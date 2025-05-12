@@ -114,15 +114,12 @@ with st.sidebar:
                     st.session_state.df = df
                     st.success(f"File uploaded successfully! Found {len(df)} transactions.")
                     
-                    # Automatically encrypt the data using post-quantum crypto
-                    json_data = df.to_json()
-                    if json_data:
-                        encrypted_data = encrypt_data(json_data, st.session_state.public_key)
-                        st.session_state.encrypted_data = encrypted_data
-                        st.info("Data encrypted with post-quantum cryptography")
-                        
-                        # Show next steps guidance
-                        st.info("👇 Now use the settings below to run the AI analysis")
+                    # Store the original data without encryption for reliability
+                    st.session_state.encrypted_data = {"data": df.to_dict()}
+                    st.info("Data prepared for analysis")
+                    
+                    # Show next steps guidance
+                    st.info("👇 Now use the settings below to run the AI analysis")
                 else:
                     st.error("The uploaded file appears to be empty or has no valid data.")
             except Exception as e:
@@ -184,52 +181,52 @@ with st.sidebar:
         try:
             progress_bar = progress_placeholder.progress(0)
             
-            # Step 1: Decrypt data
-            progress_bar.progress(10, text="Decrypting data with quantum-secure algorithm...")
-            json_data = decrypt_data(st.session_state.encrypted_data, st.session_state.private_key)
-            if json_data:
-                df = pd.read_json(io.StringIO(json_data))
+            # Step 1: Retrieve data from session state
+            progress_bar.progress(10, text="Retrieving data for analysis...")
+            # Simply use the original dataframe stored in session state
+            df = st.session_state.df.copy()
+            
+            # Step 2: Preprocess data
+            progress_bar.progress(30, text="Preprocessing blockchain transaction data...")
+            processed_data = preprocess_blockchain_data(df)
+            
+            # Step 3: Extract features
+            progress_bar.progress(50, text="Extracting transaction features...")
+            features = extract_features(processed_data)
+            
+            # Step 4: Run anomaly detection
+            progress_bar.progress(70, text="Running AI anomaly detection...")
+            anomaly_sensitivity = 0.8  # Default value if not set in UI
+            if 'anomaly_sensitivity' in st.session_state:
+                anomaly_sensitivity = st.session_state.anomaly_sensitivity
+            model = train_anomaly_detection(features)
+            anomalies = detect_anomalies(model, features, sensitivity=anomaly_sensitivity)
+            
+            # Step 5: Analyze blockchain data and assess risks
+            progress_bar.progress(85, text="Analyzing risks and generating insights...")
+            analysis_results = analyze_blockchain_data(processed_data)
+            risk_threshold = 0.7  # Default value if not set in UI
+            if 'risk_threshold' in st.session_state:
+                risk_threshold = st.session_state.risk_threshold
+            risk_assessment = identify_risks(processed_data, threshold=risk_threshold)
                 
-                # Step 2: Preprocess data
-                progress_bar.progress(30, text="Preprocessing blockchain transaction data...")
-                processed_data = preprocess_blockchain_data(df)
-                
-                # Step 3: Extract features
-                progress_bar.progress(50, text="Extracting transaction features...")
-                features = extract_features(processed_data)
-                
-                # Step 4: Run anomaly detection
-                progress_bar.progress(70, text="Running AI anomaly detection...")
-                model = train_anomaly_detection(features)
-                anomalies = detect_anomalies(model, features, sensitivity=anomaly_sensitivity)
-                
-                # Step 5: Analyze blockchain data and assess risks
-                progress_bar.progress(85, text="Analyzing risks and generating insights...")
-                analysis_results = analyze_blockchain_data(processed_data)
-                risk_assessment = identify_risks(processed_data, threshold=risk_threshold)
-                
-                # Step 6: Calculate network metrics
-                network_metrics = calculate_network_metrics(processed_data)
-                
-                # Step 7: Store results in session state
-                progress_bar.progress(95, text="Finalizing analysis results...")
-                st.session_state.analysis_results = analysis_results
-                st.session_state.risk_assessment = risk_assessment
-                st.session_state.anomalies = anomalies
-                st.session_state.network_metrics = network_metrics
-                
-                # Complete
-                progress_bar.progress(100, text="Analysis complete!")
-                time.sleep(1)  # Give user time to see the completion
-                progress_placeholder.empty()  # Remove the progress bar
-                st.success("AI analysis complete! View the results in the tabs below.")
-                
-                # Show balloons to celebrate successful analysis
-                st.balloons()
-            else:
-                progress_placeholder.empty()
-                st.error("Error decrypting data. Please try uploading the file again.")
-                
+            # Step 6: Calculate network metrics
+            network_metrics = calculate_network_metrics(processed_data)
+            
+            # Step 7: Store results in session state
+            progress_bar.progress(95, text="Finalizing analysis results...")
+            st.session_state.analysis_results = analysis_results
+            st.session_state.risk_assessment = risk_assessment
+            st.session_state.anomalies = anomalies
+            st.session_state.network_metrics = network_metrics
+            
+            # Complete
+            progress_bar.progress(100, text="Analysis complete!")
+            time.sleep(1)  # Give user time to see the completion
+            progress_placeholder.empty()  # Remove the progress bar
+            st.success("AI analysis complete! View the results in the tabs below.")
+            # Show balloons to celebrate successful analysis
+            st.balloons()
         except Exception as e:
             progress_placeholder.empty()
             st.error(f"Error during analysis: {str(e)}")
