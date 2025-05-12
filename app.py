@@ -4,15 +4,22 @@ import numpy as np
 import io
 import time
 import traceback
+import os
 from blockchain_analyzer import analyze_blockchain_data, identify_risks
 from ml_models import train_anomaly_detection, detect_anomalies
 from quantum_crypto import encrypt_data, decrypt_data, generate_pq_keys
-from data_processor import preprocess_blockchain_data, extract_features
+from data_processor import preprocess_blockchain_data, extract_features, calculate_network_metrics
 from visualizations import (
     plot_transaction_network, 
     plot_risk_heatmap, 
     plot_anomaly_detection,
     plot_transaction_timeline
+)
+from database import (
+    save_analysis_to_db,
+    get_analysis_sessions,
+    get_analysis_by_id,
+    delete_analysis_session
 )
 
 # Set page configuration
@@ -36,6 +43,14 @@ if 'risk_assessment' not in st.session_state:
     st.session_state.risk_assessment = None
 if 'anomalies' not in st.session_state:
     st.session_state.anomalies = None
+if 'network_metrics' not in st.session_state:
+    st.session_state.network_metrics = None
+if 'saved_session_id' not in st.session_state:
+    st.session_state.saved_session_id = None
+if 'view_saved_analysis' not in st.session_state:
+    st.session_state.view_saved_analysis = False
+if 'current_dataset_name' not in st.session_state:
+    st.session_state.current_dataset_name = None
 # Generate keys when app starts
 if not st.session_state.keys_generated:
     st.session_state.public_key, st.session_state.private_key = generate_pq_keys()
@@ -44,73 +59,120 @@ if not st.session_state.keys_generated:
 # Header
 st.title("Quantum-Secure Blockchain Transaction Analyzer")
 
-# Sidebar for uploads and settings
+# Sidebar navigation
 with st.sidebar:
-    st.header("Data Upload")
-    uploaded_file = st.file_uploader("Upload blockchain transaction dataset", 
-                                    type=["csv", "xlsx", "json"])
+    st.header("Navigation")
+    app_mode = st.radio("Select Mode", ["New Analysis", "Saved Analyses"])
     
-    if uploaded_file is not None:
-        try:
-            df = None
-            if uploaded_file.name.endswith('.csv'):
-                df = pd.read_csv(uploaded_file)
-            elif uploaded_file.name.endswith('.xlsx'):
-                df = pd.read_excel(uploaded_file)
-            elif uploaded_file.name.endswith('.json'):
-                df = pd.read_json(uploaded_file)
-            
-            if df is not None and not df.empty:
-                # Check if we have the minimum required columns
-                required_cols = ['from_address', 'to_address']
+    if app_mode == "New Analysis":
+        st.session_state.view_saved_analysis = False
+        
+        st.header("Data Upload")
+        uploaded_file = st.file_uploader("Upload blockchain transaction dataset", 
+                                        type=["csv", "xlsx", "json"])
+        
+        if uploaded_file is not None:
+            try:
+                df = None
+                # Store the dataset name
+                st.session_state.current_dataset_name = uploaded_file.name
                 
-                # Try to map columns if possible
-                for col in required_cols:
-                    if col not in df.columns:
-                        if col == 'from_address' and any(c in df.columns for c in ['sender', 'source', 'src']):
-                            for alt in ['sender', 'source', 'src']:
-                                if alt in df.columns:
-                                    df['from_address'] = df[alt]
-                                    break
-                        elif col == 'to_address' and any(c in df.columns for c in ['receiver', 'target', 'dst']):
-                            for alt in ['receiver', 'target', 'dst']:
-                                if alt in df.columns:
-                                    df['to_address'] = df[alt]
-                                    break
+                if uploaded_file.name.endswith('.csv'):
+                    df = pd.read_csv(uploaded_file)
+                elif uploaded_file.name.endswith('.xlsx'):
+                    df = pd.read_excel(uploaded_file)
+                elif uploaded_file.name.endswith('.json'):
+                    df = pd.read_json(uploaded_file)
                 
-                # Add the value column if missing
-                if 'value' not in df.columns and 'amount' in df.columns:
-                    df['value'] = df['amount']
-                
-                # Save to session state
-                st.session_state.df = df
-                st.success(f"File uploaded successfully! Found {len(df)} transactions.")
-                
-                # Automatically encrypt the data using post-quantum crypto
-                json_data = df.to_json()
-                if json_data:
-                    encrypted_data = encrypt_data(json_data, st.session_state.public_key)
-                    st.session_state.encrypted_data = encrypted_data
-                    st.info("Data encrypted with post-quantum cryptography")
+                if df is not None and not df.empty:
+                    # Check if we have the minimum required columns
+                    required_cols = ['from_address', 'to_address']
                     
-                    # Show next steps guidance
-                    st.info("👇 Now use the settings below to run the AI analysis")
+                    # Try to map columns if possible
+                    for col in required_cols:
+                        if col not in df.columns:
+                            if col == 'from_address' and any(c in df.columns for c in ['sender', 'source', 'src']):
+                                for alt in ['sender', 'source', 'src']:
+                                    if alt in df.columns:
+                                        df['from_address'] = df[alt]
+                                        break
+                            elif col == 'to_address' and any(c in df.columns for c in ['receiver', 'target', 'dst']):
+                                for alt in ['receiver', 'target', 'dst']:
+                                    if alt in df.columns:
+                                        df['to_address'] = df[alt]
+                                        break
+                    
+                    # Add the value column if missing
+                    if 'value' not in df.columns and 'amount' in df.columns:
+                        df['value'] = df['amount']
+                    
+                    # Save to session state
+                    st.session_state.df = df
+                    st.success(f"File uploaded successfully! Found {len(df)} transactions.")
+                    
+                    # Automatically encrypt the data using post-quantum crypto
+                    json_data = df.to_json()
+                    if json_data:
+                        encrypted_data = encrypt_data(json_data, st.session_state.public_key)
+                        st.session_state.encrypted_data = encrypted_data
+                        st.info("Data encrypted with post-quantum cryptography")
+                        
+                        # Show next steps guidance
+                        st.info("👇 Now use the settings below to run the AI analysis")
+                else:
+                    st.error("The uploaded file appears to be empty or has no valid data.")
+            except Exception as e:
+                st.error(f"Error loading file: {str(e)}")
+                st.expander("Technical Details").code(traceback.format_exc())
+        
+        st.divider()
+        st.header("Analysis Settings")
+        
+        risk_threshold = st.slider("Risk Threshold", 0.0, 1.0, 0.7, 0.05)
+        anomaly_sensitivity = st.slider("Anomaly Detection Sensitivity", 0.0, 1.0, 0.8, 0.05)
+        
+        # Create a progress placeholder
+        progress_placeholder = st.empty()
+        
+        run_analysis = st.button("Run Analysis")
+        
+    else:  # Saved Analyses mode
+        st.session_state.view_saved_analysis = True
+        st.header("Saved Analyses")
+        
+        # Get list of saved analyses
+        try:
+            saved_analyses = get_analysis_sessions()
+            if saved_analyses:
+                # Format the options for the selectbox
+                analysis_options = [
+                    f"{a['name']} ({a['dataset_name']}) - {a['timestamp']}" 
+                    for a in saved_analyses
+                ]
+                
+                selected_analysis = st.selectbox(
+                    "Select a saved analysis", 
+                    analysis_options
+                )
+                
+                if selected_analysis:
+                    # Get the selected analysis ID
+                    selected_idx = analysis_options.index(selected_analysis)
+                    st.session_state.saved_session_id = saved_analyses[selected_idx]['id']
+                    
+                    # Show delete button
+                    if st.button("Delete Selected Analysis"):
+                        success = delete_analysis_session(st.session_state.saved_session_id)
+                        if success:
+                            st.success("Analysis deleted successfully!")
+                            st.rerun()
+                        else:
+                            st.error("Failed to delete analysis.")
             else:
-                st.error("The uploaded file appears to be empty or has no valid data.")
+                st.info("No saved analyses found. Run an analysis and save it first.")
         except Exception as e:
-            st.error(f"Error loading file: {str(e)}")
+            st.error(f"Error loading saved analyses: {str(e)}")
             st.expander("Technical Details").code(traceback.format_exc())
-    
-    st.divider()
-    st.header("Analysis Settings")
-    
-    risk_threshold = st.slider("Risk Threshold", 0.0, 1.0, 0.7, 0.05)
-    anomaly_sensitivity = st.slider("Anomaly Detection Sensitivity", 0.0, 1.0, 0.8, 0.05)
-    
-    # Create a progress placeholder
-    progress_placeholder = st.empty()
-    
-    run_analysis = st.button("Run Analysis")
     
     if run_analysis and st.session_state.df is not None and st.session_state.encrypted_data is not None:
         try:
