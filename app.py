@@ -59,6 +59,10 @@ if not st.session_state.keys_generated:
 # Header
 st.title("Quantum-Secure Blockchain Transaction Analyzer")
 
+# Initialize variables for run_analysis and progress_placeholder
+run_analysis = False
+progress_placeholder = None
+
 # Sidebar navigation
 with st.sidebar:
     st.header("Navigation")
@@ -128,12 +132,14 @@ with st.sidebar:
         st.divider()
         st.header("Analysis Settings")
         
+        # Define risk threshold and anomaly sensitivity
         risk_threshold = st.slider("Risk Threshold", 0.0, 1.0, 0.7, 0.05)
         anomaly_sensitivity = st.slider("Anomaly Detection Sensitivity", 0.0, 1.0, 0.8, 0.05)
         
         # Create a progress placeholder
         progress_placeholder = st.empty()
         
+        # Run analysis button
         run_analysis = st.button("Run Analysis")
         
     else:  # Saved Analyses mode
@@ -202,11 +208,15 @@ with st.sidebar:
                 analysis_results = analyze_blockchain_data(processed_data)
                 risk_assessment = identify_risks(processed_data, threshold=risk_threshold)
                 
-                # Step 6: Store results in session state
+                # Step 6: Calculate network metrics
+                network_metrics = calculate_network_metrics(processed_data)
+                
+                # Step 7: Store results in session state
                 progress_bar.progress(95, text="Finalizing analysis results...")
                 st.session_state.analysis_results = analysis_results
                 st.session_state.risk_assessment = risk_assessment
                 st.session_state.anomalies = anomalies
+                st.session_state.network_metrics = network_metrics
                 
                 # Complete
                 progress_bar.progress(100, text="Analysis complete!")
@@ -228,7 +238,97 @@ with st.sidebar:
             st.info("Try adjusting the sensitivity settings or using a different dataset.")
 
 # Main content area
-if st.session_state.df is None:
+if st.session_state.view_saved_analysis and st.session_state.saved_session_id:
+    # Load data from the saved analysis
+    try:
+        analysis_data = get_analysis_by_id(st.session_state.saved_session_id)
+        
+        if analysis_data:
+            st.header(f"Saved Analysis: {analysis_data['name']}")
+            
+            # Display analysis metadata
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric("Dataset", analysis_data['dataset_name'])
+            with col2:
+                st.metric("Risk Threshold", f"{analysis_data['risk_threshold']:.2f}")
+            with col3:
+                st.metric("Anomaly Sensitivity", f"{analysis_data['anomaly_sensitivity']:.2f}")
+            
+            if analysis_data['description']:
+                st.info(analysis_data['description'])
+            
+            # Create tabs for visualizations
+            tab1, tab2, tab3, tab4 = st.tabs(["Transaction Network", "Risk Assessment", 
+                                          "Anomaly Detection", "Transaction Timeline"])
+            
+            # Convert transaction data to DataFrame
+            transactions_df = pd.DataFrame(analysis_data['transactions'])
+            
+            # Convert risk data to DataFrame
+            risk_df = pd.DataFrame(analysis_data['risk_assessments'])
+            
+            # Get anomaly indices
+            anomaly_indices = [a['transaction_id'] for a in analysis_data['anomalies'] if a['is_anomaly']]
+            
+            with tab1:
+                st.subheader("Blockchain Transaction Network")
+                if not transactions_df.empty:
+                    try:
+                        fig = plot_transaction_network(transactions_df)
+                        st.plotly_chart(fig, use_container_width=True)
+                    except Exception as e:
+                        st.error(f"Error creating network visualization: {str(e)}")
+            
+            with tab2:
+                st.subheader("Risk Assessment")
+                if not risk_df.empty:
+                    try:
+                        fig = plot_risk_heatmap(risk_df)
+                        st.plotly_chart(fig, use_container_width=True)
+                        
+                        # Display high-risk transactions
+                        high_risks = risk_df[risk_df['risk_score'] > 0.7]
+                        if not high_risks.empty:
+                            st.warning(f"Found {len(high_risks)} high-risk transactions")
+                            st.dataframe(high_risks)
+                        else:
+                            st.success("No high-risk transactions detected")
+                    except Exception as e:
+                        st.error(f"Error creating risk visualization: {str(e)}")
+            
+            with tab3:
+                st.subheader("Anomaly Detection")
+                if not transactions_df.empty and anomaly_indices:
+                    try:
+                        fig = plot_anomaly_detection(transactions_df, anomaly_indices)
+                        st.plotly_chart(fig, use_container_width=True)
+                        
+                        # Display anomalies
+                        if anomaly_indices:
+                            st.warning(f"Detected {len(anomaly_indices)} anomalous transactions")
+                            # Get anomalous transactions
+                            anomaly_df = transactions_df[transactions_df['id'].isin(anomaly_indices)]
+                            st.dataframe(anomaly_df)
+                        else:
+                            st.success("No anomalies detected")
+                    except Exception as e:
+                        st.error(f"Error creating anomaly visualization: {str(e)}")
+            
+            with tab4:
+                st.subheader("Transaction Timeline")
+                if not transactions_df.empty:
+                    try:
+                        fig = plot_transaction_timeline(transactions_df)
+                        st.plotly_chart(fig, use_container_width=True)
+                    except Exception as e:
+                        st.error(f"Error creating timeline visualization: {str(e)}")
+        else:
+            st.error("Could not load the selected analysis. It may have been deleted.")
+    except Exception as e:
+        st.error(f"Error loading saved analysis: {str(e)}")
+
+elif st.session_state.df is None:
     st.header("Welcome to Quantum-Secure Blockchain Analyzer")
     
     col1, col2 = st.columns(2)
@@ -254,6 +354,10 @@ if st.session_state.df is None:
     ### Post-Quantum Security
     This application uses state-of-the-art post-quantum cryptography to protect your data,
     ensuring it remains secure even against quantum computing attacks.
+    
+    ### Database Integration
+    Analysis results are securely stored in a PostgreSQL database, allowing you to 
+    save and retrieve your analysis at any time.
     """)
 
 else:
@@ -314,43 +418,81 @@ else:
                 fig = plot_transaction_timeline(st.session_state.df)
                 st.plotly_chart(fig, use_container_width=True)
         
-        # Export functionality
-        st.header("Export Results")
-        export_format = st.selectbox("Export Format", ["CSV", "JSON", "Excel"])
+        # Export and Save functionality
+        col1, col2 = st.columns(2)
         
-        if st.button("Export Analysis Results") and st.session_state.analysis_results is not None:
-            try:
-                if export_format == "CSV":
-                    csv = st.session_state.analysis_results.to_csv(index=False)
-                    st.download_button(
-                        label="Download CSV",
-                        data=csv,
-                        file_name="blockchain_analysis_results.csv",
-                        mime="text/csv"
-                    )
-                elif export_format == "JSON":
-                    json_str = st.session_state.analysis_results.to_json(orient="records")
-                    st.download_button(
-                        label="Download JSON",
-                        data=json_str,
-                        file_name="blockchain_analysis_results.json",
-                        mime="application/json"
-                    )
-                elif export_format == "Excel":
-                    try:
-                        output = io.BytesIO()
-                        with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
-                            st.session_state.analysis_results.to_excel(writer, sheet_name='Analysis', index=False)
-                        excel_data = output.getvalue()
+        with col1:
+            st.header("Export Results")
+            export_format = st.selectbox("Export Format", ["CSV", "JSON", "Excel"])
+            
+            if st.button("Export Analysis Results") and st.session_state.analysis_results is not None:
+                try:
+                    if export_format == "CSV":
+                        csv = st.session_state.analysis_results.to_csv(index=False)
                         st.download_button(
-                            label="Download Excel",
-                            data=excel_data,
-                            file_name="blockchain_analysis_results.xlsx",
-                            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                            label="Download CSV",
+                            data=csv,
+                            file_name="blockchain_analysis_results.csv",
+                            mime="text/csv"
                         )
-                    except Exception as excel_error:
-                        st.error(f"Error creating Excel file: {str(excel_error)}")
-                        st.info("Try exporting as CSV instead.")
-            except Exception as export_error:
-                st.error(f"Error exporting results: {str(export_error)}")
-                st.info("Please make sure analysis has been completed successfully.")
+                    elif export_format == "JSON":
+                        json_str = st.session_state.analysis_results.to_json(orient="records")
+                        st.download_button(
+                            label="Download JSON",
+                            data=json_str,
+                            file_name="blockchain_analysis_results.json",
+                            mime="application/json"
+                        )
+                    elif export_format == "Excel":
+                        try:
+                            output = io.BytesIO()
+                            with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+                                st.session_state.analysis_results.to_excel(writer, sheet_name='Analysis', index=False)
+                            excel_data = output.getvalue()
+                            st.download_button(
+                                label="Download Excel",
+                                data=excel_data,
+                                file_name="blockchain_analysis_results.xlsx",
+                                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                            )
+                        except Exception as excel_error:
+                            st.error(f"Error creating Excel file: {str(excel_error)}")
+                            st.info("Try exporting as CSV instead.")
+                except Exception as export_error:
+                    st.error(f"Error exporting results: {str(export_error)}")
+                    st.info("Please make sure analysis has been completed successfully.")
+        
+        with col2:
+            st.header("Save to Database")
+            save_name = st.text_input("Analysis Name", value=f"Analysis of {st.session_state.current_dataset_name}" if st.session_state.current_dataset_name else "Blockchain Analysis")
+            save_description = st.text_area("Description (optional)", placeholder="Enter a description for this analysis...")
+            
+            if st.button("Save Analysis to Database") and st.session_state.analysis_results is not None:
+                try:
+                    # Calculate network metrics if not already done
+                    if st.session_state.network_metrics is None:
+                        with st.spinner("Calculating network metrics..."):
+                            st.session_state.network_metrics = calculate_network_metrics(st.session_state.df)
+                    
+                    # Save to database
+                    session_id = save_analysis_to_db(
+                        session_name=save_name,
+                        dataset_name=st.session_state.current_dataset_name or "Unknown Dataset",
+                        dataframe=st.session_state.df,
+                        risk_assessment_df=st.session_state.risk_assessment,
+                        anomaly_indices=st.session_state.anomalies,
+                        network_metrics=st.session_state.network_metrics,
+                        risk_threshold=risk_threshold,
+                        anomaly_sensitivity=anomaly_sensitivity,
+                        description=save_description
+                    )
+                    
+                    if session_id:
+                        st.success(f"Analysis saved successfully with ID: {session_id}")
+                        st.session_state.saved_session_id = session_id
+                    else:
+                        st.error("Failed to save analysis")
+                        
+                except Exception as save_error:
+                    st.error(f"Error saving analysis: {str(save_error)}")
+                    st.expander("Technical Details").code(traceback.format_exc())

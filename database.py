@@ -7,10 +7,13 @@ from datetime import datetime
 import json
 
 # Get the database URL from environment variables
-DATABASE_URL = os.environ.get('DATABASE_URL')
+DATABASE_URL = os.environ.get('DATABASE_URL', '')
 
 # Create SQLAlchemy engine and session
-engine = create_engine(DATABASE_URL)
+if DATABASE_URL:
+    engine = create_engine(DATABASE_URL)
+else:
+    raise ValueError("DATABASE_URL environment variable is not set")
 Session = sessionmaker(bind=engine)
 Base = declarative_base()
 
@@ -339,7 +342,7 @@ def get_analysis_by_id(session_id):
                 'clustering': network_metrics.clustering,
                 'connected_components': network_metrics.connected_components,
                 'largest_component_size': network_metrics.largest_component_size,
-                'top_addresses': json.loads(network_metrics.top_addresses) if network_metrics.top_addresses else []
+                'top_addresses': json.loads(network_metrics.top_addresses) if network_metrics.top_addresses and isinstance(network_metrics.top_addresses, str) else []
             }
         else:
             network_data = {}
