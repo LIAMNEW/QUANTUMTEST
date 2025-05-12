@@ -374,8 +374,9 @@ else:
             st.subheader("Blockchain Transaction Network")
             st.image("https://pixabay.com/get/g6529d0db98955dfe8174b5acaa568d923927d28db0122b0db6ab44972011b793bd8ef5e798a55278d8faa81e2e0d1025132499258a8b64a914568805bc71007e_1280.jpg", 
                     caption="Network Visualization")
-            if st.session_state.df is not None:
-                fig = plot_transaction_network(st.session_state.df)
+            if 'analysis_results' in st.session_state and st.session_state.analysis_results is not None:
+                # Use the processed data for visualization
+                fig = plot_transaction_network(st.session_state.analysis_results)
                 st.plotly_chart(fig, use_container_width=True)
         
         with tab2:
@@ -402,8 +403,10 @@ else:
                 # Display anomalies
                 if st.session_state.anomalies and len(st.session_state.anomalies) > 0:
                     st.warning(f"Detected {len(st.session_state.anomalies)} anomalous transactions")
-                    anomaly_df = st.session_state.df.iloc[st.session_state.anomalies]
-                    st.dataframe(anomaly_df)
+                    # Use the processed data for anomaly display
+                    if 'analysis_results' in st.session_state and st.session_state.analysis_results is not None:
+                        anomaly_df = st.session_state.analysis_results.iloc[st.session_state.anomalies]
+                        st.dataframe(anomaly_df)
                 else:
                     st.success("No anomalies detected")
         
@@ -411,8 +414,9 @@ else:
             st.subheader("Transaction Timeline")
             st.image("https://pixabay.com/get/ga135386cc8dfd2789f7b1bc9fe96ea3866bb276ebee4e580692a7ceef724f7ea6207f336bb8582491b52a24572b454cbf9b4ce2e774a8a82afa8f6d8130a8eea_1280.jpg", 
                     caption="Blockchain Timeline Analysis")
-            if st.session_state.df is not None:
-                fig = plot_transaction_timeline(st.session_state.df)
+            if 'analysis_results' in st.session_state and st.session_state.analysis_results is not None:
+                # Use the processed data for visualization
+                fig = plot_transaction_timeline(st.session_state.analysis_results)
                 st.plotly_chart(fig, use_container_width=True)
         
         # Export and Save functionality
