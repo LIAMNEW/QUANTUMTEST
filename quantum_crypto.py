@@ -116,30 +116,44 @@ def decrypt_data(encrypted_payload: Dict[str, Any], private_key: Dict[str, Any])
     Returns:
         Decrypted data as a string
     """
-    # Extract components
-    ciphertext_component = np.array(encrypted_payload["ciphertext_component"])
-    encrypted_data = base64.b64decode(encrypted_payload["encrypted_data"])
-    private_lattice = private_key["private_lattice"]
-    modulus = private_key["modulus"]
-    
-    # Compute shared secret from ciphertext component and private key
-    shared_secret_raw = np.sum((ciphertext_component * private_lattice) % modulus)
-    shared_secret = hashlib.sha256(str(shared_secret_raw).encode()).digest()
-    
-    # Generate full key for decryption
-    full_key = shared_secret
-    while len(full_key) < len(encrypted_data):
-        full_key += hashlib.sha256(full_key).digest()
-    
-    # Decrypt the data (XOR)
-    decrypted_bytes = bytes([a ^ b for a, b in zip(encrypted_data, full_key[:len(encrypted_data)])])
-    
-    # Convert back to string
     try:
-        decrypted_data = decrypted_bytes.decode('utf-8')
-        return decrypted_data
-    except UnicodeDecodeError:
-        # If decoding fails, return empty string
+        # Extract components
+        if not isinstance(encrypted_payload, dict):
+            print(f"Error: encrypted_payload is not a dictionary: {type(encrypted_payload)}")
+            return ""
+            
+        if "ciphertext_component" not in encrypted_payload:
+            print(f"Error: ciphertext_component missing from payload: {list(encrypted_payload.keys())}")
+            return ""
+            
+        ciphertext_component = np.array(encrypted_payload["ciphertext_component"])
+        encrypted_data = base64.b64decode(encrypted_payload["encrypted_data"])
+        private_lattice = private_key["private_lattice"]
+        modulus = private_key["modulus"]
+        
+        # Compute shared secret from ciphertext component and private key
+        shared_secret_raw = np.sum((ciphertext_component * private_lattice) % modulus)
+        shared_secret = hashlib.sha256(str(shared_secret_raw).encode()).digest()
+        
+        # Generate full key for decryption
+        full_key = shared_secret
+        while len(full_key) < len(encrypted_data):
+            full_key += hashlib.sha256(full_key).digest()
+        
+        # Decrypt the data (XOR)
+        decrypted_bytes = bytes([a ^ b for a, b in zip(encrypted_data, full_key[:len(encrypted_data)])])
+        
+        # Convert back to string
+        try:
+            decrypted_data = decrypted_bytes.decode('utf-8')
+            return decrypted_data
+        except UnicodeDecodeError:
+            print("UnicodeDecodeError: Failed to decode decrypted bytes")
+            return ""
+    except Exception as e:
+        print(f"Decryption error: {str(e)}")
+        import traceback
+        print(traceback.format_exc())
         return ""
 
 def verify_integrity(data: str, signature: Dict[str, Any], public_key: Dict[str, Any]) -> bool:

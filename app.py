@@ -28,14 +28,18 @@ if 'df' not in st.session_state:
     st.session_state.df = None
 if 'encrypted_data' not in st.session_state:
     st.session_state.encrypted_data = None
+if 'keys_generated' not in st.session_state:
+    st.session_state.keys_generated = False
 if 'analysis_results' not in st.session_state:
     st.session_state.analysis_results = None
 if 'risk_assessment' not in st.session_state:
     st.session_state.risk_assessment = None
 if 'anomalies' not in st.session_state:
     st.session_state.anomalies = None
-if 'public_key' not in st.session_state:
+# Generate keys when app starts
+if not st.session_state.keys_generated:
     st.session_state.public_key, st.session_state.private_key = generate_pq_keys()
+    st.session_state.keys_generated = True
 
 # Header
 st.title("Quantum-Secure Blockchain Transaction Analyzer")
@@ -148,8 +152,8 @@ with st.sidebar:
                 progress_placeholder.empty()  # Remove the progress bar
                 st.success("AI analysis complete! View the results in the tabs below.")
                 
-                # Auto-scroll to results section
-                st.markdown('<script>window.scrollTo(0, document.body.scrollHeight);</script>', unsafe_allow_html=True)
+                # Show balloons to celebrate successful analysis
+                st.balloons()
             else:
                 progress_placeholder.empty()
                 st.error("Error decrypting data. Please try uploading the file again.")
