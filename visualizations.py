@@ -285,8 +285,8 @@ def plot_transaction_timeline(df: pd.DataFrame) -> go.Figure:
     
     # Create a timeline visualization
     if 'value' in timeline_df.columns:
-        # If we have value data, create a value timeline
-        timeline_df['hour'] = timeline_df['timestamp'].dt.floor('H')
+        # If we have value data, create a value timeline (using 'h' instead of deprecated 'H')
+        timeline_df['hour'] = timeline_df['timestamp'].dt.floor('1h')
         hourly_values = timeline_df.groupby('hour')['value'].sum().reset_index()
         
         fig = px.line(

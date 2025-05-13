@@ -45,8 +45,9 @@ def preprocess_blockchain_data(df: pd.DataFrame) -> pd.DataFrame:
     if 'value' in processed_df.columns:
         # Convert to numeric
         processed_df['value'] = pd.to_numeric(processed_df['value'], errors='coerce')
-        # Fill missing values with median
-        processed_df['value'].fillna(processed_df['value'].median(), inplace=True)
+        # Fill missing values with median (avoiding the deprecated inplace method)
+        median_value = processed_df['value'].median()
+        processed_df['value'] = processed_df['value'].fillna(median_value)
     else:
         # Try to find value column with different name
         value_columns = ['amount', 'transaction_value', 'tx_value']

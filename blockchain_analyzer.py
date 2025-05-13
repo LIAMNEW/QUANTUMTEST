@@ -105,8 +105,8 @@ def identify_risks(df: pd.DataFrame, threshold: float = 0.7) -> pd.DataFrame:
     if 'timestamp' in df.columns and 'from_address' in df.columns:
         risk_df['timestamp'] = pd.to_datetime(risk_df['timestamp'])
         
-        # Group by sender and time window
-        risk_df['time_window'] = risk_df['timestamp'].dt.floor('1H')
+        # Group by sender and time window (using 'h' instead of deprecated 'H')
+        risk_df['time_window'] = risk_df['timestamp'].dt.floor('1h')
         transaction_counts = risk_df.groupby(['from_address', 'time_window']).size().reset_index(name='count')
         
         # Find high frequency senders

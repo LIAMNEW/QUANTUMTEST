@@ -429,13 +429,20 @@ else:
             if st.button("Export Analysis Results") and st.session_state.analysis_results is not None:
                 try:
                     if export_format == "CSV":
-                        csv = st.session_state.analysis_results.to_csv(index=False)
-                        st.download_button(
-                            label="Download CSV",
-                            data=csv,
-                            file_name="blockchain_analysis_results.csv",
-                            mime="text/csv"
-                        )
+                        try:
+                            # Use StringIO for more reliable CSV export
+                            csv_buffer = io.StringIO()
+                            st.session_state.analysis_results.to_csv(csv_buffer, index=False)
+                            csv_str = csv_buffer.getvalue()
+                            
+                            st.download_button(
+                                label="Download CSV",
+                                data=csv_str,
+                                file_name="blockchain_analysis_results.csv",
+                                mime="text/csv"
+                            )
+                        except Exception as e:
+                            st.error(f"Error exporting to CSV: {str(e)}")
                     elif export_format == "JSON":
                         json_str = st.session_state.analysis_results.to_json(orient="records")
                         st.download_button(
