@@ -22,52 +22,77 @@ def plot_transaction_network(df: pd.DataFrame) -> go.Figure:
         create_using=nx.DiGraph()
     )
     
-    # Calculate node positions
-    pos = nx.spring_layout(G, seed=42)
+    # Calculate node positions with more spread for less overlap
+    pos = nx.spring_layout(G, seed=42, k=0.5)  # Increasing k spreads nodes further apart
     
-    # Calculate node sizes based on degree
+    # Calculate node sizes based on degree - bigger nodes for better visibility
     degrees = dict(G.degree())
     max_degree = max(degrees.values()) if degrees else 1
-    node_sizes = {node: (10 + (degree / max_degree) * 40) for node, degree in degrees.items()}
+    node_sizes = {node: (15 + (degree / max_degree) * 25) for node, degree in degrees.items()}
     
     # Calculate edge weights based on transaction value
     if 'value' in df.columns:
         edge_weights = nx.get_edge_attributes(G, 'value')
         max_weight = max(edge_weights.values()) if edge_weights else 1
-        edge_widths = {edge: (1 + (weight / max_weight) * 5) for edge, weight in edge_weights.items()}
+        # Reduce line width range for cleaner appearance
+        edge_widths = {edge: (0.5 + (weight / max_weight) * 3) for edge, weight in edge_weights.items()}
     else:
         edge_widths = {edge: 1 for edge in G.edges()}
     
-    # Create node traces
+    # Create node traces - improved visibility and hover information
     node_trace = go.Scatter(
         x=[pos[node][0] for node in G.nodes()],
         y=[pos[node][1] for node in G.nodes()],
-        mode='markers',
+        mode='markers+text',
         marker=dict(
             size=[node_sizes[node] for node in G.nodes()],
             color=[degrees[node] for node in G.nodes()],
             colorscale='Viridis',
-            colorbar=dict(title='Node Degree'),
-            line=dict(width=1, color='rgba(50, 50, 50, 0.8)')
+            colorbar=dict(title='Node Connections'),
+            line=dict(width=1.5, color='rgba(50, 50, 50, 0.9)'),
+            opacity=0.9
         ),
-        text=[f"Address: {node}<br>Degree: {degrees[node]}" for node in G.nodes()],
+        # Truncate long addresses for display clarity
+        text=[node[:6] + '...' if len(str(node)) > 10 else node for node in G.nodes()],
+        textposition="bottom center",
+        textfont=dict(size=10, color='rgba(0, 0, 0, 0.7)'),
+        # Show full details on hover
+        hovertext=[f"Address: {node}<br>Connections: {degrees[node]}" for node in G.nodes()],
         hoverinfo='text',
         name='Addresses'
     )
     
-    # Create edge traces
+    # Create edge traces with better styling and hover information
     edge_traces = []
     for edge in G.edges():
         x0, y0 = pos[edge[0]]
         x1, y1 = pos[edge[1]]
         width = edge_widths.get((edge[0], edge[1]), 1)
         
+        # Get the transaction value if available
+        if 'value' in df.columns:
+            # Find transactions between these addresses
+            transactions = df[(df['from_address'] == edge[0]) & (df['to_address'] == edge[1])]
+            if not transactions.empty:
+                value = transactions['value'].sum()
+                hover_text = f"From: {edge[0][:6]}...<br>To: {edge[1][:6]}...<br>Total Value: {value:.2f}"
+            else:
+                hover_text = f"From: {edge[0][:6]}...<br>To: {edge[1][:6]}..."
+        else:
+            hover_text = f"From: {edge[0][:6]}...<br>To: {edge[1][:6]}..."
+        
+        # Create a more visually appealing edge trace
         edge_trace = go.Scatter(
             x=[x0, x1, None],
             y=[y0, y1, None],
             mode='lines',
-            line=dict(width=width, color='rgba(150, 150, 150, 0.6)'),
-            hoverinfo='none',
+            line=dict(
+                width=width, 
+                color='rgba(70, 130, 180, 0.6)',  # Steel blue color
+                dash='solid'
+            ),
+            hovertext=hover_text,
+            hoverinfo='text',
             showlegend=False
         )
         edge_traces.append(edge_trace)
