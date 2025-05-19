@@ -97,16 +97,37 @@ def plot_transaction_network(df: pd.DataFrame) -> go.Figure:
         )
         edge_traces.append(edge_trace)
     
-    # Create figure
+    # Create figure with improved styling and annotations
     fig = go.Figure(data=edge_traces + [node_trace],
                    layout=go.Layout(
-                       title='Blockchain Transaction Network',
+                       title={
+                           'text': 'Blockchain Transaction Network',
+                           'font': {'size': 24},
+                           'x': 0.5,
+                           'y': 0.95
+                       },
                        showlegend=True,
                        hovermode='closest',
-                       margin=dict(b=20, l=5, r=5, t=40),
+                       margin=dict(b=40, l=10, r=10, t=60),
                        xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
                        yaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
-                       template='plotly_dark'
+                       template='plotly_dark',
+                       legend=dict(
+                           x=0.01, 
+                           y=0.99,
+                           bgcolor='rgba(50, 50, 50, 0.8)',
+                           borderwidth=1
+                       ),
+                       annotations=[
+                           dict(
+                               text="<b>Node size</b>: Number of connections | <b>Edge thickness</b>: Transaction value",
+                               showarrow=False,
+                               xref="paper", yref="paper",
+                               x=0.5, y=0.02,
+                               align="center",
+                               font=dict(size=12, color='rgba(200, 200, 200, 0.9)')
+                           )
+                       ]
                    ))
     
     return fig
@@ -154,14 +175,30 @@ def plot_risk_heatmap(risk_df: pd.DataFrame) -> go.Figure:
     if len(risk_pivot) > 10:
         risk_pivot = risk_pivot.sort_values('Count', ascending=False).head(10)
     
-    # Create horizontal bar chart
+    # Create horizontal bar chart with improved styling
     fig = px.bar(
         risk_pivot, y='Risk Factor', x='Count',
         color='Count', color_continuous_scale='Reds',
         orientation='h',
         title='Risk Factors Distribution',
-        template='plotly_dark'
+        template='plotly_dark',
+        labels={'Count': 'Number of Transactions'},
+        height=500  # Taller graph for better readability
     )
+    
+    # Improve formatting and readability
+    fig.update_layout(
+        title={
+            'text': 'Risk Factors Distribution',
+            'font': {'size': 22},
+            'x': 0.5,
+            'y': 0.95
+        },
+        margin=dict(l=20, r=20, t=60, b=40)
+    )
+    
+    # Sort by count for better visualization
+    fig.update_yaxes(categoryorder='total ascending')
     
     # Add a secondary plot showing risk score distribution
     fig2 = px.histogram(
@@ -225,22 +262,45 @@ def plot_anomaly_detection(df: pd.DataFrame, anomaly_indices: List[int]) -> go.F
             vis_df['transaction_index'] = np.arange(len(vis_df))
             y_feature = 'transaction_index'
         
-        # Create scatter plot
+        # Create a more informative scatter plot
         fig = px.scatter(
             vis_df, x=x_feature, y=y_feature, 
             color='is_anomaly',
-            color_discrete_map={False: 'rgba(99, 110, 250, 0.7)', True: 'rgba(239, 85, 59, 0.9)'},
-            size=[10 if a else 5 for a in vis_df['is_anomaly']],
+            color_discrete_map={False: 'rgba(99, 110, 250, 0.7)', True: 'rgba(239, 85, 59, 1.0)'},
+            size=[15 if a else 7 for a in vis_df['is_anomaly']],  # Make anomalies more prominent
+            opacity=[1.0 if a else 0.7 for a in vis_df['is_anomaly']],  # Make normal points semi-transparent
             hover_data=vis_df.columns.tolist(),
+            labels={
+                'is_anomaly': 'Anomaly Status',
+                x_feature: x_feature.title(),
+                y_feature: 'Time/Sequence' if y_feature == 'transaction_index' else y_feature.title()
+            },
             title='Anomaly Detection Results',
-            template='plotly_dark'
+            template='plotly_dark',
+            height=600  # Larger plot for better visibility
         )
         
-        # Highlight anomalies with markers
-        fig.update_traces(
-            marker=dict(line=dict(width=1, color='white')),
-            selector=dict(mode='markers')
+        # Add custom hover information
+        hover_template = (
+            "<b>Transaction:</b> %{customdata[0]}<br>" +
+            "<b>Value:</b> %{x}<br>" +
+            "<b>From:</b> %{customdata[1]}<br>" +
+            "<b>To:</b> %{customdata[2]}<br>" +
+            "<b>Status:</b> %{customdata[3]}<br>" +
+            "<b>Anomaly:</b> %{customdata[4]}"
         )
+        
+        # Highlight anomalies with markers and improved styling
+        for i, trace in enumerate(fig.data):
+            is_anomaly_trace = i == 1  # Typically the second trace contains anomalies
+            
+            if is_anomaly_trace:
+                # Highlight anomalies with distinct styling
+                fig.data[i].marker.line = dict(width=2, color='white')
+                fig.data[i].name = "Anomalous Transactions"
+            else:
+                fig.data[i].marker.line = dict(width=0.5, color='rgba(50, 50, 50, 0.5)')
+                fig.data[i].name = "Normal Transactions"
         
         return fig
     
