@@ -377,7 +377,35 @@ def plot_transaction_timeline(df: pd.DataFrame) -> go.Figure:
         fig = px.line(
             hourly_values, x='hour', y='value',
             title='Hourly Transaction Value Timeline',
-            template='plotly_dark'
+            template='plotly_dark',
+            labels={'hour': 'Time', 'value': 'Transaction Value'},
+            height=500
+        )
+        
+        # Improve formatting
+        fig.update_layout(
+            title={
+                'text': 'Hourly Transaction Value Timeline',
+                'font': {'size': 22},
+                'x': 0.5,
+                'y': 0.95
+            },
+            xaxis_title='Time',
+            yaxis_title='Total Value',
+            hovermode='x unified',
+            margin=dict(l=20, r=20, t=60, b=40)
+        )
+        
+        # Add range slider for better time navigation
+        fig.update_xaxes(
+            rangeslider_visible=True,
+            rangeselector=dict(
+                buttons=list([
+                    dict(count=6, label="6h", step="hour", stepmode="backward"),
+                    dict(count=1, label="1d", step="day", stepmode="backward"),
+                    dict(step="all")
+                ])
+            )
         )
         
         # Add a second line for transaction counts

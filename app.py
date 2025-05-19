@@ -372,7 +372,8 @@ else:
         
         with tab1:
             st.subheader("Blockchain Transaction Network")
-            st.image("https://pixabay.com/get/g6529d0db98955dfe8174b5acaa568d923927d28db0122b0db6ab44972011b793bd8ef5e798a55278d8faa81e2e0d1025132499258a8b64a914568805bc71007e_1280.jpg", 
+            # Use a more reliable image URL from a CDN
+            st.image("https://cdn.pixabay.com/photo/2017/12/22/08/01/blockchain-3033200_1280.jpg", 
                     caption="Network Visualization")
             if 'analysis_results' in st.session_state and st.session_state.analysis_results is not None:
                 # Use the processed data for visualization
@@ -412,7 +413,8 @@ else:
         
         with tab4:
             st.subheader("Transaction Timeline")
-            st.image("https://pixabay.com/get/ga135386cc8dfd2789f7b1bc9fe96ea3866bb276ebee4e580692a7ceef724f7ea6207f336bb8582491b52a24572b454cbf9b4ce2e774a8a82afa8f6d8130a8eea_1280.jpg", 
+            # Use a more reliable image URL from a CDN
+            st.image("https://cdn.pixabay.com/photo/2021/05/25/02/51/crypto-6281601_1280.jpg", 
                     caption="Blockchain Timeline Analysis")
             if 'analysis_results' in st.session_state and st.session_state.analysis_results is not None:
                 # Use the processed data for visualization
