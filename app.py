@@ -372,9 +372,8 @@ else:
         
         with tab1:
             st.subheader("Blockchain Transaction Network")
-            # Use a more reliable image URL from a CDN
-            st.image("https://cdn.pixabay.com/photo/2017/12/22/08/01/blockchain-3033200_1280.jpg", 
-                    caption="Network Visualization")
+            # Skip using external images and just show a descriptive title
+            st.markdown("### Interactive Network Graph of Transaction Connections")
             if 'analysis_results' in st.session_state and st.session_state.analysis_results is not None:
                 # Use the processed data for visualization
                 fig = plot_transaction_network(st.session_state.analysis_results)
@@ -413,9 +412,8 @@ else:
         
         with tab4:
             st.subheader("Transaction Timeline")
-            # Use a more reliable image URL from a CDN
-            st.image("https://cdn.pixabay.com/photo/2021/05/25/02/51/crypto-6281601_1280.jpg", 
-                    caption="Blockchain Timeline Analysis")
+            # Skip using external images and just show a title
+            st.markdown("### Blockchain Transaction Timeline Analysis")
             if 'analysis_results' in st.session_state and st.session_state.analysis_results is not None:
                 # Use the processed data for visualization
                 fig = plot_transaction_timeline(st.session_state.analysis_results)
