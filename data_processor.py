@@ -15,6 +15,12 @@ def preprocess_blockchain_data(df: pd.DataFrame) -> pd.DataFrame:
     """
     processed_df = df.copy()
     
+    # Print diagnostic information
+    print(f"Original columns: {processed_df.columns.tolist()}")
+    
+    # Set index to None to avoid the "not in index" error
+    processed_df = processed_df.reset_index(drop=True)
+    
     # Check if essential columns exist
     required_columns = ['from_address', 'to_address']
     for col in required_columns:
@@ -28,18 +34,24 @@ def preprocess_blockchain_data(df: pd.DataFrame) -> pd.DataFrame:
                 # Create empty column if it can't be inferred
                 processed_df[col] = np.nan
     
-    # Handle timestamp if available
+    # Handle timestamp - IMPORTANT FIX FOR "TIMESTAMP NOT IN INDEX" ERROR
     if 'timestamp' in processed_df.columns:
         # Convert to datetime
         try:
             processed_df['timestamp'] = pd.to_datetime(processed_df['timestamp'])
-        except:
+        except Exception as e:
+            print(f"Error converting timestamp to datetime: {str(e)}")
             # Try unix timestamp conversion
             try:
                 processed_df['timestamp'] = pd.to_datetime(processed_df['timestamp'], unit='s')
-            except:
-                # If all fails, drop the column
-                processed_df.drop('timestamp', axis=1, inplace=True)
+            except Exception as e:
+                print(f"Error converting as unix timestamp: {str(e)}")
+                # Don't drop the column, just leave it as is
+                print("Keeping timestamp column as-is without conversion")
+    else:
+        # CRITICAL FIX: If timestamp is missing, create a dummy timestamp column
+        print("Warning: No timestamp column found. Creating a dummy timestamp column.")
+        processed_df['timestamp'] = pd.to_datetime('2025-01-01')  # Use a default date
     
     # Handle transaction value
     if 'value' in processed_df.columns:
