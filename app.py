@@ -410,6 +410,33 @@ else:
         # Create tabs for different visualizations and AI search
         tab1, tab2, tab3, tab4, tab5 = st.tabs(["Transaction Network", "Risk Assessment", 
                                       "Anomaly Detection", "Transaction Timeline", "AI Transaction Search"])
+                                      
+        # Add AI Search directly on the main page for easier access
+        st.sidebar.divider()
+        with st.sidebar.expander("🔍 AI Transaction Search", expanded=True):
+            st.markdown("Ask any question about your transaction data:")
+            sidebar_query = st.text_input("Your question:", key="sidebar_search_query")
+            
+            if st.button("Search", key="sidebar_search_button"):
+                if sidebar_query and st.session_state.df is not None:
+                    with st.spinner("Analyzing with AI..."):
+                        try:
+                            response = ai_transaction_search(
+                                sidebar_query,
+                                st.session_state.df,
+                                st.session_state.risk_assessment,
+                                st.session_state.anomalies,
+                                st.session_state.network_metrics
+                            )
+                            st.session_state.search_result = response
+                            st.success("Search complete! Check the AI Transaction Search tab for results.")
+                        except Exception as e:
+                            st.error(f"Error: {str(e)}")
+                else:
+                    if st.session_state.df is None:
+                        st.warning("Please upload and analyze data first.")
+                    else:
+                        st.warning("Please enter a search query.")
         
         with tab1:
             st.subheader("Blockchain Transaction Network")
