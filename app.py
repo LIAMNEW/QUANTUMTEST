@@ -407,9 +407,9 @@ else:
     if st.session_state.analysis_results is not None:
         st.header("Analysis Results")
         
-        # Create tabs for different visualizations
-        tab1, tab2, tab3, tab4 = st.tabs(["Transaction Network", "Risk Assessment", 
-                                          "Anomaly Detection", "Transaction Timeline"])
+        # Create tabs for different visualizations and AI search
+        tab1, tab2, tab3, tab4, tab5 = st.tabs(["Transaction Network", "Risk Assessment", 
+                                      "Anomaly Detection", "Transaction Timeline", "AI Transaction Search"])
         
         with tab1:
             st.subheader("Blockchain Transaction Network")
@@ -459,6 +459,64 @@ else:
                 # Use the processed data for visualization
                 fig = plot_transaction_timeline(st.session_state.analysis_results)
                 st.plotly_chart(fig, use_container_width=True)
+                
+        with tab5:
+            st.subheader("AI-Powered Transaction Search")
+            
+            # Add AI search icon and description
+            col1, col2 = st.columns([1, 3])
+            with col1:
+                st.markdown("🔍 🤖")
+            with col2:
+                st.markdown("""
+                Ask any question about the analyzed blockchain transactions and get AI-powered insights.
+                For example:
+                - "Which transactions have the highest risk scores?"
+                - "Are there any unusual patterns in the transactions?"
+                - "What is the average transaction value?"
+                - "Show me transactions between the most active addresses"
+                """)
+            
+            # Search input
+            search_query = st.text_input(
+                "Ask a question about the blockchain transactions:",
+                key="new_analysis_search_query"
+            )
+            
+            if st.button("Search", key="new_analysis_search_button"):
+                if search_query:
+                    with st.spinner("Analyzing your query with AI..."):
+                        try:
+                            # Use the AI search function
+                            response = ai_transaction_search(
+                                search_query,
+                                st.session_state.df,
+                                st.session_state.risk_assessment,
+                                st.session_state.anomalies,
+                                st.session_state.network_metrics
+                            )
+                            
+                            # Store the result in session state
+                            st.session_state.search_result = response
+                            
+                            # Display the response
+                            st.markdown("### AI Analysis Results")
+                            st.markdown(response)
+                        except Exception as e:
+                            st.error(f"Error performing AI search: {str(e)}")
+                            st.expander("Technical Details").code(traceback.format_exc())
+                else:
+                    st.warning("Please enter a search query.")
+            
+            # Display previous search result if available
+            if 'search_result' in st.session_state and st.session_state.search_result and not search_query:
+                st.markdown("### Previous Search Results")
+                st.markdown(st.session_state.search_result)
+                
+                # Option to clear results
+                if st.button("Clear Results"):
+                    st.session_state.search_result = None
+                    st.rerun()
         
         # Export and Save functionality
         col1, col2 = st.columns(2)
