@@ -413,13 +413,13 @@ else:
                                       
         # Add AI Search directly on the main page for easier access
         st.sidebar.divider()
-        with st.sidebar.expander("🔍 AI Transaction Search", expanded=True):
+        with st.sidebar.expander("🔍 AI Transaction Search (Powered by OpenAI GPT-4o)", expanded=True):
             st.markdown("Ask any question about your transaction data:")
             sidebar_query = st.text_input("Your question:", key="sidebar_search_query")
             
             if st.button("Search", key="sidebar_search_button"):
                 if sidebar_query and st.session_state.df is not None:
-                    with st.spinner("Analyzing with AI..."):
+                    with st.spinner("Analyzing with OpenAI GPT-4o..."):
                         try:
                             response = ai_transaction_search(
                                 sidebar_query,
@@ -429,7 +429,12 @@ else:
                                 st.session_state.network_metrics
                             )
                             st.session_state.search_result = response
-                            st.success("Search complete! Check the AI Transaction Search tab for results.")
+                            
+                            # Show the results directly in the sidebar
+                            st.success("AI Analysis Complete")
+                            st.markdown("### AI Analysis Results")
+                            st.markdown(response)
+                            st.info("The complete results are also available in the 'AI Transaction Search' tab.")
                         except Exception as e:
                             st.error(f"Error: {str(e)}")
                 else:
