@@ -21,6 +21,7 @@ from database import (
     get_analysis_by_id,
     delete_analysis_session
 )
+from ai_search import ai_transaction_search
 
 # Set page configuration
 st.set_page_config(
@@ -51,6 +52,10 @@ if 'view_saved_analysis' not in st.session_state:
     st.session_state.view_saved_analysis = False
 if 'current_dataset_name' not in st.session_state:
     st.session_state.current_dataset_name = None
+if 'search_query' not in st.session_state:
+    st.session_state.search_query = ""
+if 'search_result' not in st.session_state:
+    st.session_state.search_result = None
 # Generate keys when app starts
 if not st.session_state.keys_generated:
     st.session_state.public_key, st.session_state.private_key = generate_pq_keys()
@@ -255,9 +260,9 @@ if st.session_state.view_saved_analysis and st.session_state.saved_session_id:
             if analysis_data['description']:
                 st.info(analysis_data['description'])
             
-            # Create tabs for visualizations
-            tab1, tab2, tab3, tab4 = st.tabs(["Transaction Network", "Risk Assessment", 
-                                          "Anomaly Detection", "Transaction Timeline"])
+            # Create tabs for visualizations and AI search
+            tab1, tab2, tab3, tab4, tab5 = st.tabs(["Transaction Network", "Risk Assessment", 
+                                          "Anomaly Detection", "Transaction Timeline", "AI Transaction Search"])
             
             # Convert transaction data to DataFrame
             transactions_df = pd.DataFrame(analysis_data['transactions'])
@@ -320,6 +325,42 @@ if st.session_state.view_saved_analysis and st.session_state.saved_session_id:
                         st.plotly_chart(fig, use_container_width=True)
                     except Exception as e:
                         st.error(f"Error creating timeline visualization: {str(e)}")
+            
+            # Add AI-powered Transaction Search tab
+            tab5 = st.tabs(["AI Transaction Search"])[0]
+            with tab5:
+                st.subheader("AI-Powered Transaction Search")
+                st.markdown("""
+                Ask any question about the analyzed blockchain transactions and get AI-powered insights.
+                For example:
+                - "Which transactions have the highest risk scores?"
+                - "Are there any unusual patterns in the transactions?"
+                - "What is the average transaction value?"
+                """)
+                
+                # Search input
+                search_query = st.text_input("Ask a question about the blockchain transactions:", key="saved_search_query")
+                
+                if st.button("Search", key="saved_search_button"):
+                    if search_query:
+                        with st.spinner("Analyzing your query with AI..."):
+                            try:
+                                # Use the AI search function with saved analysis data
+                                response = ai_transaction_search(
+                                    search_query,
+                                    transactions_df,
+                                    pd.DataFrame(analysis_data['risk_assessments']) if 'risk_assessments' in analysis_data else None,
+                                    [a['transaction_id'] for a in analysis_data['anomalies'] if a['is_anomaly']] if 'anomalies' in analysis_data else None,
+                                    analysis_data['network_metrics'] if 'network_metrics' in analysis_data else None
+                                )
+                                
+                                # Display the response
+                                st.markdown("### AI Analysis Results")
+                                st.markdown(response)
+                            except Exception as e:
+                                st.error(f"Error performing AI search: {str(e)}")
+                    else:
+                        st.warning("Please enter a search query.")
         else:
             st.error("Could not load the selected analysis. It may have been deleted.")
     except Exception as e:
