@@ -409,8 +409,9 @@ else:
         st.header("Analysis Results")
         
         # Create tabs for different visualizations and AI search
-        tab1, tab2, tab3, tab4, tab5 = st.tabs(["Transaction Network", "Risk Assessment", 
-                                      "Anomaly Detection", "Transaction Timeline", "AI Transaction Search"])
+        tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(["Transaction Network", "Risk Assessment", 
+                                      "Anomaly Detection", "Transaction Timeline", "AI Transaction Search", 
+                                      "Advanced Analytics", "Predictive Analysis"])
                                       
         # Add AI Search directly on the main page for easier access
         st.sidebar.divider()
@@ -550,6 +551,182 @@ else:
                 if st.button("Clear Results"):
                     st.session_state.search_result = None
                     st.rerun()
+        
+        with tab6:
+            st.subheader("🧠 Advanced Multimodal Analytics")
+            st.markdown("Comprehensive AI-powered analysis combining multiple analytical approaches")
+            
+            if st.button("Run Advanced Analytics", key="advanced_analytics_button"):
+                with st.spinner("Running advanced multimodal analysis..."):
+                    try:
+                        # Initialize advanced analytics
+                        advanced_analytics = AdvancedAnalytics()
+                        
+                        # Perform multimodal analysis
+                        multimodal_results = advanced_analytics.multimodal_analysis(
+                            st.session_state.df,
+                            st.session_state.risk_assessment,
+                            st.session_state.network_metrics
+                        )
+                        
+                        # Display results
+                        st.success("Advanced analytics complete!")
+                        
+                        # Transaction Clustering Results
+                        if 'transaction_clustering' in multimodal_results:
+                            st.subheader("Transaction Clustering Analysis")
+                            clustering_data = multimodal_results['transaction_clustering']
+                            if 'error' not in clustering_data:
+                                col1, col2 = st.columns(2)
+                                with col1:
+                                    st.metric("Total Clusters", clustering_data.get('total_clusters', 0))
+                                with col2:
+                                    st.metric("Outlier Percentage", f"{clustering_data.get('outlier_percentage', 0):.1f}%")
+                                
+                                if 'clusters' in clustering_data:
+                                    for cluster_name, cluster_info in clustering_data['clusters'].items():
+                                        with st.expander(f"{cluster_name} ({cluster_info['size']} transactions)"):
+                                            st.write(f"Average Value: ${cluster_info['avg_value']:.2f}")
+                                            st.write(f"Pattern: {cluster_info['pattern_description']}")
+                        
+                        # Behavioral Patterns
+                        if 'behavioral_patterns' in multimodal_results:
+                            st.subheader("Behavioral Pattern Analysis")
+                            patterns = multimodal_results['behavioral_patterns']
+                            if 'error' not in patterns:
+                                col1, col2, col3 = st.columns(3)
+                                with col1:
+                                    if 'peak_hour' in patterns:
+                                        st.metric("Peak Activity Hour", f"{patterns['peak_hour']}:00")
+                                with col2:
+                                    if 'unique_senders' in patterns:
+                                        st.metric("Unique Senders", patterns['unique_senders'])
+                                with col3:
+                                    if 'unique_receivers' in patterns:
+                                        st.metric("Unique Receivers", patterns['unique_receivers'])
+                        
+                        # Value Distribution Analysis
+                        if 'value_distribution' in multimodal_results:
+                            st.subheader("Value Distribution Analysis")
+                            dist_data = multimodal_results['value_distribution']
+                            if 'error' not in dist_data:
+                                col1, col2, col3, col4 = st.columns(4)
+                                with col1:
+                                    st.metric("Mean Value", f"${dist_data['mean']:.2f}")
+                                with col2:
+                                    st.metric("Median Value", f"${dist_data['median']:.2f}")
+                                with col3:
+                                    st.metric("Std Deviation", f"${dist_data['std']:.2f}")
+                                with col4:
+                                    st.metric("Skewness", f"{dist_data['skewness']:.2f}")
+                                
+                                if 'value_categories' in dist_data:
+                                    st.write("**Transaction Categories:**")
+                                    categories = dist_data['value_categories']
+                                    st.write(f"- Micro Transactions: {categories['micro_transactions']}")
+                                    st.write(f"- Small Transactions: {categories['small_transactions']}")
+                                    st.write(f"- Large Transactions: {categories['large_transactions']}")
+                                    st.write(f"- Whale Transactions: {categories['whale_transactions']}")
+                        
+                        # AI Insights
+                        if 'ai_insights' in multimodal_results:
+                            st.subheader("AI-Generated Insights")
+                            st.markdown(multimodal_results['ai_insights'])
+                            
+                    except Exception as e:
+                        st.error(f"Advanced analytics failed: {str(e)}")
+        
+        with tab7:
+            st.subheader("🔮 Predictive Analysis")
+            st.markdown("AI-powered forecasting and trend prediction for transaction patterns")
+            
+            # Prediction horizon selector
+            prediction_days = st.selectbox("Prediction Horizon", [7, 14, 30, 60], index=2)
+            
+            if st.button("Run Predictive Analysis", key="predictive_analysis_button"):
+                with st.spinner("Running predictive analysis..."):
+                    try:
+                        # Initialize advanced analytics
+                        advanced_analytics = AdvancedAnalytics()
+                        
+                        # Perform predictive analysis
+                        predictive_results = advanced_analytics.predictive_analysis(
+                            st.session_state.df,
+                            prediction_horizon=prediction_days
+                        )
+                        
+                        # Display results
+                        st.success("Predictive analysis complete!")
+                        
+                        # Volume Forecast
+                        if 'volume_forecast' in predictive_results:
+                            st.subheader("Transaction Volume Forecast")
+                            volume_data = predictive_results['volume_forecast']
+                            if 'error' not in volume_data:
+                                col1, col2, col3 = st.columns(3)
+                                with col1:
+                                    st.metric("Predicted Daily Volume", f"{volume_data.get('predicted_daily_volume', 0):.1f}")
+                                with col2:
+                                    st.metric("Confidence Level", volume_data.get('confidence', 'Unknown'))
+                                with col3:
+                                    st.metric("Trend Direction", volume_data.get('trend', 'Unknown'))
+                        
+                        # Value Forecast
+                        if 'value_forecast' in predictive_results:
+                            st.subheader("Transaction Value Forecast")
+                            value_data = predictive_results['value_forecast']
+                            if 'error' not in value_data:
+                                col1, col2, col3 = st.columns(3)
+                                with col1:
+                                    st.metric("Predicted Avg Value", f"${value_data.get('predicted_avg_value', 0):.2f}")
+                                with col2:
+                                    st.metric("Value Trend", value_data.get('value_trend', 'Unknown'))
+                                with col3:
+                                    st.metric("Volatility Forecast", value_data.get('volatility_forecast', 'Unknown'))
+                        
+                        # Risk Forecast
+                        if 'risk_forecast' in predictive_results:
+                            st.subheader("Risk Level Forecast")
+                            risk_data = predictive_results['risk_forecast']
+                            if 'error' not in risk_data:
+                                col1, col2 = st.columns(2)
+                                with col1:
+                                    risk_level = risk_data.get('risk_level_forecast', 'Unknown')
+                                    if risk_level == 'High':
+                                        st.error(f"Risk Level: {risk_level}")
+                                    elif risk_level == 'Moderate':
+                                        st.warning(f"Risk Level: {risk_level}")
+                                    else:
+                                        st.success(f"Risk Level: {risk_level}")
+                                with col2:
+                                    st.info(f"Recommendation: {risk_data.get('monitoring_recommendation', 'Standard monitoring')}")
+                        
+                        # Anomaly Likelihood
+                        if 'anomaly_likelihood' in predictive_results:
+                            st.subheader("Anomaly Prediction")
+                            anomaly_data = predictive_results['anomaly_likelihood']
+                            if 'error' not in anomaly_data:
+                                col1, col2 = st.columns(2)
+                                with col1:
+                                    likelihood = anomaly_data.get('anomaly_likelihood', 'Unknown')
+                                    if likelihood == 'High':
+                                        st.error(f"Anomaly Likelihood: {likelihood}")
+                                    elif likelihood == 'Medium':
+                                        st.warning(f"Anomaly Likelihood: {likelihood}")
+                                    else:
+                                        st.success(f"Anomaly Likelihood: {likelihood}")
+                                with col2:
+                                    st.info(anomaly_data.get('recommendation', 'Standard monitoring'))
+                        
+                        # Recommendations
+                        if 'recommendations' in predictive_results:
+                            st.subheader("Predictive Recommendations")
+                            recommendations = predictive_results['recommendations']
+                            for i, rec in enumerate(recommendations, 1):
+                                st.write(f"{i}. {rec}")
+                                
+                    except Exception as e:
+                        st.error(f"Predictive analysis failed: {str(e)}")
         
         # Export and Save functionality
         col1, col2 = st.columns(2)
