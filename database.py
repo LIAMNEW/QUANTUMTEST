@@ -9,9 +9,19 @@ import json
 # Get the database URL from environment variables
 DATABASE_URL = os.environ.get('DATABASE_URL', '')
 
-# Create SQLAlchemy engine and session
+# Create SQLAlchemy engine and session with SSL configuration
 if DATABASE_URL:
-    engine = create_engine(DATABASE_URL)
+    engine = create_engine(
+        DATABASE_URL,
+        connect_args={
+            "sslmode": "require",
+            "connect_timeout": 10,
+        },
+        pool_pre_ping=True,  # Validate connections before use
+        pool_recycle=300,    # Recycle connections every 5 minutes
+        pool_timeout=30,     # Timeout after 30 seconds
+        max_overflow=10      # Allow up to 10 overflow connections
+    )
 else:
     raise ValueError("DATABASE_URL environment variable is not set")
 Session = sessionmaker(bind=engine)
@@ -143,112 +153,123 @@ def save_analysis_to_db(
     Returns:
         int: The ID of the created analysis session
     """
-    session = Session()
+    max_retries = 3
+    retry_count = 0
     
-    try:
-        # Create a dataset hash for identification (simple hash of first few rows)
-        sample_data = dataframe.head(5).to_json()
-        dataset_hash = str(hash(sample_data))
-        
-        # Create analysis session
-        analysis_session = AnalysisSession(
-            name=session_name,
-            dataset_name=dataset_name,
-            dataset_hash=dataset_hash,
-            risk_threshold=risk_threshold,
-            anomaly_sensitivity=anomaly_sensitivity,
-            description=description
-        )
-        session.add(analysis_session)
-        session.flush()  # To get the ID without committing
-        
-        # Store transactions
-        transactions = []
-        for _, row in dataframe.iterrows():
-            from_addr = row.get('from_address', 'unknown')
-            to_addr = row.get('to_address', 'unknown')
-            value = row.get('value', 0.0)
+    while retry_count < max_retries:
+        session = Session()
+        try:
+            # Create a dataset hash for identification (simple hash of first few rows)
+            sample_data = dataframe.head(5).to_json()
+            dataset_hash = str(hash(sample_data))
             
-            timestamp = None
-            if 'timestamp' in row and pd.notna(row['timestamp']):
-                try:
-                    timestamp = pd.to_datetime(row['timestamp'])
-                except:
-                    pass
-                    
-            status = row.get('status', 'unknown')
-            tx_hash = row.get('transaction_hash', None)
-            
-            transaction = Transaction(
-                session_id=analysis_session.id,
-                from_address=from_addr,
-                to_address=to_addr,
-                value=value,
-                timestamp=timestamp,
-                status=status,
-                transaction_hash=tx_hash
+            # Create analysis session
+            analysis_session = AnalysisSession(
+                name=session_name,
+                dataset_name=dataset_name,
+                dataset_hash=dataset_hash,
+                risk_threshold=risk_threshold,
+                anomaly_sensitivity=anomaly_sensitivity,
+                description=description
             )
-            transactions.append(transaction)
-        
-        session.add_all(transactions)
-        session.flush()
-        
-        # Store risk assessments
-        if risk_assessment_df is not None:
-            risk_assessments = []
+            session.add(analysis_session)
+            session.flush()  # To get the ID without committing
             
-            for i, row in risk_assessment_df.iterrows():
-                if i < len(transactions):  # Make sure we have a matching transaction
-                    risk_assessment = RiskAssessment(
-                        session_id=analysis_session.id,
-                        transaction_id=transactions[i].id,
-                        risk_score=row.get('risk_score', 0.0),
-                        risk_factors=row.get('risk_factors', ''),
-                        risk_category=row.get('risk_category', 'Low')
-                    )
-                    risk_assessments.append(risk_assessment)
+            # Store transactions
+            transactions = []
+            for _, row in dataframe.iterrows():
+                from_addr = row.get('from_address', 'unknown')
+                to_addr = row.get('to_address', 'unknown')
+                value = row.get('value', 0.0)
+                
+                timestamp = None
+                if 'timestamp' in row and pd.notna(row['timestamp']):
+                    try:
+                        timestamp = pd.to_datetime(row['timestamp'])
+                    except:
+                        pass
+                        
+                status = row.get('status', 'unknown')
+                tx_hash = row.get('transaction_hash', None)
+                
+                transaction = Transaction(
+                    session_id=analysis_session.id,
+                    from_address=from_addr,
+                    to_address=to_addr,
+                    value=value,
+                    timestamp=timestamp,
+                    status=status,
+                    transaction_hash=tx_hash
+                )
+                transactions.append(transaction)
             
-            session.add_all(risk_assessments)
-        
-        # Store anomalies
-        if anomaly_indices:
-            anomalies = []
+            session.add_all(transactions)
+            session.flush()
             
-            for idx in anomaly_indices:
-                if idx < len(transactions):  # Make sure we have a matching transaction
-                    anomaly = Anomaly(
-                        session_id=analysis_session.id,
-                        transaction_id=transactions[idx].id,
-                        anomaly_score=1.0,  # We don't have actual scores in this implementation
-                        is_anomaly=True
-                    )
-                    anomalies.append(anomaly)
+            # Store risk assessments
+            if risk_assessment_df is not None:
+                risk_assessments = []
+                
+                for i, row in risk_assessment_df.iterrows():
+                    if i < len(transactions):  # Make sure we have a matching transaction
+                        risk_assessment = RiskAssessment(
+                            session_id=analysis_session.id,
+                            transaction_id=transactions[i].id,
+                            risk_score=row.get('risk_score', 0.0),
+                            risk_factors=row.get('risk_factors', ''),
+                            risk_category=row.get('risk_category', 'Low')
+                        )
+                        risk_assessments.append(risk_assessment)
+                
+                session.add_all(risk_assessments)
             
-            session.add_all(anomalies)
-        
-        # Store network metrics
-        if network_metrics:
-            network_metric = NetworkMetric(
-                session_id=analysis_session.id,
-                total_nodes=network_metrics.get('total_nodes', 0),
-                total_edges=network_metrics.get('total_edges', 0),
-                avg_degree=network_metrics.get('avg_degree', 0.0),
-                clustering=network_metrics.get('clustering', 0.0),
-                connected_components=network_metrics.get('connected_components', 0),
-                largest_component_size=network_metrics.get('largest_component_size', 0),
-                top_addresses=json.dumps(network_metrics.get('top_addresses', []))
-            )
-            session.add(network_metric)
-        
-        # Commit all changes
-        session.commit()
-        return analysis_session.id
-        
-    except Exception as e:
-        session.rollback()
-        raise e
-    finally:
-        session.close()
+            # Store anomalies
+            if anomaly_indices:
+                anomalies = []
+                
+                for idx in anomaly_indices:
+                    if idx < len(transactions):  # Make sure we have a matching transaction
+                        anomaly = Anomaly(
+                            session_id=analysis_session.id,
+                            transaction_id=transactions[idx].id,
+                            anomaly_score=1.0,  # We don't have actual scores in this implementation
+                            is_anomaly=True
+                        )
+                        anomalies.append(anomaly)
+                
+                session.add_all(anomalies)
+            
+            # Store network metrics
+            if network_metrics:
+                network_metric = NetworkMetric(
+                    session_id=analysis_session.id,
+                    total_nodes=network_metrics.get('total_nodes', 0),
+                    total_edges=network_metrics.get('total_edges', 0),
+                    avg_degree=network_metrics.get('avg_degree', 0.0),
+                    clustering=network_metrics.get('clustering', 0.0),
+                    connected_components=network_metrics.get('connected_components', 0),
+                    largest_component_size=network_metrics.get('largest_component_size', 0),
+                    top_addresses=json.dumps(network_metrics.get('top_addresses', []))
+                )
+                session.add(network_metric)
+            
+            # Commit all changes
+            session.commit()
+            return analysis_session.id
+            
+        except Exception as e:
+            session.rollback()
+            retry_count += 1
+            if retry_count >= max_retries:
+                raise e
+            # Wait before retrying
+            import time
+            time.sleep(1)
+        finally:
+            session.close()
+    
+    # If we get here, all retries failed
+    raise Exception("Failed to save analysis after multiple attempts")
 
 def get_analysis_sessions():
     """
