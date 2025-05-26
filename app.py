@@ -22,6 +22,7 @@ from database import (
     delete_analysis_session
 )
 from ai_search import ai_transaction_search
+from advanced_ai_analytics import AdvancedAnalytics
 
 # Set page configuration
 st.set_page_config(
