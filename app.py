@@ -23,6 +23,7 @@ from database import (
 )
 from ai_search import ai_transaction_search
 from advanced_ai_analytics import AdvancedAnalytics
+from austrac_dashboard import create_austrac_dashboard_page
 
 # Set page configuration
 st.set_page_config(
@@ -72,7 +73,7 @@ progress_placeholder = None
 # Sidebar navigation
 with st.sidebar:
     st.header("Navigation")
-    app_mode = st.radio("Select Mode", ["New Analysis", "Saved Analyses"])
+    app_mode = st.radio("Select Mode", ["New Analysis", "Saved Analyses", "AUSTRAC Compliance"])
     
     if app_mode == "New Analysis":
         st.session_state.view_saved_analysis = False
@@ -145,7 +146,7 @@ with st.sidebar:
         # Run analysis button
         run_analysis = st.button("Run Analysis")
         
-    else:  # Saved Analyses mode
+    elif app_mode == "Saved Analyses":
         st.session_state.view_saved_analysis = True
         st.header("Saved Analyses")
         
@@ -182,6 +183,10 @@ with st.sidebar:
         except Exception as e:
             st.error(f"Error loading saved analyses: {str(e)}")
             st.expander("Technical Details").code(traceback.format_exc())
+    
+    else:  # AUSTRAC Compliance mode
+        create_austrac_dashboard_page()
+        st.stop()  # Stop execution here for AUSTRAC mode
     
     if run_analysis and st.session_state.df is not None and st.session_state.encrypted_data is not None:
         try:
