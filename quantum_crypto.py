@@ -64,43 +64,43 @@ def encrypt_data(data: str, public_key: Dict[str, Any]) -> Dict[str, Any]:
     Returns:
         Dictionary containing encrypted data and key encapsulation
     """
-    # Convert string data to bytes and then hash it to fixed length
+    # Convert string data to bytes
     data_bytes = data.encode('utf-8')
-    data_hash = hashlib.sha256(data_bytes).digest()
     
-    # In a real PQ implementation, we would:
-    # 1. Use key encapsulation to create a shared secret
-    # 2. Use the shared secret to encrypt data with symmetric encryption
-    
-    # For simulation, we'll create a simplified version
+    # Extract public key components
     matrix_a = public_key["matrix_a"]
     public_component = public_key["public_component"]
     modulus = public_key["modulus"]
+    seed = public_key["seed"]
     
-    # Create a random vector for "encapsulation"
-    random_vector = np.random.randint(0, modulus, size=len(matrix_a))
+    # Create a deterministic random vector based on data hash for reproducibility
+    data_hash = hashlib.sha256(data_bytes).digest()
+    combined_seed = hashlib.sha256(seed.encode() + data_hash).digest()
+    seed_int = int.from_bytes(combined_seed[:4], byteorder="big") % (2**32 - 1)
+    
+    random_gen = np.random.RandomState(seed_int)
+    random_vector = random_gen.randint(0, modulus, size=len(matrix_a))
     
     # Compute "ciphertext" component
     ciphertext_component = (matrix_a * random_vector) % modulus
     
     # Derive a shared secret from public component and random vector
     shared_secret_raw = np.sum((public_component * random_vector) % modulus)
-    shared_secret = hashlib.sha256(str(shared_secret_raw).encode()).digest()
+    shared_secret = hashlib.sha256(str(shared_secret_raw).encode() + combined_seed).digest()
     
-    # Encrypt data with shared secret (XOR for simplicity)
-    ciphertext = bytes([a ^ b for a, b in zip(data_hash, shared_secret[:len(data_hash)])])
+    # Generate encryption key by extending shared secret
+    encryption_key = shared_secret
+    while len(encryption_key) < len(data_bytes):
+        encryption_key += hashlib.sha256(encryption_key).digest()
     
-    # Extended encryption for the full data
-    full_key = shared_secret
-    while len(full_key) < len(data_bytes):
-        full_key += hashlib.sha256(full_key).digest()
-    
-    full_ciphertext = bytes([a ^ b for a, b in zip(data_bytes, full_key[:len(data_bytes)])])
+    # Encrypt data using XOR with the generated key
+    encrypted_data = bytes([a ^ b for a, b in zip(data_bytes, encryption_key[:len(data_bytes)])])
     
     encrypted_payload = {
         "ciphertext_component": ciphertext_component.tolist(),
-        "encrypted_data": base64.b64encode(full_ciphertext).decode('utf-8'),
-        "key_confirmation": base64.b64encode(ciphertext).decode('utf-8')
+        "encrypted_data": base64.b64encode(encrypted_data).decode('utf-8'),
+        "data_hash": base64.b64encode(data_hash).decode('utf-8'),
+        "seed_hash": base64.b64encode(combined_seed).decode('utf-8')
     }
     
     return encrypted_payload
@@ -119,41 +119,36 @@ def decrypt_data(encrypted_payload: Dict[str, Any], private_key: Dict[str, Any])
     try:
         # Extract components
         if not isinstance(encrypted_payload, dict):
-            print(f"Error: encrypted_payload is not a dictionary: {type(encrypted_payload)}")
             return ""
             
-        if "ciphertext_component" not in encrypted_payload:
-            print(f"Error: ciphertext_component missing from payload: {list(encrypted_payload.keys())}")
+        required_keys = ["ciphertext_component", "encrypted_data", "seed_hash"]
+        if not all(key in encrypted_payload for key in required_keys):
             return ""
             
         ciphertext_component = np.array(encrypted_payload["ciphertext_component"])
         encrypted_data = base64.b64decode(encrypted_payload["encrypted_data"])
+        combined_seed = base64.b64decode(encrypted_payload["seed_hash"])
+        
         private_lattice = private_key["private_lattice"]
         modulus = private_key["modulus"]
         
         # Compute shared secret from ciphertext component and private key
         shared_secret_raw = np.sum((ciphertext_component * private_lattice) % modulus)
-        shared_secret = hashlib.sha256(str(shared_secret_raw).encode()).digest()
+        shared_secret = hashlib.sha256(str(shared_secret_raw).encode() + combined_seed).digest()
         
-        # Generate full key for decryption
-        full_key = shared_secret
-        while len(full_key) < len(encrypted_data):
-            full_key += hashlib.sha256(full_key).digest()
+        # Generate decryption key by extending shared secret
+        decryption_key = shared_secret
+        while len(decryption_key) < len(encrypted_data):
+            decryption_key += hashlib.sha256(decryption_key).digest()
         
-        # Decrypt the data (XOR)
-        decrypted_bytes = bytes([a ^ b for a, b in zip(encrypted_data, full_key[:len(encrypted_data)])])
+        # Decrypt the data using XOR
+        decrypted_bytes = bytes([a ^ b for a, b in zip(encrypted_data, decryption_key[:len(encrypted_data)])])
         
         # Convert back to string
-        try:
-            decrypted_data = decrypted_bytes.decode('utf-8')
-            return decrypted_data
-        except UnicodeDecodeError:
-            print("UnicodeDecodeError: Failed to decode decrypted bytes")
-            return ""
+        decrypted_data = decrypted_bytes.decode('utf-8')
+        return decrypted_data
+        
     except Exception as e:
-        print(f"Decryption error: {str(e)}")
-        import traceback
-        print(traceback.format_exc())
         return ""
 
 def verify_integrity(data: str, signature: Dict[str, Any], public_key: Dict[str, Any]) -> bool:
