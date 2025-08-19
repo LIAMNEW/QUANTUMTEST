@@ -23,7 +23,8 @@ from database import (
 )
 from ai_search import ai_transaction_search
 from advanced_ai_analytics import AdvancedAnalytics
-from austrac_dashboard import create_austrac_dashboard_page
+from austrac_classifier import AUSTRACClassifier
+from austrac_risk_calculator import calculate_austrac_risk_score
 
 # Set page configuration
 st.set_page_config(
@@ -58,6 +59,8 @@ if 'search_query' not in st.session_state:
     st.session_state.search_query = ""
 if 'search_result' not in st.session_state:
     st.session_state.search_result = None
+if 'austrac_risk_score' not in st.session_state:
+    st.session_state.austrac_risk_score = None
 # Generate keys when app starts
 if not st.session_state.keys_generated:
     st.session_state.public_key, st.session_state.private_key = generate_pq_keys()
@@ -73,7 +76,7 @@ progress_placeholder = None
 # Sidebar navigation
 with st.sidebar:
     st.header("Navigation")
-    app_mode = st.radio("Select Mode", ["New Analysis", "Saved Analyses", "AUSTRAC Compliance"])
+    app_mode = st.radio("Select Mode", ["New Analysis", "Saved Analyses"])
     
     if app_mode == "New Analysis":
         st.session_state.view_saved_analysis = False
@@ -123,10 +126,61 @@ with st.sidebar:
                     
                     # Store the original data without encryption for reliability
                     st.session_state.encrypted_data = {"data": df.to_dict()}
-                    st.info("Data prepared for analysis")
                     
-                    # Show next steps guidance
-                    st.info("👇 Now use the settings below to run the AI analysis")
+                    # Calculate AUSTRAC risk score immediately after upload
+                    with st.spinner("Calculating AUSTRAC compliance risk score..."):
+                        st.session_state.austrac_risk_score = calculate_austrac_risk_score(df)
+                    
+                    # Display prominent AUSTRAC risk score
+                    risk_data = st.session_state.austrac_risk_score
+                    
+                    st.markdown("---")
+                    st.subheader("🇦🇺 AUSTRAC Compliance Risk Assessment")
+                    
+                    # Create prominent risk score display
+                    col1, col2, col3 = st.columns([2, 1, 2])
+                    
+                    with col1:
+                        # Large risk percentage display
+                        risk_percentage = risk_data["risk_percentage"]
+                        risk_color = risk_data["risk_color"]
+                        
+                        # Create color-coded metric display
+                        if risk_color == "red":
+                            st.error(f"**RISK SCORE: {risk_percentage}%**")
+                        elif risk_color == "darkred":
+                            st.error(f"**RISK SCORE: {risk_percentage}%**")
+                        elif risk_color == "orange":
+                            st.warning(f"**RISK SCORE: {risk_percentage}%**")
+                        elif risk_color == "yellow":
+                            st.warning(f"**RISK SCORE: {risk_percentage}%**")
+                        else:
+                            st.success(f"**RISK SCORE: {risk_percentage}%**")
+                        
+                        st.markdown(f"**Status:** {risk_data['risk_status']}")
+                    
+                    with col2:
+                        st.markdown("**📊 Quick Stats**")
+                        st.metric("Analyzed", f"{risk_data['transactions_analyzed']:,}")
+                        st.metric("High Risk", risk_data['high_risk_count'])
+                        st.metric("Reports Due", risk_data['reporting_required'])
+                    
+                    with col3:
+                        st.markdown("**🎯 Compliance Level**")
+                        st.markdown(f"**Risk Level:** {risk_data['risk_level']}")
+                        st.markdown(f"**Max Individual Risk:** {risk_data['max_individual_risk']}%")
+                        st.markdown(f"**Average Risk:** {risk_data['avg_individual_risk']}%")
+                    
+                    # Show summary in expandable section
+                    with st.expander("📋 Detailed AUSTRAC Assessment", expanded=False):
+                        st.markdown(risk_data["summary_message"])
+                        
+                        st.markdown("**🔍 Compliance Recommendations:**")
+                        for rec in risk_data["compliance_recommendations"]:
+                            st.markdown(f"• {rec}")
+                    
+                    st.markdown("---")
+                    st.info("👇 Use the analysis settings below to run detailed blockchain analysis")
                 else:
                     st.error("The uploaded file appears to be empty or has no valid data.")
             except Exception as e:
@@ -184,9 +238,7 @@ with st.sidebar:
             st.error(f"Error loading saved analyses: {str(e)}")
             st.expander("Technical Details").code(traceback.format_exc())
     
-    else:  # AUSTRAC Compliance mode
-        create_austrac_dashboard_page()
-        st.stop()  # Stop execution here for AUSTRAC mode
+
     
     if run_analysis and st.session_state.df is not None and st.session_state.encrypted_data is not None:
         try:
