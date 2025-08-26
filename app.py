@@ -743,8 +743,86 @@ else:
         
         # Add quantum security testing section
         st.markdown("---")
-        if st.button("🛡️ Test Quantum Security", help="Verify the quantum-resistant properties of the cryptographic system"):
-            test_quantum_security()
+        st.markdown("### 🛡️ Quantum Security Verification")
+        st.markdown("Test the quantum-resistant properties of QuantumGuard AI's cryptographic implementation")
+        
+        if st.button("🔬 Run Quantum Security Tests", help="Verify the quantum-resistant properties of the cryptographic system"):
+            with st.spinner("Running comprehensive quantum security tests..."):
+                try:
+                    results = run_quantum_security_test()
+                    
+                    # Display overall status
+                    status = results['overall_security_status']
+                    if status == "QUANTUM-SAFE":
+                        st.success(f"✅ **Security Status: {status}**")
+                        st.balloons()
+                    else:
+                        st.error(f"❌ **Security Status: {status}**")
+                    
+                    # Key metrics
+                    col1, col2, col3, col4 = st.columns(4)
+                    
+                    with col1:
+                        st.metric("Security Level", f"{results['security_level']} bits")
+                    
+                    with col2:
+                        st.metric("Tests Passed", f"{results['tests_passed']}/{results['total_tests']}")
+                    
+                    with col3:
+                        pass_rate = (results['tests_passed'] / results['total_tests']) * 100
+                        st.metric("Pass Rate", f"{pass_rate:.1f}%")
+                    
+                    with col4:
+                        st.metric("Algorithm", "Lattice-Based LWE")
+                    
+                    # Test results
+                    st.markdown("### Test Results Summary")
+                    
+                    test_results = results['detailed_results']
+                    
+                    # Key Generation Test
+                    key_gen = test_results['key_generation']
+                    if key_gen['status'] == "PASS":
+                        st.success(f"🔑 Key Generation: PASSED - {key_gen['uniqueness_rate']:.1f}% uniqueness, {key_gen['average_entropy']:.2f} entropy")
+                    else:
+                        st.error(f"🔑 Key Generation: FAILED - Issues with randomness or entropy")
+                    
+                    # Encryption Security Test
+                    enc_sec = test_results['encryption_security']
+                    if enc_sec['status'] == "PASS":
+                        st.success(f"🔒 Encryption Security: PASSED - {enc_sec['average_ciphertext_entropy']:.2f} ciphertext entropy")
+                    else:
+                        st.error(f"🔒 Encryption Security: FAILED - Security vulnerabilities detected")
+                    
+                    # Quantum Resistance Test
+                    quantum_res = test_results['quantum_resistance']
+                    overall_quantum = quantum_res['overall_quantum_resistance']
+                    if overall_quantum['secure']:
+                        st.success(f"⚛️ Quantum Resistance: {overall_quantum['status']} - Resistant to Shor's and Grover's algorithms")
+                    else:
+                        st.error(f"⚛️ Quantum Resistance: {overall_quantum['status']} - Potential quantum vulnerabilities")
+                    
+                    # Performance Test
+                    performance = test_results['performance']
+                    st.info(f"⚡ Performance: {performance['performance_grade']} - {performance['overall_throughput']} throughput")
+                    
+                    # Recommendations
+                    st.markdown("### Security Recommendations")
+                    for rec in results['recommendations']:
+                        if "✅" in rec:
+                            st.success(rec)
+                        elif "⚠️" in rec:
+                            st.warning(rec)
+                        else:
+                            st.info(rec)
+                    
+                    # Technical Details
+                    with st.expander("View Technical Details"):
+                        st.json(results)
+                        
+                except Exception as e:
+                    st.error(f"Security test failed: {str(e)}")
+                    st.text("Please ensure all cryptographic modules are properly configured.")
                                       
         # Enhanced sidebar AI search
         st.sidebar.markdown("---")
@@ -1436,83 +1514,4 @@ else:
                     st.error(f"Error saving analysis: {str(save_error)}")
                     st.expander("Technical Details").code(traceback.format_exc())
 
-def test_quantum_security():
-    """Run quantum security tests and display results"""
-    st.markdown("### 🛡️ Quantum Security Verification")
-    
-    with st.spinner("Running comprehensive quantum security tests..."):
-        try:
-            results = run_quantum_security_test()
-            
-            # Display overall status
-            status = results['overall_security_status']
-            if status == "QUANTUM-SAFE":
-                st.success(f"✅ **Security Status: {status}**")
-                st.balloons()
-            else:
-                st.error(f"❌ **Security Status: {status}**")
-            
-            # Key metrics
-            col1, col2, col3, col4 = st.columns(4)
-            
-            with col1:
-                st.metric("Security Level", f"{results['security_level']} bits")
-            
-            with col2:
-                st.metric("Tests Passed", f"{results['tests_passed']}/{results['total_tests']}")
-            
-            with col3:
-                pass_rate = (results['tests_passed'] / results['total_tests']) * 100
-                st.metric("Pass Rate", f"{pass_rate:.1f}%")
-            
-            with col4:
-                st.metric("Algorithm", "Lattice-Based LWE")
-            
-            # Test results
-            st.markdown("### Test Results Summary")
-            
-            test_results = results['detailed_results']
-            
-            # Key Generation Test
-            key_gen = test_results['key_generation']
-            if key_gen['status'] == "PASS":
-                st.success(f"🔑 Key Generation: PASSED - {key_gen['uniqueness_rate']:.1f}% uniqueness, {key_gen['average_entropy']:.2f} entropy")
-            else:
-                st.error(f"🔑 Key Generation: FAILED - Issues with randomness or entropy")
-            
-            # Encryption Security Test
-            enc_sec = test_results['encryption_security']
-            if enc_sec['status'] == "PASS":
-                st.success(f"🔒 Encryption Security: PASSED - {enc_sec['average_ciphertext_entropy']:.2f} ciphertext entropy")
-            else:
-                st.error(f"🔒 Encryption Security: FAILED - Security vulnerabilities detected")
-            
-            # Quantum Resistance Test
-            quantum_res = test_results['quantum_resistance']
-            overall_quantum = quantum_res['overall_quantum_resistance']
-            if overall_quantum['secure']:
-                st.success(f"⚛️ Quantum Resistance: {overall_quantum['status']} - Resistant to Shor's and Grover's algorithms")
-            else:
-                st.error(f"⚛️ Quantum Resistance: {overall_quantum['status']} - Potential quantum vulnerabilities")
-            
-            # Performance Test
-            performance = test_results['performance']
-            st.info(f"⚡ Performance: {performance['performance_grade']} - {performance['overall_throughput']} throughput")
-            
-            # Recommendations
-            st.markdown("### Security Recommendations")
-            for rec in results['recommendations']:
-                if "✅" in rec:
-                    st.success(rec)
-                elif "⚠️" in rec:
-                    st.warning(rec)
-                else:
-                    st.info(rec)
-            
-            # Technical Details
-            with st.expander("View Technical Details"):
-                st.json(results)
-                
-        except Exception as e:
-            st.error(f"Security test failed: {str(e)}")
-            st.text("Please ensure all cryptographic modules are properly configured.")
+# Quantum security testing is now embedded in the main UI flow above

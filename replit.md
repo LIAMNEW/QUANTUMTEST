@@ -41,6 +41,11 @@ Preferred communication style: Simple, everyday language.
 - **OpenAI API**: Used for AI-powered search, natural language processing, and generating intelligent insights from transaction data
 - **Etherscan API Integration**: Support for importing and converting Etherscan transaction data
 
+## Quantum Security Testing
+- **Comprehensive Cryptographic Validation**: Built-in quantum security test suite (`quantum_security_test.py`) validates post-quantum cryptographic implementation
+- **Security Metrics**: Tests key generation entropy, encryption security, quantum attack resistance, and performance benchmarks
+- **Standards Compliance**: Validates compliance with NIST post-quantum cryptography standards and resistance to Shor's and Grover's quantum algorithms
+
 ## Machine Learning Libraries
 - **scikit-learn**: Core machine learning functionality including RandomForestRegressor, IsolationForest, LinearRegression, StandardScaler, LabelEncoder, DBSCAN, and various metrics
 - **pandas & numpy**: Data manipulation, analysis, and numerical computing
