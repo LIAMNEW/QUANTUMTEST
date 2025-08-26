@@ -62,6 +62,8 @@ class QuantumSecureBackend:
         try:
             # Use environment-based encryption for master keys
             env_key = os.environ.get('DATABASE_URL', 'default_quantum_key')
+            if env_key is None:
+                env_key = 'default_quantum_key'
             key_hash = hashlib.sha256(env_key.encode()).digest()
             
             # Simple XOR encryption for key storage (additional layer)
@@ -219,12 +221,14 @@ class QuantumSecureBackend:
             session_data = self.decrypt_sensitive_data(encrypted_session, "session")
             
             # Check expiration
-            expires_at = datetime.fromisoformat(session_data["expires_at"])
-            if datetime.now() > expires_at:
-                del self.session_keys[session_id]
-                return None
+            if isinstance(session_data, dict) and "expires_at" in session_data:
+                expires_at_str = str(session_data["expires_at"])
+                expires_at = datetime.fromisoformat(expires_at_str)
+                if datetime.now() > expires_at:
+                    del self.session_keys[session_id]
+                    return None
             
-            return session_data
+            return session_data if isinstance(session_data, dict) else None
             
         except Exception:
             return None

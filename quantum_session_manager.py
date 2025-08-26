@@ -45,7 +45,7 @@ class QuantumSessionManager:
                 return session_id
             except Exception as e:
                 st.error(f"Failed to create quantum-safe session: {str(e)}")
-                return None
+                return ""
         
         return st.session_state[self.session_key]
     
