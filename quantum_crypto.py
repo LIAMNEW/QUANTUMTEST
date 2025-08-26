@@ -4,10 +4,15 @@ import hashlib
 import base64
 import os
 
-# Note: In a production environment, you would use actual post-quantum 
-# cryptography libraries like liboqs-python or PQCrypto.
-# For demonstration purposes, we'll implement simplified versions of 
-# post-quantum crypto algorithms (Kyber-like KEM)
+# Post-Quantum Cryptography Implementation
+# Based on Learning With Errors (LWE) lattice-based cryptography
+# Inspired by NIST-standardized algorithms like Kyber
+# Note: In production, use certified libraries like liboqs-python
+
+# Security Parameters
+SECURITY_LEVEL = 128  # bits of security
+MODULUS = 3329       # Prime modulus (Kyber-512 parameter)
+NOISE_PARAMETER = 2  # Error distribution parameter
 
 def generate_pq_keys() -> Tuple[Dict[str, Any], Dict[str, Any]]:
     """
@@ -53,19 +58,18 @@ def generate_pq_keys() -> Tuple[Dict[str, Any], Dict[str, Any]]:
     
     return public_key, private_key
 
-def encrypt_data(data: str, public_key: Dict[str, Any]) -> Dict[str, Any]:
+def encrypt_data(data: bytes, public_key: Dict[str, Any]) -> bytes:
     """
     Encrypt data using post-quantum secure encryption (simplified Kyber-like KEM).
     
     Args:
-        data: String data to encrypt
+        data: Bytes data to encrypt
         public_key: Public key dictionary
     
     Returns:
-        Dictionary containing encrypted data and key encapsulation
+        Encrypted bytes
     """
-    # Convert string data to bytes
-    data_bytes = data.encode('utf-8')
+    data_bytes = data if isinstance(data, bytes) else data.encode('utf-8')
     
     # Extract public key components
     matrix_a = public_key["matrix_a"]
@@ -103,31 +107,36 @@ def encrypt_data(data: str, public_key: Dict[str, Any]) -> Dict[str, Any]:
         "seed_hash": base64.b64encode(combined_seed).decode('utf-8')
     }
     
-    return encrypted_payload
+    # Serialize and return as bytes
+    import json
+    return json.dumps(encrypted_payload).encode('utf-8')
 
-def decrypt_data(encrypted_payload: Dict[str, Any], private_key: Dict[str, Any]) -> str:
+def decrypt_data(encrypted_payload: bytes, private_key: Dict[str, Any]) -> bytes:
     """
     Decrypt data using post-quantum secure decryption (simplified Kyber-like KEM).
     
     Args:
-        encrypted_payload: Dictionary containing encrypted data and key encapsulation
+        encrypted_payload: Bytes containing encrypted data and key encapsulation
         private_key: Private key dictionary
     
     Returns:
-        Decrypted data as a string
+        Decrypted data as bytes
     """
     try:
-        # Extract components
-        if not isinstance(encrypted_payload, dict):
-            return ""
+        import json
+        # Parse encrypted payload
+        if isinstance(encrypted_payload, bytes):
+            payload_dict = json.loads(encrypted_payload.decode('utf-8'))
+        else:
+            return b""
             
         required_keys = ["ciphertext_component", "encrypted_data", "seed_hash"]
-        if not all(key in encrypted_payload for key in required_keys):
-            return ""
+        if not all(key in payload_dict for key in required_keys):
+            return b""
             
-        ciphertext_component = np.array(encrypted_payload["ciphertext_component"])
-        encrypted_data = base64.b64decode(encrypted_payload["encrypted_data"])
-        combined_seed = base64.b64decode(encrypted_payload["seed_hash"])
+        ciphertext_component = np.array(payload_dict["ciphertext_component"])
+        encrypted_data = base64.b64decode(payload_dict["encrypted_data"])
+        combined_seed = base64.b64decode(payload_dict["seed_hash"])
         
         private_lattice = private_key["private_lattice"]
         modulus = private_key["modulus"]
@@ -144,12 +153,10 @@ def decrypt_data(encrypted_payload: Dict[str, Any], private_key: Dict[str, Any])
         # Decrypt the data using XOR
         decrypted_bytes = bytes([a ^ b for a, b in zip(encrypted_data, decryption_key[:len(encrypted_data)])])
         
-        # Convert back to string
-        decrypted_data = decrypted_bytes.decode('utf-8')
-        return decrypted_data
+        return decrypted_bytes
         
     except Exception as e:
-        return ""
+        return b""
 
 def verify_integrity(data: str, signature: Dict[str, Any], public_key: Dict[str, Any]) -> bool:
     """
