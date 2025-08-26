@@ -26,6 +26,8 @@ from advanced_ai_analytics import AdvancedAnalytics
 from austrac_classifier import AUSTRACClassifier
 from austrac_risk_calculator import calculate_austrac_risk_score
 from quantum_security_test import run_quantum_security_test
+from quantum_backend_security import get_backend_security_status
+from quantum_session_manager import init_quantum_session, get_session_security_status
 
 # Set page configuration
 st.set_page_config(
@@ -712,12 +714,48 @@ elif st.session_state.df is None:
             <p>Australian Standards</p>
         </div>
         <div class="metric-card" style="flex: 1;">
-            <h4>🔒 Data Protection</h4>
-            <h2>Enterprise</h2>
-            <p>Bank-Grade Security</p>
+            <h4>🔒 Quantum Security</h4>
+            <h2 id="quantum-status">Active</h2>
+            <p>Post-Quantum Cryptography</p>
         </div>
     </div>
     """, unsafe_allow_html=True)
+    
+    # Initialize quantum session and display status
+    try:
+        session_id = init_quantum_session()
+        if session_id:
+            # Display quantum security status
+            with st.expander("🛡️ Backend Security Status", expanded=False):
+                try:
+                    backend_status = get_backend_security_status()
+                    session_status = get_session_security_status()
+                    
+                    col1, col2, col3 = st.columns(3)
+                    
+                    with col1:
+                        st.metric("Quantum Algorithm", backend_status.get("algorithm", "Unknown"))
+                        st.metric("Security Level", backend_status.get("security_level", "Unknown"))
+                    
+                    with col2:
+                        st.metric("Session Status", "Active" if session_status.get("session_active") else "Inactive")
+                        st.metric("Backend Encryption", "Active" if backend_status.get("backend_encryption") == "Active" else "Inactive")
+                    
+                    with col3:
+                        st.metric("Quantum Safe", "Yes" if backend_status.get("quantum_safe") else "No")
+                        st.metric("Database Encryption", "Active" if backend_status.get("database_encryption") == "Active" else "Inactive")
+                    
+                    if backend_status.get("quantum_safe"):
+                        st.success("✅ All backend systems are quantum-safe and protected with post-quantum cryptography")
+                    else:
+                        st.warning("⚠️ Backend quantum security needs attention")
+                        
+                except Exception as e:
+                    st.error(f"Could not load backend security status: {str(e)}")
+        else:
+            st.warning("⚠️ Quantum session initialization failed - some security features may be limited")
+    except Exception as e:
+        st.error(f"Backend security initialization error: {str(e)}")
 
 else:
     # Display the data preview

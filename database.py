@@ -5,6 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from datetime import datetime
 import json
+from quantum_backend_security import encrypt_for_storage, decrypt_from_storage, get_backend_security_status
 
 # Get the database URL from environment variables
 DATABASE_URL = os.environ.get('DATABASE_URL', '')
@@ -159,27 +160,32 @@ def save_analysis_to_db(
     while retry_count < max_retries:
         session = Session()
         try:
-            # Create a dataset hash for identification (simple hash of first few rows)
+            # Create quantum-safe dataset hash for identification
+            import hashlib
             sample_data = dataframe.head(5).to_json()
-            dataset_hash = str(hash(sample_data))
+            dataset_hash = hashlib.sha3_256(sample_data.encode()).hexdigest()
             
-            # Create analysis session
+            # Encrypt sensitive description data
+            encrypted_description = encrypt_for_storage(description or "", "database") if description else None
+            
+            # Create analysis session with quantum-safe encryption
             analysis_session = AnalysisSession(
                 name=session_name,
                 dataset_name=dataset_name,
                 dataset_hash=dataset_hash,
                 risk_threshold=risk_threshold,
                 anomaly_sensitivity=anomaly_sensitivity,
-                description=description
+                description=encrypted_description
             )
             session.add(analysis_session)
             session.flush()  # To get the ID without committing
             
-            # Store transactions
+            # Store transactions with quantum-safe encryption for sensitive addresses
             transactions = []
             for _, row in dataframe.iterrows():
-                from_addr = row.get('from_address', 'unknown')
-                to_addr = row.get('to_address', 'unknown')
+                # Encrypt sensitive address data
+                from_addr = encrypt_for_storage(row.get('from_address', 'unknown'), "database")
+                to_addr = encrypt_for_storage(row.get('to_address', 'unknown'), "database")
                 value = row.get('value', 0.0)
                 
                 timestamp = None
