@@ -77,11 +77,39 @@ st.markdown("""
     /* Metric cards */
     .metric-card {
         background: rgba(255, 255, 255, 0.1);
-        padding: 1rem;
-        border-radius: 10px;
+        padding: 1.5rem;
+        border-radius: 15px;
         margin: 0.5rem;
         backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.2);
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .metric-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+    
+    .metric-card h4 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.8);
+        font-weight: 500;
+    }
+    
+    .metric-card h2 {
+        margin: 0 0 0.5rem 0;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: white;
+    }
+    
+    .metric-card p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.7);
+        font-weight: 400;
     }
     
     /* Sidebar styling */
@@ -298,44 +326,36 @@ with st.sidebar:
                     </div>
                     """, unsafe_allow_html=True)
                     
-                    # Enhanced metrics display
-                    col1, col2, col3, col4 = st.columns(4)
-                    
-                    with col1:
-                        st.markdown("""
-                        <div class="metric-card">
+                    # Professional horizontal metrics display
+                    st.markdown("""
+                    <div style="display: flex; justify-content: space-between; gap: 1rem; margin: 2rem 0;">
+                        <div class="metric-card" style="flex: 1;">
                             <h4>📊 Analyzed</h4>
                             <h2>{:,}</h2>
                             <p>Transactions</p>
                         </div>
-                        """.format(risk_data['transactions_analyzed']), unsafe_allow_html=True)
-                    
-                    with col2:
-                        st.markdown("""
-                        <div class="metric-card">
+                        <div class="metric-card" style="flex: 1;">
                             <h4>⚠️ High Risk</h4>
                             <h2>{}</h2>
                             <p>Transactions</p>
                         </div>
-                        """.format(risk_data['high_risk_count']), unsafe_allow_html=True)
-                    
-                    with col3:
-                        st.markdown("""
-                        <div class="metric-card">
+                        <div class="metric-card" style="flex: 1;">
                             <h4>📋 Reports Due</h4>
                             <h2>{}</h2>
                             <p>AUSTRAC Reports</p>
                         </div>
-                        """.format(risk_data['reporting_required']), unsafe_allow_html=True)
-                    
-                    with col4:
-                        st.markdown("""
-                        <div class="metric-card">
+                        <div class="metric-card" style="flex: 1;">
                             <h4>🎯 Risk Level</h4>
                             <h2>{}</h2>
                             <p>Classification</p>
                         </div>
-                        """.format(risk_data['risk_level']), unsafe_allow_html=True)
+                    </div>
+                    """.format(
+                        risk_data['transactions_analyzed'],
+                        risk_data['high_risk_count'], 
+                        risk_data['reporting_required'],
+                        risk_data['risk_level']
+                    ), unsafe_allow_html=True)
                     
                     # Show summary in expandable section
                     with st.expander("📋 Detailed AUSTRAC Assessment", expanded=False):
@@ -618,32 +638,23 @@ elif st.session_state.df is None:
     </div>
     """, unsafe_allow_html=True)
     
-    # Feature highlights
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.markdown("""
-        <div class="metric-card" style="text-align: center;">
-            <h3>🛡️ Quantum Security</h3>
-            <p>Post-quantum cryptography protects your data against future quantum computing threats</p>
+    # Enhanced feature highlights with horizontal layout
+    st.markdown("""
+    <div style="display: flex; justify-content: space-between; gap: 1.5rem; margin: 2rem 0;">
+        <div class="metric-card" style="flex: 1;">
+            <h3 style="margin: 0 0 1rem 0; color: white;">🛡️ Quantum Security</h3>
+            <p style="margin: 0; line-height: 1.5;">Post-quantum cryptography protects your data against future quantum computing threats</p>
         </div>
-        """, unsafe_allow_html=True)
-    
-    with col2:
-        st.markdown("""
-        <div class="metric-card" style="text-align: center;">
-            <h3>🇦🇺 AUSTRAC Compliance</h3>
-            <p>Automated compliance scoring and reporting for Australian regulatory requirements</p>
+        <div class="metric-card" style="flex: 1;">
+            <h3 style="margin: 0 0 1rem 0; color: white;">🇦🇺 AUSTRAC Compliance</h3>
+            <p style="margin: 0; line-height: 1.5;">Automated compliance scoring and reporting for Australian regulatory requirements</p>
         </div>
-        """, unsafe_allow_html=True)
-    
-    with col3:
-        st.markdown("""
-        <div class="metric-card" style="text-align: center;">
-            <h3>🤖 AI Analytics</h3>
-            <p>Advanced machine learning for anomaly detection and predictive risk assessment</p>
+        <div class="metric-card" style="flex: 1;">
+            <h3 style="margin: 0 0 1rem 0; color: white;">🤖 AI Analytics</h3>
+            <p style="margin: 0; line-height: 1.5;">Advanced machine learning for anomaly detection and predictive risk assessment</p>
         </div>
-        """, unsafe_allow_html=True)
+    </div>
+    """, unsafe_allow_html=True)
     
     st.markdown("---")
     
@@ -678,23 +689,34 @@ elif st.session_state.df is None:
         - Export capabilities
         """)
     
-    # Quick stats
+    # Enhanced platform capabilities with custom styling
     st.markdown("---")
     st.markdown("### 📊 Platform Capabilities")
     
-    metrics_col1, metrics_col2, metrics_col3, metrics_col4 = st.columns(4)
-    
-    with metrics_col1:
-        st.metric("Security Level", "Quantum-Safe", delta="Post-Quantum Ready")
-    
-    with metrics_col2:
-        st.metric("AI Models", "Multiple", delta="OpenAI GPT Integration")
-    
-    with metrics_col3:
-        st.metric("Compliance", "AUSTRAC", delta="Australian Standards")
-    
-    with metrics_col4:
-        st.metric("Data Protection", "Enterprise", delta="Bank-Grade Security")
+    st.markdown("""
+    <div style="display: flex; justify-content: space-between; gap: 1rem; margin: 2rem 0;">
+        <div class="metric-card" style="flex: 1;">
+            <h4>🛡️ Security Level</h4>
+            <h2>Quantum-Safe</h2>
+            <p>Post-Quantum Ready</p>
+        </div>
+        <div class="metric-card" style="flex: 1;">
+            <h4>🤖 AI Models</h4>
+            <h2>Multiple</h2>
+            <p>OpenAI GPT Integration</p>
+        </div>
+        <div class="metric-card" style="flex: 1;">
+            <h4>📋 Compliance</h4>
+            <h2>AUSTRAC</h2>
+            <p>Australian Standards</p>
+        </div>
+        <div class="metric-card" style="flex: 1;">
+            <h4>🔒 Data Protection</h4>
+            <h2>Enterprise</h2>
+            <p>Bank-Grade Security</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 else:
     # Display the data preview
