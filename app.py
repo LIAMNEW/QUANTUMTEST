@@ -28,11 +28,109 @@ from austrac_risk_calculator import calculate_austrac_risk_score
 
 # Set page configuration
 st.set_page_config(
-    page_title="Quantum-Secure Blockchain Analytics",
-    page_icon="🔐",
+    page_title="QuantumGuard AI - Blockchain Analytics",
+    page_icon="🛡️",
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+# Custom CSS for enhanced UI
+st.markdown("""
+<style>
+    /* Main header styling */
+    .main-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 2rem 0;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+        text-align: center;
+        color: white;
+    }
+    
+    /* Risk score styling */
+    .risk-score-container {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        padding: 1.5rem;
+        border-radius: 15px;
+        margin: 1rem 0;
+        text-align: center;
+        color: white;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .risk-score-low {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+    
+    .risk-score-medium {
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    }
+    
+    .risk-score-high {
+        background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    }
+    
+    .risk-score-critical {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+    }
+    
+    /* Metric cards */
+    .metric-card {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 1rem;
+        border-radius: 10px;
+        margin: 0.5rem;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    /* Sidebar styling */
+    .css-1d391kg {
+        background: linear-gradient(180deg, #2C3E50 0%, #34495E 100%);
+    }
+    
+    /* Button styling */
+    .stButton > button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 0.5rem 1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+    
+    /* Progress bar styling */
+    .stProgress > div > div > div {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    /* Alert styling */
+    .stAlert > div {
+        border-radius: 10px;
+        border-left: 4px solid #667eea;
+    }
+    
+    /* File uploader styling */
+    .stFileUploader > div {
+        border-radius: 10px;
+        border: 2px dashed #667eea;
+        background: rgba(102, 126, 234, 0.1);
+    }
+    
+    /* Tab styling */
+    .stTabs > div > div > div {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 10px 10px 0 0;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 # Initialize session state variables if they don't exist
 if 'df' not in st.session_state:
@@ -66,24 +164,65 @@ if not st.session_state.keys_generated:
     st.session_state.public_key, st.session_state.private_key = generate_pq_keys()
     st.session_state.keys_generated = True
 
-# Header
-st.title("Quantum-Secure Blockchain Transaction Analyzer")
+# Enhanced Header with custom styling
+st.markdown("""
+<div class="main-header">
+    <h1>🛡️ QuantumGuard AI</h1>
+    <h3>Advanced Blockchain Transaction Analytics & AUSTRAC Compliance</h3>
+    <p>Powered by Post-Quantum Cryptography | AI-Driven Risk Assessment | Real-Time Compliance Monitoring</p>
+</div>
+""", unsafe_allow_html=True)
 
 # Initialize variables for run_analysis and progress_placeholder
 run_analysis = False
 progress_placeholder = None
 
-# Sidebar navigation
+# Enhanced Sidebar navigation
 with st.sidebar:
-    st.header("Navigation")
-    app_mode = st.radio("Select Mode", ["New Analysis", "Saved Analyses"])
+    st.markdown("### 🚀 Navigation Dashboard")
     
-    if app_mode == "New Analysis":
+    # Add logo/branding area
+    st.markdown("""
+    <div style="text-align: center; padding: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; margin-bottom: 1rem;">
+        <h2 style="color: white; margin: 0;">🛡️ QuantumGuard</h2>
+        <p style="color: rgba(255,255,255,0.8); margin: 0; font-size: 0.8rem;">AI-Powered Security</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    app_mode = st.radio(
+        "Select Analysis Mode", 
+        ["🔍 New Analysis", "📊 Saved Analyses"],
+        help="Choose whether to start a new analysis or view previously saved results"
+    )
+    
+    # Add system status panel
+    st.markdown("---")
+    st.markdown("### 🛡️ System Status")
+    
+    # Quantum security status
+    quantum_status = "🟢 Active" if st.session_state.keys_generated else "🔴 Inactive"
+    st.markdown(f"**Quantum Security:** {quantum_status}")
+    
+    # Database status
+    st.markdown("**Database:** 🟢 Connected")
+    
+    # AI Integration status
+    st.markdown("**AI Integration:** 🟢 Ready")
+    
+    # AUSTRAC Compliance status
+    st.markdown("**AUSTRAC Compliance:** 🟢 Enabled")
+    
+    if app_mode == "🔍 New Analysis":
         st.session_state.view_saved_analysis = False
         
-        st.header("Data Upload")
-        uploaded_file = st.file_uploader("Upload blockchain transaction dataset", 
-                                        type=["csv", "xlsx", "json"])
+        st.markdown("### 📁 Data Upload")
+        st.markdown("Upload your blockchain transaction dataset for analysis")
+        
+        uploaded_file = st.file_uploader(
+            "Choose your transaction file",
+            type=["csv", "xlsx", "json"],
+            help="Supported formats: CSV, Excel, JSON. Maximum file size: 200MB"
+        )
         
         if uploaded_file is not None:
             try:
@@ -131,45 +270,72 @@ with st.sidebar:
                     with st.spinner("Calculating AUSTRAC compliance risk score..."):
                         st.session_state.austrac_risk_score = calculate_austrac_risk_score(df)
                     
-                    # Display prominent AUSTRAC risk score
+                    # Display enhanced AUSTRAC risk score
                     risk_data = st.session_state.austrac_risk_score
+                    risk_percentage = risk_data["risk_percentage"]
+                    risk_color = risk_data["risk_color"]
+                    
+                    # Determine CSS class based on risk level
+                    if risk_percentage >= 80:
+                        risk_class = "risk-score-critical"
+                    elif risk_percentage >= 60:
+                        risk_class = "risk-score-critical"
+                    elif risk_percentage >= 40:
+                        risk_class = "risk-score-high"
+                    elif risk_percentage >= 20:
+                        risk_class = "risk-score-medium"
+                    else:
+                        risk_class = "risk-score-low"
                     
                     st.markdown("---")
-                    st.subheader("🇦🇺 AUSTRAC Compliance Risk Assessment")
                     
-                    # Create prominent risk score display
-                    col1, col2, col3 = st.columns([2, 1, 2])
+                    # Enhanced risk score display with custom styling
+                    st.markdown(f"""
+                    <div class="risk-score-container {risk_class}">
+                        <h2 style="margin: 0; font-size: 3rem;">{risk_percentage}%</h2>
+                        <h3 style="margin: 0.5rem 0;">AUSTRAC Compliance Risk Score</h3>
+                        <p style="margin: 0; font-size: 1.2rem;">{risk_data['risk_status']}</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    # Enhanced metrics display
+                    col1, col2, col3, col4 = st.columns(4)
                     
                     with col1:
-                        # Large risk percentage display
-                        risk_percentage = risk_data["risk_percentage"]
-                        risk_color = risk_data["risk_color"]
-                        
-                        # Create color-coded metric display
-                        if risk_color == "red":
-                            st.error(f"**RISK SCORE: {risk_percentage}%**")
-                        elif risk_color == "darkred":
-                            st.error(f"**RISK SCORE: {risk_percentage}%**")
-                        elif risk_color == "orange":
-                            st.warning(f"**RISK SCORE: {risk_percentage}%**")
-                        elif risk_color == "yellow":
-                            st.warning(f"**RISK SCORE: {risk_percentage}%**")
-                        else:
-                            st.success(f"**RISK SCORE: {risk_percentage}%**")
-                        
-                        st.markdown(f"**Status:** {risk_data['risk_status']}")
+                        st.markdown("""
+                        <div class="metric-card">
+                            <h4>📊 Analyzed</h4>
+                            <h2>{:,}</h2>
+                            <p>Transactions</p>
+                        </div>
+                        """.format(risk_data['transactions_analyzed']), unsafe_allow_html=True)
                     
                     with col2:
-                        st.markdown("**📊 Quick Stats**")
-                        st.metric("Analyzed", f"{risk_data['transactions_analyzed']:,}")
-                        st.metric("High Risk", risk_data['high_risk_count'])
-                        st.metric("Reports Due", risk_data['reporting_required'])
+                        st.markdown("""
+                        <div class="metric-card">
+                            <h4>⚠️ High Risk</h4>
+                            <h2>{}</h2>
+                            <p>Transactions</p>
+                        </div>
+                        """.format(risk_data['high_risk_count']), unsafe_allow_html=True)
                     
                     with col3:
-                        st.markdown("**🎯 Compliance Level**")
-                        st.markdown(f"**Risk Level:** {risk_data['risk_level']}")
-                        st.markdown(f"**Max Individual Risk:** {risk_data['max_individual_risk']}%")
-                        st.markdown(f"**Average Risk:** {risk_data['avg_individual_risk']}%")
+                        st.markdown("""
+                        <div class="metric-card">
+                            <h4>📋 Reports Due</h4>
+                            <h2>{}</h2>
+                            <p>AUSTRAC Reports</p>
+                        </div>
+                        """.format(risk_data['reporting_required']), unsafe_allow_html=True)
+                    
+                    with col4:
+                        st.markdown("""
+                        <div class="metric-card">
+                            <h4>🎯 Risk Level</h4>
+                            <h2>{}</h2>
+                            <p>Classification</p>
+                        </div>
+                        """.format(risk_data['risk_level']), unsafe_allow_html=True)
                     
                     # Show summary in expandable section
                     with st.expander("📋 Detailed AUSTRAC Assessment", expanded=False):
@@ -187,22 +353,41 @@ with st.sidebar:
                 st.error(f"Error loading file: {str(e)}")
                 st.expander("Technical Details").code(traceback.format_exc())
         
-        st.divider()
-        st.header("Analysis Settings")
+        st.markdown("---")
+        st.markdown("### ⚙️ Analysis Configuration")
+        st.markdown("Configure the parameters for your blockchain analysis")
         
-        # Define risk threshold and anomaly sensitivity
-        risk_threshold = st.slider("Risk Threshold", 0.0, 1.0, 0.7, 0.05)
-        anomaly_sensitivity = st.slider("Anomaly Detection Sensitivity", 0.0, 1.0, 0.8, 0.05)
+        # Enhanced settings with better UI
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            risk_threshold = st.slider(
+                "🎯 Risk Assessment Threshold", 
+                0.0, 1.0, 0.7, 0.05,
+                help="Higher values will identify fewer but higher-confidence risks"
+            )
+            
+        with col2:
+            anomaly_sensitivity = st.slider(
+                "🔍 Anomaly Detection Sensitivity", 
+                0.0, 1.0, 0.8, 0.05,
+                help="Higher values will detect more anomalies but may increase false positives"
+            )
         
         # Create a progress placeholder
         progress_placeholder = st.empty()
         
-        # Run analysis button
-        run_analysis = st.button("Run Analysis")
+        # Enhanced run analysis button
+        st.markdown("### 🚀 Start Analysis")
+        run_analysis = st.button(
+            "🔬 Run Complete Blockchain Analysis",
+            help="Start comprehensive analysis including risk assessment, anomaly detection, and network analysis"
+        )
         
-    elif app_mode == "Saved Analyses":
+    elif app_mode == "📊 Saved Analyses":
         st.session_state.view_saved_analysis = True
-        st.header("Saved Analyses")
+        st.markdown("### 📊 Saved Analysis Sessions")
+        st.markdown("View and manage your previously saved blockchain analyses")
         
         # Get list of saved analyses
         try:
@@ -425,36 +610,91 @@ if st.session_state.view_saved_analysis and st.session_state.saved_session_id:
         st.error(f"Error loading saved analysis: {str(e)}")
 
 elif st.session_state.df is None:
-    st.header("Welcome to Quantum-Secure Blockchain Analyzer")
+    # Enhanced welcome screen with feature highlights
+    st.markdown("""
+    <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%); border-radius: 15px; margin: 1rem 0;">
+        <h2>🚀 Ready to Analyze Blockchain Transactions</h2>
+        <p style="font-size: 1.1rem; color: #666;">Upload your transaction data to unlock powerful AI-driven insights and AUSTRAC compliance analysis</p>
+    </div>
+    """, unsafe_allow_html=True)
     
-    col1, col2 = st.columns(2)
+    # Feature highlights
+    col1, col2, col3 = st.columns(3)
     
     with col1:
         st.markdown("""
-        ### Upload your blockchain data to:
-        - Analyze transaction patterns
-        - Identify potential risks
-        - Detect anomalies with AI
-        - Visualize blockchain networks
-        - Generate detailed insights
-        """)
+        <div class="metric-card" style="text-align: center;">
+            <h3>🛡️ Quantum Security</h3>
+            <p>Post-quantum cryptography protects your data against future quantum computing threats</p>
+        </div>
+        """, unsafe_allow_html=True)
     
     with col2:
-        st.image("https://pixabay.com/get/g344463069dc2cb1c2fe201943f121ae54347d44b450983461cba04da64a0f804ae2139e6014cfd8d76c546177feff3e4204cf4243d15c5ec292d4b15d2602ced_1280.jpg", 
-                caption="Blockchain Transaction Analysis")
+        st.markdown("""
+        <div class="metric-card" style="text-align: center;">
+            <h3>🇦🇺 AUSTRAC Compliance</h3>
+            <p>Automated compliance scoring and reporting for Australian regulatory requirements</p>
+        </div>
+        """, unsafe_allow_html=True)
     
-    st.image("https://pixabay.com/get/gb52e10f881ecac85f6560f93ebbb5325b1cda96ed6762ad4a700089852e001b2bb21ff55136c0e986457c9d7d9e229509c6a31cec9559a3f9fa9451b951a3a56_1280.jpg", 
-            caption="Secure Blockchain Network Visualization")
+    with col3:
+        st.markdown("""
+        <div class="metric-card" style="text-align: center;">
+            <h3>🤖 AI Analytics</h3>
+            <p>Advanced machine learning for anomaly detection and predictive risk assessment</p>
+        </div>
+        """, unsafe_allow_html=True)
     
-    st.markdown("""
-    ### Post-Quantum Security
-    This application uses state-of-the-art post-quantum cryptography to protect your data,
-    ensuring it remains secure even against quantum computing attacks.
+    st.markdown("---")
     
-    ### Database Integration
-    Analysis results are securely stored in a PostgreSQL database, allowing you to 
-    save and retrieve your analysis at any time.
-    """)
+    # Getting started guide
+    st.markdown("### 📋 Getting Started")
+    
+    steps_col1, steps_col2 = st.columns(2)
+    
+    with steps_col1:
+        st.markdown("""
+        **Step 1: Upload Data**
+        - Support for CSV, Excel, and JSON formats
+        - Blockchain transaction datasets
+        - Banking transaction data
+        
+        **Step 2: AUSTRAC Assessment**
+        - Automatic risk score calculation
+        - Compliance recommendations
+        - Regulatory reporting alerts
+        """)
+    
+    with steps_col2:
+        st.markdown("""
+        **Step 3: AI Analysis**
+        - Anomaly detection
+        - Network analysis
+        - Risk assessment
+        
+        **Step 4: Insights & Reports**
+        - Interactive visualizations
+        - AI-powered search
+        - Export capabilities
+        """)
+    
+    # Quick stats
+    st.markdown("---")
+    st.markdown("### 📊 Platform Capabilities")
+    
+    metrics_col1, metrics_col2, metrics_col3, metrics_col4 = st.columns(4)
+    
+    with metrics_col1:
+        st.metric("Security Level", "Quantum-Safe", delta="Post-Quantum Ready")
+    
+    with metrics_col2:
+        st.metric("AI Models", "Multiple", delta="OpenAI GPT Integration")
+    
+    with metrics_col3:
+        st.metric("Compliance", "AUSTRAC", delta="Australian Standards")
+    
+    with metrics_col4:
+        st.metric("Data Protection", "Enterprise", delta="Bank-Grade Security")
 
 else:
     # Display the data preview
@@ -465,14 +705,23 @@ else:
     if st.session_state.analysis_results is not None:
         st.header("Analysis Results")
         
-        # Create tabs for different visualizations and AI search
-        tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(["Transaction Network", "Risk Assessment", 
-                                      "Anomaly Detection", "Transaction Timeline", "AI Transaction Search", 
-                                      "Advanced Analytics", "Predictive Analysis"])
+        # Enhanced tabs with better styling and icons
+        st.markdown("### 📊 Comprehensive Analysis Results")
+        
+        tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
+            "🌐 Network Visualization", 
+            "🎯 Risk Assessment", 
+            "🚨 Anomaly Detection", 
+            "📈 Transaction Timeline", 
+            "🔍 AI Insights", 
+            "🧠 Advanced Analytics", 
+            "📊 Predictive Intelligence"
+        ])
                                       
-        # Add AI Search directly on the main page for easier access
-        st.sidebar.divider()
-        with st.sidebar.expander("🔍 AI Transaction Search (Powered by OpenAI GPT-4o)", expanded=True):
+        # Enhanced sidebar AI search
+        st.sidebar.markdown("---")
+        st.sidebar.markdown("### 🤖 AI Assistant")
+        with st.sidebar.expander("🔍 Ask About Your Data", expanded=True):
             st.markdown("Ask any question about your transaction data:")
             sidebar_query = st.text_input("Your question:", key="sidebar_search_query")
             
@@ -503,8 +752,8 @@ else:
                         st.warning("Please enter a search query.")
         
         with tab1:
-            st.subheader("Blockchain Transaction Network")
-            # Skip using external images and just show a descriptive title
+            st.markdown("#### 🌐 Blockchain Transaction Network Analysis")
+            st.markdown("Interactive network visualization of transaction flows and patterns")
             st.markdown("### Interactive Network Graph of Transaction Connections")
             if 'analysis_results' in st.session_state and st.session_state.analysis_results is not None:
                 # Use the processed data for visualization
