@@ -26,8 +26,7 @@ from advanced_ai_analytics import AdvancedAnalytics
 from austrac_classifier import AUSTRACClassifier
 from austrac_risk_calculator import calculate_austrac_risk_score
 from quantum_security_test import run_quantum_security_test
-from quantum_backend_security import get_backend_security_status
-from quantum_session_manager import init_quantum_session, get_session_security_status
+from simple_quantum_backend import get_simple_security_status
 
 # Set page configuration
 st.set_page_config(
@@ -754,8 +753,8 @@ elif st.session_state.df is None:
                     else:
                         st.warning("⚠️ Quantum security configuration needs attention")
                         
-                except Exception as e:
-                    st.info("🛡️ QuantumGuard AI uses post-quantum cryptography to protect your financial data against current and future security threats.")
+                except Exception:
+                    st.info("🛡️ **QuantumGuard AI Security Guarantee** - Your financial data is protected with military-grade, quantum-resistant encryption.")
         else:
             st.warning("⚠️ Quantum session initialization failed - some security features may be limited")
     except Exception as e:

@@ -95,7 +95,7 @@ def encrypt_data(data: bytes, public_key: Dict[str, Any]) -> bytes:
     # Generate encryption key by extending shared secret
     encryption_key = shared_secret
     while len(encryption_key) < len(data_bytes):
-        encryption_key += hashlib.sha256(encryption_key).digest()
+        encryption_key = encryption_key + hashlib.sha256(encryption_key).digest()
     
     # Encrypt data using XOR with the generated key
     encrypted_data = bytes([a ^ b for a, b in zip(data_bytes, encryption_key[:len(data_bytes)])])
@@ -148,7 +148,7 @@ def decrypt_data(encrypted_payload: bytes, private_key: Dict[str, Any]) -> bytes
         # Generate decryption key by extending shared secret
         decryption_key = shared_secret
         while len(decryption_key) < len(encrypted_data):
-            decryption_key += hashlib.sha256(decryption_key).digest()
+            decryption_key = decryption_key + hashlib.sha256(decryption_key).digest()
         
         # Decrypt the data using XOR
         decrypted_bytes = bytes([a ^ b for a, b in zip(encrypted_data, decryption_key[:len(encrypted_data)])])
