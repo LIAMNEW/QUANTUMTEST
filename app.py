@@ -194,14 +194,21 @@ if not st.session_state.keys_generated:
     st.session_state.public_key, st.session_state.private_key = generate_pq_keys()
     st.session_state.keys_generated = True
 
-# Enhanced Header with custom styling
-st.markdown("""
-<div class="main-header">
-    <h1>🛡️ QuantumGuard AI</h1>
-    <h3>Advanced Blockchain Transaction Analytics & AUSTRAC Compliance</h3>
-    <p>Powered by Post-Quantum Cryptography | AI-Driven Risk Assessment | Real-Time Compliance Monitoring</p>
-</div>
-""", unsafe_allow_html=True)
+# Enhanced Header with QuantumGuard AI logo
+col1, col2, col3 = st.columns([1, 2, 1])
+
+with col2:
+    st.image("attached_assets/ChatGPT Image Apr 4, 2025, 09_55_04 PM_1756390179713.png", 
+             width=450, use_column_width=True)
+    
+    st.markdown("""
+    <div style="text-align: center; margin: 1rem 0;">
+        <h3 style="color: #64748b; margin: 0.5rem 0;">Advanced Blockchain Transaction Analytics & AUSTRAC Compliance</h3>
+        <p style="font-size: 1rem; color: #475569; margin: 0.5rem auto;">
+            Powered by Post-Quantum Cryptography | AI-Driven Risk Assessment | Real-Time Compliance Monitoring
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
 # Initialize variables for run_analysis and progress_placeholder
 run_analysis = False
