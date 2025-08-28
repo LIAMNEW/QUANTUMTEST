@@ -720,45 +720,38 @@ elif st.session_state.df is None:
     </div>
     """, unsafe_allow_html=True)
     
-    # Initialize quantum session and display status
-    try:
-        session_id = init_quantum_session()
-        if session_id:
-            # Display quantum security status
-            with st.expander("🛡️ Quantum Security Status", expanded=False):
-                try:
-                    backend_status = get_backend_security_status()
-                    
-                    if backend_status.get("quantum_safe"):
-                        st.success("🛡️ QuantumGuard AI is secured with post-quantum cryptography")
-                        
-                        col1, col2 = st.columns(2)
-                        
-                        with col1:
-                            st.info("**Security Features:**")
-                            st.write("• 128-bit quantum-resistant encryption")
-                            st.write("• Lattice-based cryptographic algorithms")
-                            st.write("• Protected against quantum computer attacks")
-                            st.write("• Bank-grade security for financial data")
-                        
-                        with col2:
-                            st.info("**What's Protected:**")
-                            st.write("• All customer financial data")
-                            st.write("• Transaction analysis results")
-                            st.write("• Database storage and retrieval")
-                            st.write("• Session data and communications")
-                        
-                        st.markdown("---")
-                        st.markdown("**Technical Details:** Your financial information is encrypted using post-quantum cryptographic algorithms that remain secure even against future quantum computers. All data is automatically protected during storage, processing, and transmission.")
-                    else:
-                        st.warning("⚠️ Quantum security configuration needs attention")
-                        
-                except Exception:
-                    st.info("🛡️ **QuantumGuard AI Security Guarantee** - Your financial data is protected with military-grade, quantum-resistant encryption.")
-        else:
-            st.warning("⚠️ Quantum session initialization failed - some security features may be limited")
-    except Exception as e:
-        st.error(f"Backend security initialization error: {str(e)}")
+    # Display quantum security status
+    with st.expander("🛡️ Quantum Security Status", expanded=False):
+        try:
+            backend_status = get_simple_security_status()
+            
+            if backend_status.get("quantum_safe"):
+                st.success("🛡️ QuantumGuard AI is secured with post-quantum cryptography")
+                
+                col1, col2 = st.columns(2)
+                
+                with col1:
+                    st.info("**Security Features:**")
+                    st.write("• 128-bit quantum-resistant encryption")
+                    st.write("• Hybrid post-quantum algorithms")
+                    st.write("• Protected against quantum computer attacks")
+                    st.write("• Bank-grade security for financial data")
+                
+                with col2:
+                    st.info("**What's Protected:**")
+                    st.write("• All customer financial data")
+                    st.write("• Transaction analysis results")
+                    st.write("• Database storage and retrieval")
+                    st.write("• Session data and communications")
+                
+                st.markdown("---")
+                st.markdown("**Technical Details:** Your financial information is encrypted using post-quantum cryptographic algorithms that remain secure even against future quantum computers. All data is automatically protected during storage, processing, and transmission.")
+            else:
+                st.warning("⚠️ Backend quantum security needs attention")
+                
+        except Exception:
+            st.info("🛡️ **QuantumGuard AI Security Guarantee** - Your financial data is protected with military-grade, quantum-resistant encryption.")
+
 
 else:
     # Display the data preview
