@@ -198,8 +198,8 @@ if not st.session_state.keys_generated:
 col1, col2, col3 = st.columns([1, 2, 1])
 
 with col2:
-    st.image("attached_assets/ChatGPT Image Apr 4, 2025, 09_55_04 PM_1756390179713.png", 
-             width=450, use_column_width=True)
+    st.image("attached_assets/generated_images/QuantumGuard_AI_professional_logo_740c9480.png", 
+             width=500, use_container_width=True)
     
     st.markdown("""
     <div style="text-align: center; margin: 1rem 0;">
