@@ -5,6 +5,7 @@ QuantumGuard AI is a comprehensive blockchain transaction analysis platform that
 # User Preferences
 
 Preferred communication style: Simple, everyday language.
+Security Focus: Backend quantum safety for customer financial data protection (not transaction analysis testing).
 
 # System Architecture
 

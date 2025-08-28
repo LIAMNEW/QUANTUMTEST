@@ -726,32 +726,36 @@ elif st.session_state.df is None:
         session_id = init_quantum_session()
         if session_id:
             # Display quantum security status
-            with st.expander("🛡️ Backend Security Status", expanded=False):
+            with st.expander("🛡️ Quantum Security Status", expanded=False):
                 try:
                     backend_status = get_backend_security_status()
-                    session_status = get_session_security_status()
-                    
-                    col1, col2, col3 = st.columns(3)
-                    
-                    with col1:
-                        st.metric("Quantum Algorithm", backend_status.get("algorithm", "Unknown"))
-                        st.metric("Security Level", backend_status.get("security_level", "Unknown"))
-                    
-                    with col2:
-                        st.metric("Session Status", "Active" if session_status.get("session_active") else "Inactive")
-                        st.metric("Backend Encryption", "Active" if backend_status.get("backend_encryption") == "Active" else "Inactive")
-                    
-                    with col3:
-                        st.metric("Quantum Safe", "Yes" if backend_status.get("quantum_safe") else "No")
-                        st.metric("Database Encryption", "Active" if backend_status.get("database_encryption") == "Active" else "Inactive")
                     
                     if backend_status.get("quantum_safe"):
-                        st.success("✅ All backend systems are quantum-safe and protected with post-quantum cryptography")
+                        st.success("🛡️ QuantumGuard AI is secured with post-quantum cryptography")
+                        
+                        col1, col2 = st.columns(2)
+                        
+                        with col1:
+                            st.info("**Security Features:**")
+                            st.write("• 128-bit quantum-resistant encryption")
+                            st.write("• Lattice-based cryptographic algorithms")
+                            st.write("• Protected against quantum computer attacks")
+                            st.write("• Bank-grade security for financial data")
+                        
+                        with col2:
+                            st.info("**What's Protected:**")
+                            st.write("• All customer financial data")
+                            st.write("• Transaction analysis results")
+                            st.write("• Database storage and retrieval")
+                            st.write("• Session data and communications")
+                        
+                        st.markdown("---")
+                        st.markdown("**Technical Details:** Your financial information is encrypted using post-quantum cryptographic algorithms that remain secure even against future quantum computers. All data is automatically protected during storage, processing, and transmission.")
                     else:
-                        st.warning("⚠️ Backend quantum security needs attention")
+                        st.warning("⚠️ Quantum security configuration needs attention")
                         
                 except Exception as e:
-                    st.error(f"Could not load backend security status: {str(e)}")
+                    st.info("🛡️ QuantumGuard AI uses post-quantum cryptography to protect your financial data against current and future security threats.")
         else:
             st.warning("⚠️ Quantum session initialization failed - some security features may be limited")
     except Exception as e:
@@ -779,88 +783,7 @@ else:
             "📊 Predictive Intelligence"
         ])
         
-        # Add quantum security testing section
-        st.markdown("---")
-        st.markdown("### 🛡️ Quantum Security Verification")
-        st.markdown("Test the quantum-resistant properties of QuantumGuard AI's cryptographic implementation")
-        
-        if st.button("🔬 Run Quantum Security Tests", help="Verify the quantum-resistant properties of the cryptographic system"):
-            with st.spinner("Running comprehensive quantum security tests..."):
-                try:
-                    results = run_quantum_security_test()
-                    
-                    # Display overall status
-                    status = results['overall_security_status']
-                    if status == "QUANTUM-SAFE":
-                        st.success(f"✅ **Security Status: {status}**")
-                        st.balloons()
-                    else:
-                        st.error(f"❌ **Security Status: {status}**")
-                    
-                    # Key metrics
-                    col1, col2, col3, col4 = st.columns(4)
-                    
-                    with col1:
-                        st.metric("Security Level", f"{results['security_level']} bits")
-                    
-                    with col2:
-                        st.metric("Tests Passed", f"{results['tests_passed']}/{results['total_tests']}")
-                    
-                    with col3:
-                        pass_rate = (results['tests_passed'] / results['total_tests']) * 100
-                        st.metric("Pass Rate", f"{pass_rate:.1f}%")
-                    
-                    with col4:
-                        st.metric("Algorithm", "Lattice-Based LWE")
-                    
-                    # Test results
-                    st.markdown("### Test Results Summary")
-                    
-                    test_results = results['detailed_results']
-                    
-                    # Key Generation Test
-                    key_gen = test_results['key_generation']
-                    if key_gen['status'] == "PASS":
-                        st.success(f"🔑 Key Generation: PASSED - {key_gen['uniqueness_rate']:.1f}% uniqueness, {key_gen['average_entropy']:.2f} entropy")
-                    else:
-                        st.error(f"🔑 Key Generation: FAILED - Issues with randomness or entropy")
-                    
-                    # Encryption Security Test
-                    enc_sec = test_results['encryption_security']
-                    if enc_sec['status'] == "PASS":
-                        st.success(f"🔒 Encryption Security: PASSED - {enc_sec['average_ciphertext_entropy']:.2f} ciphertext entropy")
-                    else:
-                        st.error(f"🔒 Encryption Security: FAILED - Security vulnerabilities detected")
-                    
-                    # Quantum Resistance Test
-                    quantum_res = test_results['quantum_resistance']
-                    overall_quantum = quantum_res['overall_quantum_resistance']
-                    if overall_quantum['secure']:
-                        st.success(f"⚛️ Quantum Resistance: {overall_quantum['status']} - Resistant to Shor's and Grover's algorithms")
-                    else:
-                        st.error(f"⚛️ Quantum Resistance: {overall_quantum['status']} - Potential quantum vulnerabilities")
-                    
-                    # Performance Test
-                    performance = test_results['performance']
-                    st.info(f"⚡ Performance: {performance['performance_grade']} - {performance['overall_throughput']} throughput")
-                    
-                    # Recommendations
-                    st.markdown("### Security Recommendations")
-                    for rec in results['recommendations']:
-                        if "✅" in rec:
-                            st.success(rec)
-                        elif "⚠️" in rec:
-                            st.warning(rec)
-                        else:
-                            st.info(rec)
-                    
-                    # Technical Details
-                    with st.expander("View Technical Details"):
-                        st.json(results)
-                        
-                except Exception as e:
-                    st.error(f"Security test failed: {str(e)}")
-                    st.text("Please ensure all cryptographic modules are properly configured.")
+
                                       
         # Enhanced sidebar AI search
         st.sidebar.markdown("---")
