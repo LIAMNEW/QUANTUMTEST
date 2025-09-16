@@ -502,8 +502,6 @@ with st.sidebar:
             time.sleep(1)  # Give user time to see the completion
             progress_placeholder.empty()  # Remove the progress bar
             st.success("AI analysis complete! View the results in the tabs below.")
-            # Show balloons to celebrate successful analysis
-            st.balloons()
         except Exception as e:
             progress_placeholder.empty()
             st.error(f"Error during analysis: {str(e)}")
