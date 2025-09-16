@@ -7,13 +7,13 @@ from typing import List, Dict
 
 def plot_transaction_network(df: pd.DataFrame) -> go.Figure:
     """
-    Create an interactive network visualization of blockchain transactions.
+    Create an enhanced, modern transaction network visualization with quantum-themed styling.
     
     Args:
         df: DataFrame containing transaction data
     
     Returns:
-        Plotly Figure object containing the network visualization
+        Plotly Figure object containing the enhanced network visualization
     """
     # Create a graph from transactions
     G = nx.from_pandas_edgelist(
@@ -22,113 +22,245 @@ def plot_transaction_network(df: pd.DataFrame) -> go.Figure:
         create_using=nx.DiGraph()
     )
     
-    # Calculate node positions with more spread for less overlap
-    pos = nx.spring_layout(G, seed=42, k=0.5)  # Increasing k spreads nodes further apart
+    if len(G.nodes()) == 0:
+        # Return empty figure if no data
+        return go.Figure().update_layout(
+            title="No transaction data available",
+            template='plotly_dark'
+        )
     
-    # Calculate node sizes based on degree - bigger nodes for better visibility
+    # Use hierarchical layout for better visual structure
+    try:
+        pos = nx.nx_agraph.graphviz_layout(G, prog='neato')
+    except:
+        # Fallback to spring layout with optimized parameters
+        pos = nx.spring_layout(G, seed=42, k=2.0, iterations=50)
+    
+    # Calculate enhanced node metrics
     degrees = dict(G.degree())
     max_degree = max(degrees.values()) if degrees else 1
-    node_sizes = {node: (15 + (degree / max_degree) * 25) for node, degree in degrees.items()}
     
-    # Calculate edge weights based on transaction value
+    # Calculate centrality for importance weighting
+    try:
+        centrality = nx.betweenness_centrality(G)
+    except:
+        centrality = {node: degrees[node] / max_degree for node in G.nodes()}
+    
+    # Enhanced node sizing with quantum glow effect
+    base_size = 20
+    node_sizes = {}
+    node_colors = {}
+    for node in G.nodes():
+        importance = centrality.get(node, 0)
+        degree = degrees[node]
+        # Size based on both degree and centrality
+        node_sizes[node] = base_size + (degree / max_degree * 30) + (importance * 20)
+        # Color intensity based on importance
+        node_colors[node] = importance
+    
+    # Calculate transaction flows for enhanced edge styling
+    edge_flows = {}
+    edge_values = {}
     if 'value' in df.columns:
-        edge_weights = nx.get_edge_attributes(G, 'value')
-        max_weight = max(edge_weights.values()) if edge_weights else 1
-        # Reduce line width range for cleaner appearance
-        edge_widths = {edge: (0.5 + (weight / max_weight) * 3) for edge, weight in edge_weights.items()}
-    else:
-        edge_widths = {edge: 1 for edge in G.edges()}
+        for edge in G.edges():
+            transactions = df[(df['from_address'] == edge[0]) & (df['to_address'] == edge[1])]
+            if not transactions.empty:
+                total_value = transactions['value'].sum()
+                edge_values[edge] = total_value
+                edge_flows[edge] = len(transactions)
     
-    # Create node traces - improved visibility and hover information
+    max_value = max(edge_values.values()) if edge_values else 1
+    max_flow = max(edge_flows.values()) if edge_flows else 1
+    
+    # Create quantum-themed background grid effect
+    grid_traces = []
+    x_range = [min(pos[n][0] for n in pos) - 1, max(pos[n][0] for n in pos) + 1]
+    y_range = [min(pos[n][1] for n in pos) - 1, max(pos[n][1] for n in pos) + 1]
+    
+    # Add subtle grid lines for quantum effect
+    for i in np.linspace(x_range[0], x_range[1], 8):
+        grid_traces.append(go.Scatter(
+            x=[i, i], y=y_range,
+            mode='lines',
+            line=dict(color='rgba(0, 255, 127, 0.05)', width=0.5),
+            showlegend=False, hoverinfo='skip'
+        ))
+    
+    for i in np.linspace(y_range[0], y_range[1], 8):
+        grid_traces.append(go.Scatter(
+            x=x_range, y=[i, i],
+            mode='lines',
+            line=dict(color='rgba(0, 255, 127, 0.05)', width=0.5),
+            showlegend=False, hoverinfo='skip'
+        ))
+    
+    # Create enhanced edge traces with quantum flow effects
+    edge_traces = []
+    for edge in G.edges():
+        x0, y0 = pos[edge[0]]
+        x1, y1 = pos[edge[1]]
+        
+        # Calculate edge properties
+        value = edge_values.get(edge, 0)
+        flow = edge_flows.get(edge, 1)
+        
+        # Dynamic width and opacity based on transaction value and frequency
+        base_width = 1.0
+        width = base_width + (value / max_value * 6) if max_value > 0 else base_width
+        opacity = 0.3 + (flow / max_flow * 0.5) if max_flow > 0 else 0.3
+        
+        # Quantum glow color based on value intensity
+        if value > max_value * 0.7:
+            color = f'rgba(255, 215, 0, {opacity})'  # Gold for high value
+            glow_color = 'rgba(255, 215, 0, 0.8)'
+        elif value > max_value * 0.3:
+            color = f'rgba(0, 255, 127, {opacity})'  # Bright green for medium
+            glow_color = 'rgba(0, 255, 127, 0.6)'
+        else:
+            color = f'rgba(64, 224, 255, {opacity})'  # Cyan for normal
+            glow_color = 'rgba(64, 224, 255, 0.4)'
+        
+        # Create main transaction flow line
+        edge_trace = go.Scatter(
+            x=[x0, x1, None],
+            y=[y0, y1, None],
+            mode='lines',
+            line=dict(width=width, color=color),
+            hovertext=f"<b>Transaction Flow</b><br>From: {edge[0][:8]}...<br>To: {edge[1][:8]}...<br>Value: {value:.2f}<br>Frequency: {flow} transactions",
+            hoverinfo='text',
+            showlegend=False
+        )
+        edge_traces.append(edge_trace)
+        
+        # Add quantum glow effect for important connections
+        if value > max_value * 0.5:
+            glow_trace = go.Scatter(
+                x=[x0, x1, None],
+                y=[y0, y1, None],
+                mode='lines',
+                line=dict(width=width + 3, color=glow_color),
+                showlegend=False,
+                hoverinfo='skip',
+                opacity=0.3
+            )
+            edge_traces.append(glow_trace)
+    
+    # Create enhanced node traces with quantum effects
+    # Main nodes with gradient effect
     node_trace = go.Scatter(
         x=[pos[node][0] for node in G.nodes()],
         y=[pos[node][1] for node in G.nodes()],
         mode='markers+text',
         marker=dict(
             size=[node_sizes[node] for node in G.nodes()],
-            color=[degrees[node] for node in G.nodes()],
-            colorscale='Viridis',
-            colorbar=dict(title='Node Connections'),
-            line=dict(width=1.5, color='rgba(50, 50, 50, 0.9)'),
+            color=[node_colors[node] for node in G.nodes()],
+            colorscale=[
+                [0, 'rgba(25, 25, 112, 0.8)'],      # Midnight blue (low)
+                [0.3, 'rgba(0, 191, 255, 0.9)'],    # Deep sky blue
+                [0.6, 'rgba(0, 255, 127, 0.95)'],   # Spring green  
+                [0.8, 'rgba(255, 215, 0, 0.98)'],   # Gold
+                [1, 'rgba(255, 20, 147, 1.0)']      # Deep pink (high)
+            ],
+            colorbar=dict(
+                title=dict(text='<b>Network Importance</b>', font=dict(color='white')),
+                tickfont=dict(color='white'),
+                x=1.02
+            ),
+            line=dict(width=2, color='rgba(255, 255, 255, 0.6)'),
             opacity=0.9
         ),
-        # Truncate long addresses for display clarity
-        text=[node[:6] + '...' if len(str(node)) > 10 else node for node in G.nodes()],
-        textposition="bottom center",
-        textfont=dict(size=10, color='rgba(0, 0, 0, 0.7)'),
-        # Show full details on hover
-        hovertext=[f"Address: {node}<br>Connections: {degrees[node]}" for node in G.nodes()],
+        text=[f"{str(node)[:4]}..." if len(str(node)) > 6 else str(node) for node in G.nodes()],
+        textposition="middle center",
+        textfont=dict(size=9, color='white', family='Arial Black'),
+        hovertext=[
+            f"<b>Address:</b> {node}<br><b>Connections:</b> {degrees[node]}<br><b>Importance:</b> {centrality.get(node, 0):.3f}<br><b>Type:</b> {'Hub' if degrees[node] > max_degree * 0.7 else 'Regular'}"
+            for node in G.nodes()
+        ],
         hoverinfo='text',
-        name='Addresses'
+        name='🔐 Wallet Addresses'
     )
     
-    # Create edge traces with better styling and hover information
-    edge_traces = []
-    for edge in G.edges():
-        x0, y0 = pos[edge[0]]
-        x1, y1 = pos[edge[1]]
-        width = edge_widths.get((edge[0], edge[1]), 1)
-        
-        # Get the transaction value if available
-        if 'value' in df.columns:
-            # Find transactions between these addresses
-            transactions = df[(df['from_address'] == edge[0]) & (df['to_address'] == edge[1])]
-            if not transactions.empty:
-                value = transactions['value'].sum()
-                hover_text = f"From: {edge[0][:6]}...<br>To: {edge[1][:6]}...<br>Total Value: {value:.2f}"
-            else:
-                hover_text = f"From: {edge[0][:6]}...<br>To: {edge[1][:6]}..."
-        else:
-            hover_text = f"From: {edge[0][:6]}...<br>To: {edge[1][:6]}..."
-        
-        # Create a more visually appealing edge trace
-        edge_trace = go.Scatter(
-            x=[x0, x1, None],
-            y=[y0, y1, None],
-            mode='lines',
-            line=dict(
-                width=width, 
-                color='rgba(70, 130, 180, 0.6)',  # Steel blue color
-                dash='solid'
+    # Add glow effect for important nodes
+    important_nodes = [node for node in G.nodes() if centrality.get(node, 0) > 0.5]
+    if important_nodes:
+        glow_trace = go.Scatter(
+            x=[pos[node][0] for node in important_nodes],
+            y=[pos[node][1] for node in important_nodes],
+            mode='markers',
+            marker=dict(
+                size=[node_sizes[node] + 15 for node in important_nodes],
+                color='rgba(255, 255, 255, 0.3)',
+                line=dict(width=0)
             ),
-            hovertext=hover_text,
-            hoverinfo='text',
-            showlegend=False
+            showlegend=False,
+            hoverinfo='skip'
         )
-        edge_traces.append(edge_trace)
+        edge_traces.append(glow_trace)
     
-    # Create figure with improved styling and annotations
-    fig = go.Figure(data=edge_traces + [node_trace],
-                   layout=go.Layout(
-                       title={
-                           'text': 'Blockchain Transaction Network',
-                           'font': {'size': 24},
-                           'x': 0.5,
-                           'y': 0.95
-                       },
-                       showlegend=True,
-                       hovermode='closest',
-                       margin=dict(b=40, l=10, r=10, t=60),
-                       xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
-                       yaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
-                       template='plotly_dark',
-                       legend=dict(
-                           x=0.01, 
-                           y=0.99,
-                           bgcolor='rgba(50, 50, 50, 0.8)',
-                           borderwidth=1
-                       ),
-                       annotations=[
-                           dict(
-                               text="<b>Node size</b>: Number of connections | <b>Edge thickness</b>: Transaction value",
-                               showarrow=False,
-                               xref="paper", yref="paper",
-                               x=0.5, y=0.02,
-                               align="center",
-                               font=dict(size=12, color='rgba(200, 200, 200, 0.9)')
-                           )
-                       ]
-                   ))
+    # Create the enhanced figure
+    fig = go.Figure(
+        data=grid_traces + edge_traces + [node_trace],
+        layout=go.Layout(
+            title={
+                'text': '<b>🔗 QuantumGuard Transaction Network Analysis</b>',
+                'font': {'size': 26, 'color': 'rgba(0, 255, 127, 1)', 'family': 'Arial Black'},
+                'x': 0.5,
+                'y': 0.95
+            },
+            showlegend=True,
+            hovermode='closest',
+            margin=dict(b=50, l=20, r=20, t=80),
+            xaxis=dict(
+                showgrid=False, 
+                zeroline=False, 
+                showticklabels=False,
+                showspikes=False
+            ),
+            yaxis=dict(
+                showgrid=False, 
+                zeroline=False, 
+                showticklabels=False,
+                showspikes=False
+            ),
+            plot_bgcolor='rgba(5, 15, 25, 1.0)',
+            paper_bgcolor='rgba(5, 15, 25, 1.0)',
+            font=dict(color='white'),
+            legend=dict(
+                x=0.01, 
+                y=0.99,
+                bgcolor='rgba(15, 25, 35, 0.9)',
+                bordercolor='rgba(0, 255, 127, 0.5)',
+                borderwidth=1,
+                font=dict(color='white')
+            ),
+            annotations=[
+                dict(
+                    text="<b>🔬 Quantum Analytics:</b> Node size = Network importance | Edge thickness = Transaction value | Color intensity = Centrality",
+                    showarrow=False,
+                    xref="paper", yref="paper",
+                    x=0.5, y=0.02,
+                    align="center",
+                    font=dict(size=11, color='rgba(0, 255, 127, 0.9)')
+                ),
+                dict(
+                    text="<b>⚡ QuantumGuard AI</b>",
+                    showarrow=False,
+                    xref="paper", yref="paper",
+                    x=0.99, y=0.01,
+                    align="right",
+                    font=dict(size=10, color='rgba(255, 215, 0, 0.7)')
+                )
+            ],
+            # Add subtle animation on hover
+            transition=dict(duration=300, easing="cubic-in-out")
+        )
+    )
+    
+    # Add custom hover effects
+    fig.update_traces(
+        hovertemplate='<b>%{hovertext}</b><extra></extra>',
+        selector=dict(mode='markers')
+    )
     
     return fig
 
