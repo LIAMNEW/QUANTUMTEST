@@ -5,6 +5,7 @@ import io
 import time
 import traceback
 import os
+from datetime import datetime, date
 from blockchain_analyzer import analyze_blockchain_data, identify_risks
 from ml_models import train_anomaly_detection, detect_anomalies
 from quantum_crypto import encrypt_data, decrypt_data, generate_pq_keys
@@ -19,7 +20,15 @@ from database import (
     save_analysis_to_db,
     get_analysis_sessions,
     get_analysis_by_id,
-    delete_analysis_session
+    delete_analysis_session,
+    add_address_to_watchlist,
+    get_watchlist_addresses,
+    remove_address_from_watchlist,
+    check_addresses_against_watchlist,
+    save_search_query,
+    get_saved_searches,
+    use_saved_search,
+    delete_saved_search
 )
 from ai_search import ai_transaction_search
 from advanced_ai_analytics import AdvancedAnalytics
@@ -27,6 +36,206 @@ from austrac_classifier import AUSTRACClassifier
 from austrac_risk_calculator import calculate_austrac_risk_score
 from quantum_security_test import run_quantum_security_test
 from simple_quantum_backend import get_simple_security_status
+
+# PDF Generation imports
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter, A4
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, Table, TableStyle, PageBreak
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import inch
+from reportlab.lib import colors
+from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
+
+def generate_pdf_report(analysis_results, session_name, visualizations=None):
+    """
+    Generate a comprehensive PDF report of blockchain analysis results.
+    
+    Args:
+        analysis_results: DataFrame containing transaction analysis
+        session_name: Name of the analysis session
+        visualizations: Dictionary containing matplotlib figures
+        
+    Returns:
+        BytesIO object containing the PDF data
+    """
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=letter, rightMargin=72, leftMargin=72, topMargin=72, bottomMargin=18)
+    
+    # Container for the 'Flowable' objects
+    story = []
+    styles = getSampleStyleSheet()
+    
+    # Custom styles
+    title_style = ParagraphStyle(
+        'CustomTitle',
+        parent=styles['Heading1'],
+        fontSize=24,
+        spaceAfter=30,
+        alignment=TA_CENTER,
+        textColor=colors.HexColor('#667eea')
+    )
+    
+    heading_style = ParagraphStyle(
+        'CustomHeading',
+        parent=styles['Heading2'],
+        fontSize=16,
+        spaceAfter=12,
+        textColor=colors.HexColor('#4a5568')
+    )
+    
+    # Title page
+    story.append(Paragraph("QuantumGuard AI", title_style))
+    story.append(Paragraph("Blockchain Transaction Analysis Report", styles['Heading2']))
+    story.append(Spacer(1, 12))
+    
+    # Report metadata
+    metadata_data = [
+        ['Report Generated:', datetime.now().strftime('%Y-%m-%d %H:%M:%S')],
+        ['Session Name:', session_name],
+        ['Total Transactions:', str(len(analysis_results)) if analysis_results is not None else 'N/A'],
+        ['Analysis Date Range:', 'Full Dataset'],
+    ]
+    
+    metadata_table = Table(metadata_data, colWidths=[2*inch, 3*inch])
+    metadata_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, -1), colors.HexColor('#f7fafc')),
+        ('TEXTCOLOR', (0, 0), (-1, -1), colors.black),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
+        ('FONTSIZE', (0, 0), (-1, -1), 10),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
+        ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#e2e8f0'))
+    ]))
+    
+    story.append(metadata_table)
+    story.append(Spacer(1, 20))
+    
+    # Executive Summary
+    story.append(Paragraph("Executive Summary", heading_style))
+    
+    if analysis_results is not None and not analysis_results.empty:
+        # Calculate summary statistics
+        high_risk_count = len(analysis_results[analysis_results.get('risk_score', 0) > 0.7])
+        anomaly_count = len(analysis_results[analysis_results.get('is_anomaly', False) == True])
+        avg_value = analysis_results.get('value', pd.Series([0])).mean()
+        
+        summary_text = f"""
+        This report analyzes {len(analysis_results)} blockchain transactions for potential risks and anomalies.
+        Key findings include {high_risk_count} high-risk transactions and {anomaly_count} detected anomalies.
+        The average transaction value is {avg_value:.2f} units.
+        """
+        story.append(Paragraph(summary_text, styles['Normal']))
+    else:
+        story.append(Paragraph("No transaction data available for analysis.", styles['Normal']))
+    
+    story.append(Spacer(1, 20))
+    
+    # Risk Analysis Section
+    story.append(Paragraph("Risk Analysis", heading_style))
+    
+    if analysis_results is not None and not analysis_results.empty:
+        # Risk distribution table
+        risk_levels = ['Low (0-0.3)', 'Medium (0.3-0.7)', 'High (0.7-1.0)']
+        risk_counts = [
+            len(analysis_results[analysis_results.get('risk_score', 0) <= 0.3]),
+            len(analysis_results[(analysis_results.get('risk_score', 0) > 0.3) & (analysis_results.get('risk_score', 0) <= 0.7)]),
+            len(analysis_results[analysis_results.get('risk_score', 0) > 0.7])
+        ]
+        
+        risk_data = [['Risk Level', 'Transaction Count', 'Percentage']]
+        total_transactions = len(analysis_results)
+        
+        for level, count in zip(risk_levels, risk_counts):
+            percentage = (count / total_transactions * 100) if total_transactions > 0 else 0
+            risk_data.append([level, str(count), f"{percentage:.1f}%"])
+        
+        risk_table = Table(risk_data, colWidths=[2*inch, 1.5*inch, 1.5*inch])
+        risk_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#667eea')),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
+            ('FONTSIZE', (0, 0), (-1, -1), 10),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black)
+        ]))
+        
+        story.append(risk_table)
+    
+    story.append(PageBreak())
+    
+    # Visualizations section
+    if visualizations:
+        story.append(Paragraph("Data Visualizations", heading_style))
+        
+        for viz_name, fig in visualizations.items():
+            story.append(Paragraph(viz_name.replace('_', ' ').title(), styles['Heading3']))
+            
+            try:
+                # Convert Plotly figure to image
+                img_buffer = io.BytesIO()
+                if hasattr(fig, 'to_image'):
+                    # Plotly figure
+                    img_bytes = fig.to_image(format="png", width=800, height=600)
+                    img_buffer.write(img_bytes)
+                    img_buffer.seek(0)
+                    
+                    # Add image to PDF
+                    img = Image(img_buffer, width=6*inch, height=4*inch)
+                    story.append(img)
+                    story.append(Spacer(1, 20))
+                else:
+                    # Skip if not a valid figure
+                    story.append(Paragraph("Chart not available for PDF export", styles['Normal']))
+                    story.append(Spacer(1, 12))
+            except Exception as e:
+                story.append(Paragraph(f"Error rendering chart: {viz_name}", styles['Normal']))
+                story.append(Spacer(1, 12))
+    
+    # Build PDF
+    doc.build(story)
+    buffer.seek(0)
+    return buffer
+
+def create_date_filter_controls(key_prefix: str = "") -> tuple[date, date]:
+    """
+    Create date filter controls and return selected dates.
+    
+    Args:
+        key_prefix: Unique prefix for the control keys
+        
+    Returns:
+        Tuple of (start_date, end_date) or (None, None) if no filtering
+    """
+    with st.expander("📅 Date Range Filter", expanded=False):
+        col1, col2, col3 = st.columns([1, 1, 1])
+        
+        with col1:
+            enable_filter = st.checkbox("Enable Date Filtering", key=f"{key_prefix}_enable_filter")
+        
+        if enable_filter:
+            with col2:
+                start_date = st.date_input(
+                    "Start Date",
+                    value=date(2024, 1, 1),
+                    key=f"{key_prefix}_start_date"
+                )
+            
+            with col3:
+                end_date = st.date_input(
+                    "End Date", 
+                    value=date.today(),
+                    key=f"{key_prefix}_end_date"
+                )
+            
+            if start_date > end_date:
+                st.error("Start date must be before end date")
+                return None, None
+                
+            return start_date, end_date
+        else:
+            return None, None
 
 # Set page configuration
 st.set_page_config(
@@ -225,6 +434,96 @@ with st.sidebar:
         <p style="color: rgba(255,255,255,0.8); margin: 0; font-size: 0.8rem;">AI-Powered Security</p>
     </div>
     """, unsafe_allow_html=True)
+    
+    # Address Watchlist Management
+    st.markdown("---")
+    st.markdown("### 🏷️ Address Watchlist")
+    
+    with st.expander("Manage Watchlist", expanded=False):
+        # Add new address
+        st.markdown("**Add Address to Watchlist**")
+        new_address = st.text_input("Wallet Address", key="watchlist_address")
+        new_label = st.text_input("Label/Description", key="watchlist_label")
+        new_risk_level = st.selectbox("Risk Level", ["Low", "Medium", "High", "Critical"], key="watchlist_risk")
+        new_notes = st.text_area("Notes", key="watchlist_notes", height=70)
+        
+        if st.button("Add to Watchlist", key="add_watchlist"):
+            if new_address and new_label:
+                try:
+                    add_address_to_watchlist(new_address, new_label, new_risk_level, new_notes)
+                    st.success(f"Added {new_label} to watchlist")
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Error adding to watchlist: {str(e)}")
+            else:
+                st.warning("Please enter both address and label")
+        
+        # Display current watchlist
+        st.markdown("**Current Watchlist**")
+        try:
+            watchlist = get_watchlist_addresses()
+            if watchlist:
+                for entry in watchlist:
+                    col1, col2 = st.columns([3, 1])
+                    with col1:
+                        risk_color = {"Low": "🟢", "Medium": "🟡", "High": "🟠", "Critical": "🔴"}
+                        st.write(f"{risk_color.get(entry['risk_level'], '⚪')} **{entry['label']}**")
+                        st.caption(f"{entry['address'][:10]}...{entry['address'][-6:]}")
+                    with col2:
+                        if st.button("❌", key=f"remove_{entry['id']}", help="Remove from watchlist"):
+                            remove_address_from_watchlist(entry['id'])
+                            st.rerun()
+            else:
+                st.info("No addresses in watchlist")
+        except Exception as e:
+            st.error(f"Error loading watchlist: {str(e)}")
+    
+    # Saved Searches Management  
+    st.markdown("---")
+    st.markdown("### 💾 Saved Searches")
+    
+    with st.expander("Manage Saved Searches", expanded=False):
+        # Add new saved search
+        st.markdown("**Save New Search**")
+        search_name = st.text_input("Search Name", key="search_name")
+        search_query = st.text_area("Search Query", key="search_query", height=70)
+        search_type = st.selectbox("Search Type", ["general", "address", "value", "risk", "anomaly"], key="search_type")
+        
+        if st.button("Save Search", key="save_search"):
+            if search_name and search_query:
+                try:
+                    save_search_query(search_name, search_query, search_type)
+                    st.success(f"Saved search: {search_name}")
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Error saving search: {str(e)}")
+            else:
+                st.warning("Please enter both name and query")
+        
+        # Display saved searches
+        st.markdown("**Saved Searches**")
+        try:
+            saved_searches = get_saved_searches()
+            if saved_searches:
+                for search in saved_searches:
+                    col1, col2, col3 = st.columns([2, 1, 1])
+                    with col1:
+                        st.write(f"**{search['name']}**")
+                        st.caption(f"{search['type']} | Used {search['use_count']} times")
+                    with col2:
+                        if st.button("Use", key=f"use_{search['id']}", help="Use this search"):
+                            used_search = use_saved_search(search['id'])
+                            if used_search:
+                                st.session_state.last_search_query = used_search['query']
+                                st.success(f"Loaded: {used_search['name']}")
+                    with col3:
+                        if st.button("🗑️", key=f"delete_{search['id']}", help="Delete search"):
+                            delete_saved_search(search['id'])
+                            st.rerun()
+            else:
+                st.info("No saved searches")
+        except Exception as e:
+            st.error(f"Error loading saved searches: {str(e)}")
     
     app_mode = st.radio(
         "Select Analysis Mode", 
@@ -824,6 +1123,9 @@ else:
             </div>
             """, unsafe_allow_html=True)
             
+            # Date filtering controls
+            start_date, end_date = create_date_filter_controls("network")
+            
             # Key Insights Panel
             col1, col2, col3 = st.columns(3)
             with col1:
@@ -835,7 +1137,7 @@ else:
             
             if 'analysis_results' in st.session_state and st.session_state.analysis_results is not None:
                 try:
-                    fig = plot_transaction_network(st.session_state.analysis_results)
+                    fig = plot_transaction_network(st.session_state.analysis_results, start_date, end_date)
                     st.plotly_chart(fig, use_container_width=True)
                     
                     # Network statistics
@@ -868,6 +1170,9 @@ else:
             </div>
             """, unsafe_allow_html=True)
             
+            # Date filtering controls
+            start_date, end_date = create_date_filter_controls("risk")
+            
             # Risk Level Guide
             st.markdown("### Risk Level Guide")
             risk_col1, risk_col2, risk_col3, risk_col4 = st.columns(4)
@@ -882,7 +1187,7 @@ else:
             
             if st.session_state.risk_assessment is not None:
                 try:
-                    fig = plot_risk_heatmap(st.session_state.risk_assessment)
+                    fig = plot_risk_heatmap(st.session_state.risk_assessment, start_date, end_date)
                     st.plotly_chart(fig, use_container_width=True)
                     
                     # Risk Distribution Analysis
@@ -934,6 +1239,9 @@ else:
             </div>
             """, unsafe_allow_html=True)
             
+            # Date filtering controls
+            start_date, end_date = create_date_filter_controls("anomaly")
+            
             # Anomaly Types Guide
             st.markdown("### Types of Anomalies We Detect")
             anom_col1, anom_col2, anom_col3 = st.columns(3)
@@ -946,7 +1254,7 @@ else:
                 
             if st.session_state.df is not None and st.session_state.anomalies is not None:
                 try:
-                    fig = plot_anomaly_detection(st.session_state.df, st.session_state.anomalies)
+                    fig = plot_anomaly_detection(st.session_state.df, st.session_state.anomalies, start_date, end_date)
                     st.plotly_chart(fig, use_container_width=True)
                     
                     # Anomaly Analysis
@@ -1010,6 +1318,9 @@ else:
             </div>
             """, unsafe_allow_html=True)
             
+            # Date filtering controls
+            start_date, end_date = create_date_filter_controls("timeline")
+            
             # Timeline Insights Guide
             st.markdown("### Timeline Analysis Guide")
             time_col1, time_col2, time_col3 = st.columns(3)
@@ -1022,7 +1333,7 @@ else:
                 
             if 'analysis_results' in st.session_state and st.session_state.analysis_results is not None:
                 try:
-                    fig = plot_transaction_timeline(st.session_state.analysis_results)
+                    fig = plot_transaction_timeline(st.session_state.analysis_results, start_date, end_date)
                     st.plotly_chart(fig, use_container_width=True)
                     
                     # Timeline Statistics
@@ -1391,11 +1702,35 @@ else:
         
         with col1:
             st.header("Export Results")
-            export_format = st.selectbox("Export Format", ["CSV", "JSON", "Excel"])
+            export_format = st.selectbox("Export Format", ["PDF", "CSV", "JSON", "Excel"])
             
             if st.button("Export Analysis Results") and st.session_state.analysis_results is not None:
                 try:
-                    if export_format == "CSV":
+                    if export_format == "PDF":
+                        try:
+                            # Generate visualizations for PDF
+                            visualizations = {}
+                            if hasattr(st.session_state, 'current_figures'):
+                                visualizations = st.session_state.current_figures
+                            
+                            # Generate PDF report
+                            session_name = getattr(st.session_state, 'current_session_name', 'Blockchain Analysis')
+                            pdf_buffer = generate_pdf_report(
+                                st.session_state.analysis_results, 
+                                session_name, 
+                                visualizations
+                            )
+                            
+                            st.download_button(
+                                label="Download PDF Report",
+                                data=pdf_buffer.getvalue(),
+                                file_name=f"blockchain_analysis_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
+                                mime="application/pdf"
+                            )
+                        except Exception as e:
+                            st.error(f"Error generating PDF report: {str(e)}")
+                            st.info("Try exporting as CSV or JSON instead.")
+                    elif export_format == "CSV":
                         try:
                             # Use StringIO for more reliable CSV export
                             csv_buffer = io.StringIO()

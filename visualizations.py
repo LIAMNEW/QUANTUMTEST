@@ -3,21 +3,136 @@ import numpy as np
 import plotly.graph_objects as go
 import plotly.express as px
 import networkx as nx
-from typing import List, Dict
+from typing import List, Dict, Optional
+from datetime import datetime, date
 
-def plot_transaction_network(df: pd.DataFrame) -> go.Figure:
+# Import database function for watchlist checking
+try:
+    from database import check_addresses_against_watchlist
+except ImportError:
+    # Fallback function if database import fails
+    def check_addresses_against_watchlist(addresses):
+        return []
+
+def filter_data_by_date(df: pd.DataFrame, start_date: Optional[date] = None, end_date: Optional[date] = None, date_column: str = 'timestamp') -> pd.DataFrame:
+    """
+    Filter DataFrame by date range if dates are provided.
+    
+    Args:
+        df: DataFrame to filter
+        start_date: Start date for filtering (inclusive)
+        end_date: End date for filtering (inclusive)
+        date_column: Name of the date column to filter on
+    
+    Returns:
+        Filtered DataFrame
+    """
+    if df.empty:
+        return df
+        
+    # Check if date column exists
+    if date_column not in df.columns:
+        return df
+    
+    # If no date filters provided, return original data
+    if start_date is None and end_date is None:
+        return df
+    
+    filtered_df = df.copy()
+    
+    # Ensure the date column is in datetime format
+    if not pd.api.types.is_datetime64_dtype(filtered_df[date_column]):
+        try:
+            filtered_df[date_column] = pd.to_datetime(filtered_df[date_column])
+        except:
+            return df  # Return original if conversion fails
+    
+    # Apply date filters
+    if start_date is not None:
+        start_datetime = pd.to_datetime(start_date)
+        filtered_df = filtered_df[filtered_df[date_column] >= start_datetime]
+    
+    if end_date is not None:
+        end_datetime = pd.to_datetime(end_date) + pd.Timedelta(days=1) - pd.Timedelta(seconds=1)  # Include full end day
+        filtered_df = filtered_df[filtered_df[date_column] <= end_datetime]
+    
+    return filtered_df
+
+def enhance_addresses_with_watchlist(addresses: List[str]) -> Dict[str, Dict]:
+    """
+    Check addresses against watchlist and return enhanced display information.
+    
+    Args:
+        addresses: List of full addresses to check
+        
+    Returns:
+        Dictionary mapping addresses to their display information including watchlist status
+    """
+    try:
+        # Check addresses against watchlist
+        watchlist_matches = check_addresses_against_watchlist(addresses)
+        watchlist_dict = {match['address']: match for match in watchlist_matches}
+        
+        enhanced = {}
+        for addr in addresses:
+            if addr in watchlist_dict:
+                # Address is in watchlist
+                watchlist_info = watchlist_dict[addr]
+                risk_colors = {
+                    'Low': 'rgba(34, 197, 94, 0.9)',       # Green
+                    'Medium': 'rgba(251, 191, 36, 0.9)',   # Yellow
+                    'High': 'rgba(251, 146, 60, 0.9)',     # Orange  
+                    'Critical': 'rgba(239, 68, 68, 0.9)'   # Red
+                }
+                enhanced[addr] = {
+                    'display_name': f"🏷️ {addr[:8]}...",
+                    'is_watchlisted': True,
+                    'label': watchlist_info['label'],
+                    'risk_level': watchlist_info['risk_level'],
+                    'color': risk_colors.get(watchlist_info['risk_level'], 'rgba(156, 163, 175, 0.8)'),
+                    'hover_extra': f"<br><b>Watchlist:</b> {watchlist_info['label']}<br><b>Risk Level:</b> {watchlist_info['risk_level']}"
+                }
+            else:
+                # Regular address
+                enhanced[addr] = {
+                    'display_name': f"{addr[:8]}...",
+                    'is_watchlisted': False,
+                    'label': None,
+                    'risk_level': None,
+                    'color': 'rgba(156, 163, 175, 0.8)',  # Default gray
+                    'hover_extra': ""
+                }
+        
+        return enhanced
+    except Exception as e:
+        # Fallback if watchlist checking fails
+        return {addr: {
+            'display_name': f"{addr[:8]}...",
+            'is_watchlisted': False,
+            'label': None,
+            'risk_level': None,
+            'color': 'rgba(156, 163, 175, 0.8)',
+            'hover_extra': ""
+        } for addr in addresses}
+
+def plot_transaction_network(df: pd.DataFrame, start_date: Optional[date] = None, end_date: Optional[date] = None) -> go.Figure:
     """
     Create a simple, easy-to-understand transaction overview chart.
     
     Args:
         df: DataFrame containing transaction data
+        start_date: Start date for filtering (optional)
+        end_date: End date for filtering (optional)
     
     Returns:
         Plotly Figure object containing the simple transaction overview
     """
+    # Apply date filtering if provided
+    df = filter_data_by_date(df, start_date, end_date)
+    
     if df.empty:
         return go.Figure().update_layout(
-            title="No transaction data available",
+            title="No transaction data available for selected date range",
             plot_bgcolor='rgba(22, 25, 37, 1)',
             paper_bgcolor='rgba(22, 25, 37, 1)',
             font=dict(color='white')
@@ -30,31 +145,47 @@ def plot_transaction_network(df: pd.DataFrame) -> go.Figure:
         # Top receiving wallets  
         top_receivers = df.groupby('to_address')['value'].sum().sort_values(ascending=False).head(10)
         
+        # Get enhanced address information for watchlist checking
+        all_addresses = list(set(list(top_senders.index) + list(top_receivers.index)))
+        address_info = enhance_addresses_with_watchlist(all_addresses)
+        
         # Create a simple bar chart showing transaction volume by top addresses
         fig = go.Figure()
         
-        # Add top senders
+        # Add top senders with enhanced colors and labels
+        sender_colors = [address_info[addr]['color'] if address_info[addr]['is_watchlisted'] 
+                        else 'rgba(34, 197, 94, 0.8)' for addr in top_senders.index]
+        sender_display_names = [address_info[addr]['display_name'] for addr in top_senders.index]
+        sender_hover_extras = [address_info[addr]['hover_extra'] for addr in top_senders.index]
+        
         fig.add_trace(go.Bar(
             name='Top Senders',
-            x=[addr[:8] + '...' for addr in top_senders.index],
+            x=sender_display_names,
             y=top_senders.values,
             marker=dict(
-                color='rgba(34, 197, 94, 0.8)',  # Bright green
+                color=sender_colors,
                 line=dict(color='rgba(34, 197, 94, 1)', width=1)
             ),
-            hovertemplate='<b>Sender:</b> %{x}<br><b>Total Sent:</b> $%{y:,.2f}<extra></extra>'
+            hovertemplate='<b>Sender:</b> %{x}<br><b>Total Sent:</b> $%{y:,.2f}%{customdata}<extra></extra>',
+            customdata=sender_hover_extras
         ))
         
-        # Add top receivers
+        # Add top receivers with enhanced colors and labels
+        receiver_colors = [address_info[addr]['color'] if address_info[addr]['is_watchlisted'] 
+                          else 'rgba(59, 130, 246, 0.8)' for addr in top_receivers.index]
+        receiver_display_names = [address_info[addr]['display_name'] for addr in top_receivers.index]
+        receiver_hover_extras = [address_info[addr]['hover_extra'] for addr in top_receivers.index]
+        
         fig.add_trace(go.Bar(
             name='Top Receivers',
-            x=[addr[:8] + '...' for addr in top_receivers.index],
+            x=receiver_display_names,
             y=top_receivers.values,
             marker=dict(
-                color='rgba(59, 130, 246, 0.8)',  # Bright blue
+                color=receiver_colors,
                 line=dict(color='rgba(59, 130, 246, 1)', width=1)
             ),
-            hovertemplate='<b>Receiver:</b> %{x}<br><b>Total Received:</b> $%{y:,.2f}<extra></extra>'
+            hovertemplate='<b>Receiver:</b> %{x}<br><b>Total Received:</b> $%{y:,.2f}%{customdata}<extra></extra>',
+            customdata=receiver_hover_extras
         ))
         
         title_text = 'Top Transaction Participants'
@@ -128,19 +259,24 @@ def plot_transaction_network(df: pd.DataFrame) -> go.Figure:
     
     return fig
 
-def plot_risk_heatmap(risk_df: pd.DataFrame) -> go.Figure:
+def plot_risk_heatmap(risk_df: pd.DataFrame, start_date: Optional[date] = None, end_date: Optional[date] = None) -> go.Figure:
     """
     Create a simple risk overview visualization.
     
     Args:
         risk_df: DataFrame containing risk assessment data
+        start_date: Start date for filtering (optional)
+        end_date: End date for filtering (optional)
     
     Returns:
         Plotly Figure object containing the clean risk overview
     """
+    # Apply date filtering if provided
+    risk_df = filter_data_by_date(risk_df, start_date, end_date)
+    
     if risk_df.empty or 'risk_score' not in risk_df.columns:
         return go.Figure().update_layout(
-            title="No risk data available",
+            title="No risk data available for selected date range",
             plot_bgcolor='rgba(22, 25, 37, 1)',
             paper_bgcolor='rgba(22, 25, 37, 1)',
             font=dict(color='white')
@@ -229,20 +365,32 @@ def plot_risk_heatmap(risk_df: pd.DataFrame) -> go.Figure:
     
     return fig
 
-def plot_anomaly_detection(df: pd.DataFrame, anomaly_indices: List[int]) -> go.Figure:
+def plot_anomaly_detection(df: pd.DataFrame, anomaly_indices: List[int], start_date: Optional[date] = None, end_date: Optional[date] = None) -> go.Figure:
     """
     Create a simple anomaly overview visualization.
     
     Args:
         df: DataFrame containing transaction data
         anomaly_indices: List of indices corresponding to anomalous transactions
+        start_date: Start date for filtering (optional)
+        end_date: End date for filtering (optional)
     
     Returns:
         Plotly Figure object containing the simple anomaly overview
     """
+    # Apply date filtering if provided
+    original_df = df.copy()
+    df = filter_data_by_date(df, start_date, end_date)
+    
+    # Filter anomaly indices to match filtered data
+    if not df.empty and anomaly_indices:
+        # Get the indices that are still present after filtering
+        filtered_indices = df.index.tolist()
+        anomaly_indices = [idx for idx in anomaly_indices if idx in filtered_indices]
+    
     if df.empty:
         return go.Figure().update_layout(
-            title="No transaction data available",
+            title="No transaction data available for selected date range",
             plot_bgcolor='rgba(22, 25, 37, 1)',
             paper_bgcolor='rgba(22, 25, 37, 1)',
             font=dict(color='white')
@@ -323,19 +471,24 @@ def plot_anomaly_detection(df: pd.DataFrame, anomaly_indices: List[int]) -> go.F
     
     return fig
 
-def plot_transaction_timeline(df: pd.DataFrame) -> go.Figure:
+def plot_transaction_timeline(df: pd.DataFrame, start_date: Optional[date] = None, end_date: Optional[date] = None) -> go.Figure:
     """
     Create a simple transaction timeline visualization.
     
     Args:
         df: DataFrame containing transaction data
+        start_date: Start date for filtering (optional)
+        end_date: End date for filtering (optional)
     
     Returns:
         Plotly Figure object containing the clean timeline visualization
     """
+    # Apply date filtering if provided
+    df = filter_data_by_date(df, start_date, end_date)
+    
     if df.empty:
         return go.Figure().update_layout(
-            title="No transaction data available",
+            title="No transaction data available for selected date range",
             plot_bgcolor='rgba(22, 25, 37, 1)',
             paper_bgcolor='rgba(22, 25, 37, 1)',
             font=dict(color='white')

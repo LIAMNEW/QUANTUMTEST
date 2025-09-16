@@ -122,6 +122,38 @@ class NetworkMetric(Base):
     def __repr__(self):
         return f"<NetworkMetric(id={self.id}, nodes={self.total_nodes}, edges={self.total_edges})>"
 
+class AddressWatchlist(Base):
+    """Model for storing address watchlists with custom labels"""
+    __tablename__ = 'address_watchlists'
+    
+    id = Column(Integer, primary_key=True)
+    address = Column(String(255), unique=True, nullable=False)
+    label = Column(String(255), nullable=False)
+    risk_level = Column(String(50), default='Medium')  # Low, Medium, High, Critical
+    notes = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.now)
+    updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
+    is_active = Column(Boolean, default=True)
+    
+    def __repr__(self):
+        return f"<AddressWatchlist(id={self.id}, address='{self.address}', label='{self.label}', risk='{self.risk_level}')>"
+
+class SavedSearch(Base):
+    """Model for storing saved search queries"""
+    __tablename__ = 'saved_searches'
+    
+    id = Column(Integer, primary_key=True)
+    name = Column(String(255), nullable=False)
+    search_query = Column(Text, nullable=False)
+    search_type = Column(String(50), default='general')  # general, address, value, risk, etc.
+    created_at = Column(DateTime, default=datetime.now)
+    last_used = Column(DateTime, default=datetime.now)
+    use_count = Column(Integer, default=0)
+    is_active = Column(Boolean, default=True)
+    
+    def __repr__(self):
+        return f"<SavedSearch(id={self.id}, name='{self.name}', type='{self.search_type}')>"
+
 def init_db():
     """Initialize the database by creating all tables"""
     Base.metadata.create_all(engine)
@@ -414,6 +446,168 @@ def delete_analysis_session(session_id):
     except:
         session.rollback()
         return False
+    finally:
+        session.close()
+
+# Address Watchlist Management Functions
+def add_address_to_watchlist(address: str, label: str, risk_level: str = 'Medium', notes: str = ''):
+    """Add an address to the watchlist"""
+    session = Session()
+    try:
+        # Check if address already exists
+        existing = session.query(AddressWatchlist).filter_by(address=address).first()
+        if existing:
+            # Update existing entry
+            existing.label = label
+            existing.risk_level = risk_level
+            existing.notes = notes
+            existing.updated_at = datetime.now()
+            existing.is_active = True
+            watchlist_entry = existing
+        else:
+            # Create new entry
+            watchlist_entry = AddressWatchlist(
+                address=address,
+                label=label,
+                risk_level=risk_level,
+                notes=notes
+            )
+            session.add(watchlist_entry)
+        
+        session.commit()
+        return watchlist_entry.id
+    except Exception as e:
+        session.rollback()
+        raise e
+    finally:
+        session.close()
+
+def get_watchlist_addresses():
+    """Get all active watchlist addresses"""
+    session = Session()
+    try:
+        watchlist = session.query(AddressWatchlist).filter_by(is_active=True).all()
+        return [{
+            'id': entry.id,
+            'address': entry.address,
+            'label': entry.label,
+            'risk_level': entry.risk_level,
+            'notes': entry.notes,
+            'created_at': entry.created_at
+        } for entry in watchlist]
+    except Exception as e:
+        raise e
+    finally:
+        session.close()
+
+def remove_address_from_watchlist(address_id: int):
+    """Remove an address from the watchlist"""
+    session = Session()
+    try:
+        watchlist_entry = session.query(AddressWatchlist).filter_by(id=address_id).first()
+        if watchlist_entry:
+            watchlist_entry.is_active = False
+            session.commit()
+            return True
+        return False
+    except Exception as e:
+        session.rollback()
+        raise e
+    finally:
+        session.close()
+
+def check_addresses_against_watchlist(addresses: list):
+    """Check if any addresses are in the watchlist"""
+    session = Session()
+    try:
+        watchlist_addresses = session.query(AddressWatchlist).filter(
+            AddressWatchlist.address.in_(addresses),
+            AddressWatchlist.is_active == True
+        ).all()
+        
+        return [{
+            'address': entry.address,
+            'label': entry.label,
+            'risk_level': entry.risk_level,
+            'notes': entry.notes
+        } for entry in watchlist_addresses]
+    except Exception as e:
+        raise e
+    finally:
+        session.close()
+
+# Saved Search Management Functions
+def save_search_query(name: str, query: str, search_type: str = 'general'):
+    """Save a search query for future use"""
+    session = Session()
+    try:
+        saved_search = SavedSearch(
+            name=name,
+            search_query=query,
+            search_type=search_type
+        )
+        session.add(saved_search)
+        session.commit()
+        return saved_search.id
+    except Exception as e:
+        session.rollback()
+        raise e
+    finally:
+        session.close()
+
+def get_saved_searches():
+    """Get all active saved searches"""
+    session = Session()
+    try:
+        searches = session.query(SavedSearch).filter_by(is_active=True).order_by(SavedSearch.last_used.desc()).all()
+        return [{
+            'id': search.id,
+            'name': search.name,
+            'query': search.search_query,
+            'type': search.search_type,
+            'last_used': search.last_used,
+            'use_count': search.use_count
+        } for search in searches]
+    except Exception as e:
+        raise e
+    finally:
+        session.close()
+
+def use_saved_search(search_id: int):
+    """Update usage statistics for a saved search"""
+    session = Session()
+    try:
+        saved_search = session.query(SavedSearch).filter_by(id=search_id).first()
+        if saved_search:
+            saved_search.last_used = datetime.now()
+            saved_search.use_count += 1
+            session.commit()
+            return {
+                'id': saved_search.id,
+                'name': saved_search.name,
+                'query': saved_search.search_query,
+                'type': saved_search.search_type
+            }
+        return None
+    except Exception as e:
+        session.rollback()
+        raise e
+    finally:
+        session.close()
+
+def delete_saved_search(search_id: int):
+    """Delete a saved search"""
+    session = Session()
+    try:
+        saved_search = session.query(SavedSearch).filter_by(id=search_id).first()
+        if saved_search:
+            saved_search.is_active = False
+            session.commit()
+            return True
+        return False
+    except Exception as e:
+        session.rollback()
+        raise e
     finally:
         session.close()
 
