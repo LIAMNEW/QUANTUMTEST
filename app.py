@@ -625,21 +625,13 @@ if not st.session_state.keys_generated:
     st.session_state.public_key, st.session_state.private_key = generate_pq_keys()
     st.session_state.keys_generated = True
 
-# Enhanced Header with QuantumGuard AI logo
-col1, col2, col3 = st.columns([1, 2, 1])
-
-with col2:
-    st.image("attached_assets/generated_images/QuantumGuard_AI_professional_logo_740c9480.png", 
-             width=500, use_container_width=True)
-    
-    st.markdown("""
-    <div style="text-align: center; margin: 1rem 0;">
-        <h3 style="color: #64748b; margin: 0.5rem 0;">Advanced Blockchain Transaction Analytics & AUSTRAC Compliance</h3>
-        <p style="font-size: 1rem; color: #475569; margin: 0.5rem auto;">
-            Powered by Post-Quantum Cryptography | AI-Driven Risk Assessment | Real-Time Compliance Monitoring
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
+# Minimal header for better focus on analysis
+st.markdown("""
+<div style="text-align: center; margin: 2rem 0;">
+    <h2 style="color: #ffffff; margin-bottom: 0.5rem;">Blockchain Transaction Analysis</h2>
+    <p style="color: rgba(255, 255, 255, 0.7); font-size: 16px;">Upload your data and configure analysis settings below</p>
+</div>
+""", unsafe_allow_html=True)
 
 # Initialize variables for run_analysis and progress_placeholder
 run_analysis = False
@@ -1951,6 +1943,15 @@ else:
                 except Exception as save_error:
                     st.error(f"Error saving analysis: {str(save_error)}")
                     st.expander("Technical Details").code(traceback.format_exc())
+        
+        # QuantumGuard AI branding at bottom after analysis
+        st.markdown("""
+        <div class="bottom-branding">
+            <h1>QuantumGuard AI</h1>
+            <p>Advanced Blockchain Transaction Analytics & AUSTRAC Compliance</p>
+            <p style="font-size: 12px; margin-top: 10px;">Powered by Post-Quantum Cryptography | AI-Driven Risk Assessment | Real-Time Compliance Monitoring</p>
+        </div>
+        """, unsafe_allow_html=True)
     else:
         # Show placeholder when no analysis results exist
         st.info("📊 **Ready for Analysis**")
