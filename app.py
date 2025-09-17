@@ -1422,23 +1422,22 @@ elif st.session_state.df is None:
 
 
 else:
-    # If analysis has been run, display results
-    if st.session_state.analysis_results is not None:
-        st.header("Analysis Results")
-        
-        # Enhanced tabs with better styling and icons
-        st.markdown("### 📊 Comprehensive Analysis Results")
-        
-        tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
-            "📊 Dashboard Overview",
-            "🌐 Network Visualization", 
-            "🎯 Risk Assessment", 
-            "🚨 Anomaly Detection", 
-            "📈 Transaction Timeline", 
-            "🔍 AI Insights", 
-            "🧠 Advanced Analytics", 
-            "📊 Predictive Intelligence"
-        ])
+    # Analysis results tabs - always available
+    st.header("Analysis Dashboard")
+    
+    # Enhanced tabs with better styling and icons  
+    st.markdown("### 📊 Comprehensive Analysis Results")
+    
+    tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
+        "📊 Dashboard Overview",
+        "🌐 Network Visualization", 
+        "🎯 Risk Assessment", 
+        "🚨 Anomaly Detection", 
+        "📈 Transaction Timeline", 
+        "🔍 AI Insights", 
+        "🧠 Advanced Analytics", 
+        "📊 Predictive Intelligence"
+    ])
         
 
                                       
