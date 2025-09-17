@@ -1232,7 +1232,7 @@ if st.session_state.view_saved_analysis and st.session_state.saved_session_id:
                     except Exception as e:
                         st.error(f"Error creating risk visualization: {str(e)}")
             
-            with tab3:
+        with tab3:
                 st.subheader("Anomaly Detection")
                 if not transactions_df.empty and anomaly_indices:
                     try:
@@ -1250,7 +1250,7 @@ if st.session_state.view_saved_analysis and st.session_state.saved_session_id:
                     except Exception as e:
                         st.error(f"Error creating anomaly visualization: {str(e)}")
             
-            with tab4:
+        with tab4:
                 st.subheader("Transaction Timeline")
                 if not transactions_df.empty:
                     try:
@@ -1260,8 +1260,7 @@ if st.session_state.view_saved_analysis and st.session_state.saved_session_id:
                         st.error(f"Error creating timeline visualization: {str(e)}")
             
             # Add AI-powered Transaction Search tab
-            tab5 = st.tabs(["AI Transaction Search"])[0]
-            with tab5:
+        with tab5:
                 st.subheader("AI-Powered Transaction Search")
                 st.markdown("""
                 Ask any question about the analyzed blockchain transactions and get AI-powered insights.
@@ -1438,11 +1437,9 @@ else:
         "🧠 Advanced Analytics", 
         "📊 Predictive Intelligence"
     ])
-        
 
-                                      
-        # Add AI Assistant to sidebar
-        with st.sidebar:
+    # Add AI Assistant to sidebar
+    with st.sidebar:
             st.markdown("---")
             st.markdown("### 🤖 AI Assistant")
             with st.expander("🔍 Ask About Your Data", expanded=False):
@@ -1474,12 +1471,12 @@ else:
                             st.warning("Please upload and analyze data first.")
                         else:
                             st.warning("Please enter a search query.")
-        
-        with tab1:
-            # Dashboard Overview Tab
-            create_dashboard_section()
-        
-        with tab2:
+    
+    with tab1:
+        # Dashboard Overview Tab
+        create_dashboard_section()
+    
+    with tab2:
             # Enhanced Network Analysis Tab
             st.markdown("""
             <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%); padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem;">
@@ -1583,7 +1580,7 @@ else:
             else:
                 st.warning("No risk assessment data available")
         
-        with tab3:
+    with tab3:
             # Enhanced Anomaly Detection Tab
             st.markdown("""
             <div style="background: linear-gradient(135deg, rgba(255, 193, 7, 0.1) 0%, rgba(255, 152, 0, 0.1) 100%); padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem;">
@@ -1662,7 +1659,7 @@ else:
             else:
                 st.warning("No anomaly detection data available")
         
-        with tab4:
+    with tab4:
             # Enhanced Timeline Analysis Tab
             st.markdown("""
             <div style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(56, 142, 60, 0.1) 100%); padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem;">
@@ -1752,7 +1749,7 @@ else:
             else:
                 st.warning("No timeline data available")
                 
-        with tab5:
+    with tab5:
             # Enhanced AI Insights Tab
             st.markdown("""
             <div style="background: linear-gradient(135deg, rgba(63, 81, 181, 0.1) 0%, rgba(48, 63, 159, 0.1) 100%); padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem;">
@@ -1827,7 +1824,7 @@ else:
                     st.session_state.search_result = None
                     st.rerun()
         
-        with tab6:
+    with tab6:
             # Enhanced Advanced Analytics Tab
             st.markdown("""
             <div style="background: linear-gradient(135deg, rgba(156, 39, 176, 0.1) 0%, rgba(123, 31, 162, 0.1) 100%); padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem;">
@@ -1926,7 +1923,7 @@ else:
                     except Exception as e:
                         st.error(f"Advanced analytics failed: {str(e)}")
         
-        with tab7:
+    with tab7:
             # Enhanced Predictive Intelligence Tab
             st.markdown("""
             <div style="background: linear-gradient(135deg, rgba(233, 30, 99, 0.1) 0%, rgba(194, 24, 91, 0.1) 100%); padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem;">
