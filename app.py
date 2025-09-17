@@ -1225,38 +1225,39 @@ else:
         
 
                                       
-        # Enhanced sidebar AI search
-        st.sidebar.markdown("---")
-        st.sidebar.markdown("### 🤖 AI Assistant")
-        with st.sidebar.expander("🔍 Ask About Your Data", expanded=True):
-            st.markdown("Ask any question about your transaction data:")
-            sidebar_query = st.text_input("Your question:", key="sidebar_search_query")
-            
-            if st.button("Search", key="sidebar_search_button"):
-                if sidebar_query and st.session_state.df is not None:
-                    with st.spinner("Analyzing with OpenAI GPT-4o..."):
-                        try:
-                            response = ai_transaction_search(
-                                sidebar_query,
-                                st.session_state.df,
-                                st.session_state.risk_assessment,
-                                st.session_state.anomalies,
-                                st.session_state.network_metrics
-                            )
-                            st.session_state.search_result = response
-                            
-                            # Show the results directly in the sidebar
-                            st.success("AI Analysis Complete")
-                            st.markdown("### AI Analysis Results")
-                            st.markdown(response)
-                            st.info("The complete results are also available in the 'AI Transaction Search' tab.")
-                        except Exception as e:
-                            st.error(f"Error: {str(e)}")
-                else:
-                    if st.session_state.df is None:
-                        st.warning("Please upload and analyze data first.")
+        # Add AI Assistant to sidebar
+        with st.sidebar:
+            st.markdown("---")
+            st.markdown("### 🤖 AI Assistant")
+            with st.expander("🔍 Ask About Your Data", expanded=False):
+                st.markdown("Ask any question about your transaction data:")
+                sidebar_query = st.text_input("Your question:", key="sidebar_search_query")
+                
+                if st.button("Search", key="sidebar_search_button"):
+                    if sidebar_query and st.session_state.df is not None:
+                        with st.spinner("Analyzing with OpenAI GPT-4o..."):
+                            try:
+                                response = ai_transaction_search(
+                                    sidebar_query,
+                                    st.session_state.df,
+                                    st.session_state.risk_assessment,
+                                    st.session_state.anomalies,
+                                    st.session_state.network_metrics
+                                )
+                                st.session_state.search_result = response
+                                
+                                # Show the results directly in the sidebar
+                                st.success("AI Analysis Complete")
+                                st.markdown("### AI Analysis Results")
+                                st.markdown(response)
+                                st.info("The complete results are also available in the 'AI Insights' tab.")
+                            except Exception as e:
+                                st.error(f"Error: {str(e)}")
                     else:
-                        st.warning("Please enter a search query.")
+                        if st.session_state.df is None:
+                            st.warning("Please upload and analyze data first.")
+                        else:
+                            st.warning("Please enter a search query.")
         
         with tab1:
             # Enhanced Network Analysis Tab
