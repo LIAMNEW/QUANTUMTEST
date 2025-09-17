@@ -19,33 +19,33 @@ const RiskAssessment: React.FC<RiskAssessmentProps> = ({ riskData }) => {
       level: 'Low Risk',
       count: riskData?.low || 0,
       percentage: total > 0 ? ((riskData?.low || 0) / total * 100) : 0,
-      color: 'neon-green',
-      bgColor: 'bg-green-500/20',
-      icon: '🟢'
+      color: 'green-500',
+      bgColor: 'bg-green-500/40',
+      icon: '●'
     },
     {
       level: 'Medium Risk',
       count: riskData?.medium || 0,
       percentage: total > 0 ? ((riskData?.medium || 0) / total * 100) : 0,
-      color: 'neon-yellow',
-      bgColor: 'bg-yellow-500/20',
-      icon: '🟡'
+      color: 'gray-400',
+      bgColor: 'bg-gray-500/40',
+      icon: '●'
     },
     {
       level: 'High Risk',
       count: riskData?.high || 0,
       percentage: total > 0 ? ((riskData?.high || 0) / total * 100) : 0,
-      color: 'orange-400',
-      bgColor: 'bg-orange-500/20',
-      icon: '🟠'
+      color: 'gray-600',
+      bgColor: 'bg-gray-700/40',
+      icon: '●'
     },
     {
       level: 'Critical Risk',
       count: riskData?.critical || 0,
       percentage: total > 0 ? ((riskData?.critical || 0) / total * 100) : 0,
-      color: 'red-400',
-      bgColor: 'bg-red-500/20',
-      icon: '🔴'
+      color: 'black',
+      bgColor: 'bg-black/60',
+      icon: '●'
     }
   ];
 
@@ -55,12 +55,12 @@ const RiskAssessment: React.FC<RiskAssessmentProps> = ({ riskData }) => {
   ) : 0;
 
   return (
-    <div className="bg-dark-card border border-dark-border rounded-2xl p-6 hover:shadow-neon-blue/20 transition-all duration-300">
+    <div className="bg-gray-900 border border-gray-700 rounded-2xl p-6 hover:shadow-green-500/20 transition-all duration-300">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-xl font-bold text-white flex items-center gap-2">
-            <span className="text-neon-blue">⚡</span>
+            <span className="text-green-500">⚡</span>
             Risk Assessment
           </h2>
           <p className="text-gray-400 text-sm mt-1">Transaction risk distribution</p>
@@ -69,9 +69,9 @@ const RiskAssessment: React.FC<RiskAssessmentProps> = ({ riskData }) => {
         {/* Overall Risk Score */}
         <div className="text-center">
           <div className={`text-2xl font-bold ${
-            riskScore < 25 ? 'text-neon-green' :
-            riskScore < 50 ? 'text-neon-yellow' :
-            riskScore < 75 ? 'text-orange-400' : 'text-red-400'
+            riskScore < 25 ? 'text-green-500' :
+            riskScore < 50 ? 'text-gray-400' :
+            riskScore < 75 ? 'text-gray-600' : 'text-black bg-white rounded px-2'
           }`}>
             {riskScore.toFixed(0)}%
           </div>
@@ -85,7 +85,7 @@ const RiskAssessment: React.FC<RiskAssessmentProps> = ({ riskData }) => {
           <div key={index} className="group">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
-                <span className="text-sm">{risk.icon}</span>
+                <span className={`text-sm text-${risk.color}`}>{risk.icon}</span>
                 <span className="text-white text-sm font-medium">{risk.level}</span>
               </div>
               <div className="flex items-center gap-2">
@@ -99,7 +99,7 @@ const RiskAssessment: React.FC<RiskAssessmentProps> = ({ riskData }) => {
             </div>
             
             {/* Animated Progress Bar */}
-            <div className="relative h-3 bg-dark-surface rounded-full overflow-hidden border border-dark-border">
+            <div className="relative h-3 bg-gray-800 rounded-full overflow-hidden border border-gray-700">
               <div 
                 className={`absolute left-0 top-0 h-full ${risk.bgColor} rounded-full transition-all duration-1000 ease-out group-hover:shadow-lg`}
                 style={{ width: `${risk.percentage}%` }}
@@ -113,14 +113,14 @@ const RiskAssessment: React.FC<RiskAssessmentProps> = ({ riskData }) => {
       </div>
 
       {/* Distribution Chart */}
-      <div className="bg-dark-surface rounded-xl p-4 border border-dark-border">
+      <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
         <h3 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
-          <span className="text-neon-purple">📊</span>
+          <span className="text-green-500">📊</span>
           Risk Distribution
         </h3>
         
         {/* Horizontal Stacked Bar */}
-        <div className="relative h-8 bg-gray-800 rounded-full overflow-hidden mb-3">
+        <div className="relative h-8 bg-black rounded-full overflow-hidden mb-3 border border-gray-600">
           {riskLevels.map((risk, index) => {
             const leftOffset = riskLevels.slice(0, index).reduce((sum, r) => sum + r.percentage, 0);
             return (
@@ -147,16 +147,16 @@ const RiskAssessment: React.FC<RiskAssessmentProps> = ({ riskData }) => {
 
         {/* Summary Stats */}
         <div className="grid grid-cols-2 gap-4 text-xs">
-          <div className="bg-dark-card rounded-lg p-3 border border-dark-border">
+          <div className="bg-gray-900 rounded-lg p-3 border border-gray-700">
             <div className="text-gray-400 mb-1">High Risk+</div>
             <div className={`font-bold ${
-              highRiskPercentage > 20 ? 'text-red-400' :
-              highRiskPercentage > 10 ? 'text-orange-400' : 'text-neon-green'
+              highRiskPercentage > 20 ? 'text-black bg-white rounded px-2' :
+              highRiskPercentage > 10 ? 'text-gray-400' : 'text-green-500'
             }`}>
               {highRiskPercentage.toFixed(1)}%
             </div>
           </div>
-          <div className="bg-dark-card rounded-lg p-3 border border-dark-border">
+          <div className="bg-gray-900 rounded-lg p-3 border border-gray-700">
             <div className="text-gray-400 mb-1">Total Analyzed</div>
             <div className="text-white font-bold">
               {total.toLocaleString()}
@@ -166,14 +166,14 @@ const RiskAssessment: React.FC<RiskAssessmentProps> = ({ riskData }) => {
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between mt-4 pt-4 border-t border-dark-border text-xs">
+      <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-700 text-xs">
         <div className="text-gray-400">
           Last updated: {new Date().toLocaleTimeString()}
         </div>
         <div className={`px-2 py-1 rounded-full text-xs font-medium ${
-          highRiskPercentage > 20 ? 'bg-red-500/20 text-red-400' :
-          highRiskPercentage > 10 ? 'bg-orange-500/20 text-orange-400' :
-          'bg-green-500/20 text-neon-green'
+          highRiskPercentage > 20 ? 'bg-black/80 text-white border border-white' :
+          highRiskPercentage > 10 ? 'bg-gray-700/80 text-gray-300' :
+          'bg-green-500/20 text-green-500'
         }`}>
           {highRiskPercentage > 20 ? 'High Alert' :
            highRiskPercentage > 10 ? 'Monitor' : 'Normal'}
