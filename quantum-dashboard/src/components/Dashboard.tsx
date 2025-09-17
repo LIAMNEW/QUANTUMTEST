@@ -79,30 +79,30 @@ const Dashboard: React.FC = () => {
 
   if (loading) {
     return (
-      <div className=\"min-h-screen bg-dark-bg flex items-center justify-center\">
-        <div className=\"animate-pulse-neon\">
-          <div className=\"w-16 h-16 border-4 border-neon-green border-t-transparent rounded-full animate-spin\"></div>
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <div className="animate-pulse">
+          <div className="w-16 h-16 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className=\"min-h-screen bg-dark-bg p-6\">
-      <div className=\"max-w-7xl mx-auto space-y-6\">
+    <div className="min-h-screen bg-gray-900 p-6">
+      <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
-        <header className=\"flex items-center justify-between mb-8\">
+        <header className="flex items-center justify-between mb-8">
           <div>
-            <h1 className=\"text-3xl font-bold text-white flex items-center gap-3\">
-              <span className=\"text-neon-green\">🛡️</span>
+            <h1 className="text-3xl font-bold text-white flex items-center gap-3">
+              <span className="text-green-500">🛡️</span>
               QuantumGuard AI
-              <span className=\"text-neon-blue animate-glow\">⚡</span>
+              <span className="text-green-400">⚡</span>
             </h1>
-            <p className=\"text-gray-400 mt-1\">Advanced Fraud Detection Dashboard</p>
+            <p className="text-gray-400 mt-1">Advanced Fraud Detection Dashboard</p>
           </div>
-          <div className=\"flex items-center gap-4\">
-            <div className=\"px-3 py-1 bg-dark-card border border-neon-green rounded-full text-sm\">
-              <span className=\"text-neon-green\">●</span> Live Monitoring
+          <div className="flex items-center gap-4">
+            <div className="px-3 py-1 bg-gray-800 border border-green-500 rounded-full text-sm">
+              <span className="text-green-500">●</span> Live Monitoring
             </div>
           </div>
         </header>
@@ -111,15 +111,15 @@ const Dashboard: React.FC = () => {
         <StatsCards stats={dashboardData?.stats} />
 
         {/* Main Content Grid */}
-        <div className=\"grid grid-cols-1 xl:grid-cols-3 gap-6\">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
           {/* Left Column - Transaction Analysis & Risk Assessment */}
-          <div className=\"xl:col-span-2 space-y-6\">
+          <div className="xl:col-span-2 space-y-6">
             <TransactionAnalysis transactions={dashboardData?.transactions} />
             <RiskAssessment riskData={dashboardData?.riskAssessment} />
           </div>
 
           {/* Right Column - Security Plans, Alerts & Quick Actions */}
-          <div className=\"space-y-6\">
+          <div className="space-y-6">
             <QuickActions />
             <SecurityPlans plans={dashboardData?.securityPlans} />
             <AlertsFeed alerts={dashboardData?.alerts} />
