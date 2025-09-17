@@ -1058,10 +1058,6 @@ elif st.session_state.df is None:
 
 
 else:
-    # Display the data preview
-    st.header("Data Preview")
-    st.dataframe(st.session_state.df.head())
-    
     # If analysis has been run, display results
     if st.session_state.analysis_results is not None:
         st.header("Analysis Results")
@@ -1806,5 +1802,14 @@ else:
                 except Exception as save_error:
                     st.error(f"Error saving analysis: {str(save_error)}")
                     st.expander("Technical Details").code(traceback.format_exc())
+    else:
+        # Show placeholder when no analysis results exist
+        st.info("📊 **Ready for Analysis**")
+        st.markdown("""
+        <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%); border-radius: 10px; margin: 1rem 0;">
+            <h3>🚀 Upload your data and run the analysis to view comprehensive results here</h3>
+            <p>Analysis results will include network visualizations, risk assessments, anomaly detection, AI insights, and predictive intelligence.</p>
+        </div>
+        """, unsafe_allow_html=True)
 
 # Quantum security testing is now embedded in the main UI flow above
