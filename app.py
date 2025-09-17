@@ -248,126 +248,348 @@ st.set_page_config(
 # Custom CSS for enhanced UI
 st.markdown("""
 <style>
-    /* Main header styling */
-    .main-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 2rem 0;
-        border-radius: 10px;
-        margin-bottom: 2rem;
-        text-align: center;
-        color: white;
+    /* BEGIN QUANTUMGUARD DARK THEME */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
     }
     
-    /* Risk score styling */
-    .risk-score-container {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        padding: 1.5rem;
-        border-radius: 15px;
-        margin: 1rem 0;
-        text-align: center;
-        color: white;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    /* Main app styling */
+    .stApp {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%) !important;
+        color: #ffffff;
+        font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     
-    .risk-score-low {
-        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    .main {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%) !important;
+        color: #ffffff !important;
+        font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
     }
     
-    .risk-score-medium {
-        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    /* Sidebar styling - dark theme with glassmorphism */
+    .css-1d391kg, .css-1d391kg .stSidebar {
+        background: rgba(20, 20, 20, 0.95) !important;
+        backdrop-filter: blur(10px) !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
     }
     
-    .risk-score-high {
-        background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-    }
-    
-    .risk-score-critical {
-        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
-    }
-    
-    /* Metric cards */
-    .metric-card {
-        background: rgba(255, 255, 255, 0.1);
-        padding: 1.5rem;
-        border-radius: 15px;
-        margin: 0.5rem;
+    .css-1lcbmhc, .css-17eq0hr {
+        background: rgba(20, 20, 20, 0.95) !important;
         backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #ffffff !important;
+    }
+    
+    /* Logo/branding styling */
+    .quantum-logo {
+        padding: 30px 25px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         text-align: center;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-bottom: 20px;
     }
     
-    .metric-card:hover {
+    .quantum-logo h1 {
+        font-size: 20px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #00ff88, #00cc6a);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 5px;
+    }
+    
+    .quantum-logo p {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6);
+    }
+    
+    /* Stats grid cards */
+    .stat-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 30px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .stat-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 20px 40px rgba(0, 255, 136, 0.1);
+        border-color: rgba(0, 255, 136, 0.3);
     }
     
-    .metric-card h4 {
-        margin: 0 0 0.5rem 0;
-        font-size: 1rem;
-        color: rgba(255, 255, 255, 0.8);
+    .stat-card.primary {
+        background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 204, 106, 0.1));
+        border-color: rgba(0, 255, 136, 0.3);
+    }
+    
+    .stat-value {
+        font-size: 36px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        background: linear-gradient(135deg, #00ff88, #ffffff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .stat-label {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 14px;
         font-weight: 500;
     }
     
-    .metric-card h2 {
-        margin: 0 0 0.5rem 0;
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: white;
+    .stat-change {
+        margin-top: 10px;
+        font-size: 12px;
+        color: #00ff88;
     }
     
-    .metric-card p {
-        margin: 0;
-        font-size: 0.9rem;
-        color: rgba(255, 255, 255, 0.7);
-        font-weight: 400;
+    /* Analysis section styling */
+    .analysis-section {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 30px;
+        margin-bottom: 30px;
     }
     
-    /* Sidebar styling */
-    .css-1d391kg {
-        background: linear-gradient(180deg, #2C3E50 0%, #34495E 100%);
+    /* Horizontal tabs styling */
+    .analysis-tabs {
+        display: flex;
+        gap: 5px;
+        margin-bottom: 30px;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 8px;
+        border-radius: 15px;
+        overflow-x: auto;
+        flex-wrap: wrap;
     }
     
-    /* Button styling */
-    .stButton > button {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
+    .tab-button {
+        padding: 12px 20px;
         border-radius: 10px;
-        padding: 0.5rem 1rem;
-        font-weight: 600;
+        cursor: pointer;
         transition: all 0.3s ease;
+        white-space: nowrap;
+        font-weight: 500;
+        font-size: 14px;
+        border: none;
+        background: transparent;
+        color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .tab-button.active {
+        background: linear-gradient(135deg, #00ff88, #00cc6a) !important;
+        color: #000 !important;
+        font-weight: 700;
+    }
+    
+    .tab-button:not(.active):hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+    }
+    
+    /* Streamlit button overrides */
+    .stButton > button {
+        background: linear-gradient(135deg, #00ff88, #00cc6a) !important;
+        color: #000 !important;
+        border: none !important;
+        border-radius: 12px !important;
+        font-weight: 700 !important;
+        padding: 15px 30px !important;
+        transition: all 0.3s ease !important;
+        font-size: 16px !important;
+        width: 100% !important;
     }
     
     .stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        transform: translateY(-2px) !important;
+        box-shadow: 0 10px 20px rgba(0, 255, 136, 0.3) !important;
     }
     
-    /* Progress bar styling */
-    .stProgress > div > div > div {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /* Secondary buttons */
+    .stButton.secondary > button {
+        background: rgba(255, 255, 255, 0.1) !important;
+        color: #ffffff !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
     }
     
-    /* Alert styling */
-    .stAlert > div {
-        border-radius: 10px;
-        border-left: 4px solid #667eea;
+    /* Form controls */
+    .stSelectbox > div > div, .stTextInput > div > div, .stTextArea > div > div {
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        border-radius: 10px !important;
+        color: #ffffff !important;
+    }
+    
+    .stSelectbox > div > div:focus, .stTextInput > div > div:focus, .stTextArea > div > div:focus {
+        border-color: #00ff88 !important;
+        box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.1) !important;
+    }
+    
+    /* Risk indicators */
+    .risk-indicator {
+        text-align: center;
+        padding: 15px;
+        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.05);
+        margin: 10px;
+    }
+    
+    .risk-indicator.low {
+        border-left: 4px solid #00ff88;
+    }
+    
+    .risk-indicator.medium {
+        border-left: 4px solid #ffaa00;
+    }
+    
+    .risk-indicator.high {
+        border-left: 4px solid #ff6b00;
+    }
+    
+    .risk-indicator.critical {
+        border-left: 4px solid #ff0040;
+    }
+    
+    /* Status success */
+    .status-success {
+        background: rgba(0, 255, 136, 0.1);
+        border: 1px solid rgba(0, 255, 136, 0.3);
+        border-radius: 15px;
+        padding: 20px;
+        margin: 20px 0;
+        color: #00ff88;
+        font-weight: 600;
     }
     
     /* File uploader styling */
     .stFileUploader > div {
-        border-radius: 10px;
-        border: 2px dashed #667eea;
-        background: rgba(102, 126, 234, 0.1);
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 2px dashed rgba(0, 255, 136, 0.3) !important;
+        border-radius: 15px !important;
+        padding: 2rem !important;
     }
     
-    /* Tab styling */
-    .stTabs > div > div > div {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border-radius: 10px 10px 0 0;
+    /* Streamlit tabs override */
+    .stTabs {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 8px;
     }
+    
+    .stTabs > div > div > div {
+        background: transparent !important;
+        border: none !important;
+        border-radius: 10px !important;
+        color: rgba(255, 255, 255, 0.7) !important;
+        padding: 12px 20px !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .stTabs > div > div > div[aria-selected="true"] {
+        background: linear-gradient(135deg, #00ff88, #00cc6a) !important;
+        color: #000 !important;
+        font-weight: 700 !important;
+    }
+    
+    .stTabs > div > div > div:not([aria-selected="true"]):hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+        color: #ffffff !important;
+    }
+    
+    /* Metrics styling */
+    .stMetric {
+        background: rgba(255, 255, 255, 0.05) !important;
+        padding: 20px !important;
+        border-radius: 15px !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+    
+    /* Export section */
+    .export-section {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 30px;
+        margin-top: 30px;
+    }
+    
+    /* AI chat section */
+    .ai-chat {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 25px;
+        margin-top: 30px;
+    }
+    
+    /* Bottom branding */
+    .bottom-branding {
+        margin-top: 60px;
+        padding: 30px 0;
+        text-align: center;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .bottom-branding h1 {
+        font-size: 24px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #00ff88, #00cc6a);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 10px;
+    }
+    
+    .bottom-branding p {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 14px;
+    }
+    
+    /* Alert styling */
+    .stAlert > div {
+        background: rgba(255, 255, 255, 0.05) !important;
+        border-radius: 15px !important;
+        border: 1px solid rgba(0, 255, 136, 0.3) !important;
+    }
+    
+    /* Progress bar styling */
+    .stProgress > div > div > div {
+        background: linear-gradient(135deg, #00ff88, #00cc6a) !important;
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .analysis-tabs {
+            flex-direction: column;
+        }
+        
+        .tab-button {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        
+        .stat-card {
+            padding: 20px;
+        }
+        
+        .analysis-section {
+            padding: 20px;
+        }
+    }
+    
+    /* END QUANTUMGUARD DARK THEME */
 </style>
 """, unsafe_allow_html=True)
 
