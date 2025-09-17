@@ -32,22 +32,102 @@ const TransactionAnalysis: React.FC<TransactionAnalysisProps> = ({ transactions 
   };
 
   return (
-    <div className=\"bg-dark-card border border-dark-border rounded-2xl p-6 hover:shadow-neon-green/20 transition-all duration-300\">
+    <div className="bg-gray-900 border border-gray-700 rounded-2xl p-6 hover:shadow-green-500/20 transition-all duration-300">
       {/* Header */}
-      <div className=\"flex items-center justify-between mb-6\">
+      <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className=\"text-xl font-bold text-white flex items-center gap-2\">
-            <span className=\"text-neon-green\">📊</span>
+          <h2 className="text-xl font-bold text-white flex items-center gap-2">
+            <span className="text-green-500">📊</span>
             Transaction Analysis
           </h2>
-          <p className=\"text-gray-400 text-sm mt-1\">Network activity overview</p>
+          <p className="text-gray-400 text-sm mt-1">Network activity overview</p>
         </div>
 
         {/* Toggle Buttons */}
-        <div className=\"flex bg-dark-surface rounded-xl p-1 border border-dark-border\">
+        <div className="flex bg-gray-800 rounded-xl p-1 border border-gray-700">
           <button
             onClick={() => setViewMode('senders')}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${\n              viewMode === 'senders'\n                ? 'bg-neon-green text-black shadow-neon-green/50'\n                : 'text-gray-400 hover:text-white'\n            }`}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+              viewMode === 'senders'
+                ? 'bg-green-500 text-black shadow-green-500/50'
+                : 'text-gray-400 hover:text-white'
+            }`}
           >
             Top Senders
-          </button>\n          <button\n            onClick={() => setViewMode('receivers')}\n            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${\n              viewMode === 'receivers'\n                ? 'bg-neon-blue text-black shadow-neon-blue/50'\n                : 'text-gray-400 hover:text-white'\n            }`}\n          >\n            Top Receivers\n          </button>\n        </div>\n      </div>\n\n      {/* Chart */}\n      <div className=\"space-y-4\">\n        {currentData?.map((item, index) => {\n          const percentage = (item.value / maxValue) * 100;\n          const barColor = viewMode === 'senders' ? 'neon-green' : 'neon-blue';\n          \n          return (\n            <div key={index} className=\"group\">\n              <div className=\"flex items-center justify-between mb-2\">\n                <div className=\"flex items-center gap-3\">\n                  <span className=\"text-gray-400 text-sm w-4\">{index + 1}</span>\n                  <div className=\"flex items-center gap-2\">\n                    {item.isWatchlisted && (\n                      <span className=\"text-neon-yellow animate-pulse\" title=\"Watchlisted\">🏷️</span>\n                    )}\n                    <span className=\"font-mono text-white text-sm\">\n                      {formatAddress(item.address)}\n                    </span>\n                  </div>\n                </div>\n                <span className={`font-bold text-${barColor} text-sm`}>\n                  {formatValue(item.value)}\n                </span>\n              </div>\n              \n              {/* Animated Bar */}\n              <div className=\"relative h-8 bg-dark-surface rounded-full overflow-hidden border border-dark-border\">\n                <div \n                  className={`absolute left-0 top-0 h-full bg-gradient-to-r ${\n                    viewMode === 'senders' \n                      ? 'from-neon-green/80 to-neon-green/60' \n                      : 'from-neon-blue/80 to-neon-blue/60'\n                  } rounded-full transition-all duration-1000 ease-out group-hover:shadow-${barColor}/50`}\n                  style={{ width: `${percentage}%` }}\n                >\n                  {/* Animated shine effect */}\n                  <div className=\"absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse\"></div>\n                </div>\n                \n                {/* Risk indicator for watchlisted addresses */}\n                {item.isWatchlisted && (\n                  <div className=\"absolute right-2 top-1/2 transform -translate-y-1/2\">\n                    <div className=\"w-2 h-2 bg-neon-yellow rounded-full animate-ping\"></div>\n                  </div>\n                )}\n              </div>\n            </div>\n          );\n        })}\n      </div>\n\n      {/* Legend */}\n      <div className=\"flex items-center justify-between mt-6 pt-4 border-t border-dark-border\">\n        <div className=\"flex items-center gap-4 text-xs\">\n          <div className=\"flex items-center gap-2\">\n            <div className={`w-3 h-3 rounded bg-${viewMode === 'senders' ? 'neon-green' : 'neon-blue'}`}></div>\n            <span className=\"text-gray-400\">{viewMode === 'senders' ? 'Outbound' : 'Inbound'} Volume</span>\n          </div>\n          <div className=\"flex items-center gap-2\">\n            <span className=\"text-neon-yellow\">🏷️</span>\n            <span className=\"text-gray-400\">Watchlisted</span>\n          </div>\n        </div>\n        <div className=\"text-xs text-gray-500\">\n          Updated: {new Date().toLocaleTimeString()}\n        </div>\n      </div>\n    </div>\n  );\n};\n\nexport default TransactionAnalysis;
+          </button>
+          <button
+            onClick={() => setViewMode('receivers')}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+              viewMode === 'receivers'
+                ? 'bg-green-500 text-black shadow-green-500/50'
+                : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            Top Receivers
+          </button>
+        </div>
+      </div>
+
+      {/* Chart */}
+      <div className="space-y-4">
+        {currentData?.map((item, index) => {
+          const percentage = (item.value / maxValue) * 100;
+          
+          return (
+            <div key={index} className="group">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-3">
+                  <span className="text-gray-400 text-sm w-4">{index + 1}</span>
+                  <div className="flex items-center gap-2">
+                    {item.isWatchlisted && (
+                      <span className="text-green-400 animate-pulse" title="Watchlisted">🏷️</span>
+                    )}
+                    <span className="font-mono text-white text-sm">
+                      {formatAddress(item.address)}
+                    </span>
+                  </div>
+                </div>
+                <span className="font-bold text-green-500 text-sm">
+                  {formatValue(item.value)}
+                </span>
+              </div>
+              
+              {/* Animated Bar */}
+              <div className="relative h-8 bg-gray-800 rounded-full overflow-hidden border border-gray-700">
+                <div 
+                  className="absolute left-0 top-0 h-full bg-gradient-to-r from-green-500/80 to-green-400/60 rounded-full transition-all duration-1000 ease-out group-hover:shadow-green-500/50"
+                  style={{ width: `${percentage}%` }}
+                >
+                  {/* Animated shine effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse"></div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Summary Stats */}
+      <div className="grid grid-cols-3 gap-4 mt-6 pt-4 border-t border-gray-700">
+        <div className="bg-gray-800 rounded-lg p-3">
+          <div className="text-green-500 font-bold text-lg">{currentData?.length || 0}</div>
+          <div className="text-gray-400 text-xs">Addresses</div>
+        </div>
+        <div className="bg-gray-800 rounded-lg p-3">
+          <div className="text-green-500 font-bold text-lg">
+            {currentData?.filter(item => item.isWatchlisted).length || 0}
+          </div>
+          <div className="text-gray-400 text-xs">Watchlisted</div>
+        </div>
+        <div className="bg-gray-800 rounded-lg p-3">
+          <div className="text-green-500 font-bold text-lg">
+            {currentData ? formatValue(currentData.reduce((sum, item) => sum + item.value, 0)) : '$0'}
+          </div>
+          <div className="text-gray-400 text-xs">Total Volume</div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default TransactionAnalysis;
