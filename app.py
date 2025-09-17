@@ -248,348 +248,126 @@ st.set_page_config(
 # Custom CSS for enhanced UI
 st.markdown("""
 <style>
-    /* BEGIN QUANTUMGUARD DARK THEME */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-    
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    
-    /* Main app styling */
-    .stApp {
-        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%) !important;
-        color: #ffffff;
-        font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    
-    .main {
-        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%) !important;
-        color: #ffffff !important;
-        font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-    }
-    
-    /* Sidebar styling - dark theme with glassmorphism */
-    .css-1d391kg, .css-1d391kg .stSidebar {
-        background: rgba(20, 20, 20, 0.95) !important;
-        backdrop-filter: blur(10px) !important;
-        border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
-    }
-    
-    .css-1lcbmhc, .css-17eq0hr {
-        background: rgba(20, 20, 20, 0.95) !important;
-        backdrop-filter: blur(10px);
-        color: #ffffff !important;
-    }
-    
-    /* Logo/branding styling */
-    .quantum-logo {
-        padding: 30px 25px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        text-align: center;
-        margin-bottom: 20px;
-    }
-    
-    .quantum-logo h1 {
-        font-size: 20px;
-        font-weight: 700;
-        background: linear-gradient(135deg, #00ff88, #00cc6a);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 5px;
-    }
-    
-    .quantum-logo p {
-        font-size: 12px;
-        color: rgba(255, 255, 255, 0.6);
-    }
-    
-    /* Stats grid cards */
-    .stat-card {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 20px;
-        padding: 30px;
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .stat-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 20px 40px rgba(0, 255, 136, 0.1);
-        border-color: rgba(0, 255, 136, 0.3);
-    }
-    
-    .stat-card.primary {
-        background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 204, 106, 0.1));
-        border-color: rgba(0, 255, 136, 0.3);
-    }
-    
-    .stat-value {
-        font-size: 36px;
-        font-weight: 700;
-        margin-bottom: 8px;
-        background: linear-gradient(135deg, #00ff88, #ffffff);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-    
-    .stat-label {
-        color: rgba(255, 255, 255, 0.7);
-        font-size: 14px;
-        font-weight: 500;
-    }
-    
-    .stat-change {
-        margin-top: 10px;
-        font-size: 12px;
-        color: #00ff88;
-    }
-    
-    /* Analysis section styling */
-    .analysis-section {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 20px;
-        padding: 30px;
-        margin-bottom: 30px;
-    }
-    
-    /* Horizontal tabs styling */
-    .analysis-tabs {
-        display: flex;
-        gap: 5px;
-        margin-bottom: 30px;
-        background: rgba(255, 255, 255, 0.05);
-        padding: 8px;
-        border-radius: 15px;
-        overflow-x: auto;
-        flex-wrap: wrap;
-    }
-    
-    .tab-button {
-        padding: 12px 20px;
+    /* Main header styling */
+    .main-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 2rem 0;
         border-radius: 10px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        white-space: nowrap;
-        font-weight: 500;
-        font-size: 14px;
-        border: none;
-        background: transparent;
-        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 2rem;
+        text-align: center;
+        color: white;
     }
     
-    .tab-button.active {
-        background: linear-gradient(135deg, #00ff88, #00cc6a) !important;
-        color: #000 !important;
-        font-weight: 700;
+    /* Risk score styling */
+    .risk-score-container {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        padding: 1.5rem;
+        border-radius: 15px;
+        margin: 1rem 0;
+        text-align: center;
+        color: white;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
     
-    .tab-button:not(.active):hover {
+    .risk-score-low {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+    
+    .risk-score-medium {
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    }
+    
+    .risk-score-high {
+        background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    }
+    
+    .risk-score-critical {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+    }
+    
+    /* Metric cards */
+    .metric-card {
         background: rgba(255, 255, 255, 0.1);
-        color: #ffffff;
+        padding: 1.5rem;
+        border-radius: 15px;
+        margin: 0.5rem;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     
-    /* Streamlit button overrides */
+    .metric-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+    
+    .metric-card h4 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.8);
+        font-weight: 500;
+    }
+    
+    .metric-card h2 {
+        margin: 0 0 0.5rem 0;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: white;
+    }
+    
+    .metric-card p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.7);
+        font-weight: 400;
+    }
+    
+    /* Sidebar styling */
+    .css-1d391kg {
+        background: linear-gradient(180deg, #2C3E50 0%, #34495E 100%);
+    }
+    
+    /* Button styling */
     .stButton > button {
-        background: linear-gradient(135deg, #00ff88, #00cc6a) !important;
-        color: #000 !important;
-        border: none !important;
-        border-radius: 12px !important;
-        font-weight: 700 !important;
-        padding: 15px 30px !important;
-        transition: all 0.3s ease !important;
-        font-size: 16px !important;
-        width: 100% !important;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 0.5rem 1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
     }
     
     .stButton > button:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 10px 20px rgba(0, 255, 136, 0.3) !important;
-    }
-    
-    /* Secondary buttons */
-    .stButton.secondary > button {
-        background: rgba(255, 255, 255, 0.1) !important;
-        color: #ffffff !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    }
-    
-    /* Form controls */
-    .stSelectbox > div > div, .stTextInput > div > div, .stTextArea > div > div {
-        background: rgba(255, 255, 255, 0.05) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        border-radius: 10px !important;
-        color: #ffffff !important;
-    }
-    
-    .stSelectbox > div > div:focus, .stTextInput > div > div:focus, .stTextArea > div > div:focus {
-        border-color: #00ff88 !important;
-        box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.1) !important;
-    }
-    
-    /* Risk indicators */
-    .risk-indicator {
-        text-align: center;
-        padding: 15px;
-        border-radius: 15px;
-        background: rgba(255, 255, 255, 0.05);
-        margin: 10px;
-    }
-    
-    .risk-indicator.low {
-        border-left: 4px solid #00ff88;
-    }
-    
-    .risk-indicator.medium {
-        border-left: 4px solid #ffaa00;
-    }
-    
-    .risk-indicator.high {
-        border-left: 4px solid #ff6b00;
-    }
-    
-    .risk-indicator.critical {
-        border-left: 4px solid #ff0040;
-    }
-    
-    /* Status success */
-    .status-success {
-        background: rgba(0, 255, 136, 0.1);
-        border: 1px solid rgba(0, 255, 136, 0.3);
-        border-radius: 15px;
-        padding: 20px;
-        margin: 20px 0;
-        color: #00ff88;
-        font-weight: 600;
-    }
-    
-    /* File uploader styling */
-    .stFileUploader > div {
-        background: rgba(255, 255, 255, 0.05) !important;
-        border: 2px dashed rgba(0, 255, 136, 0.3) !important;
-        border-radius: 15px !important;
-        padding: 2rem !important;
-    }
-    
-    /* Streamlit tabs override */
-    .stTabs {
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 15px;
-        padding: 8px;
-    }
-    
-    .stTabs > div > div > div {
-        background: transparent !important;
-        border: none !important;
-        border-radius: 10px !important;
-        color: rgba(255, 255, 255, 0.7) !important;
-        padding: 12px 20px !important;
-        transition: all 0.3s ease !important;
-    }
-    
-    .stTabs > div > div > div[aria-selected="true"] {
-        background: linear-gradient(135deg, #00ff88, #00cc6a) !important;
-        color: #000 !important;
-        font-weight: 700 !important;
-    }
-    
-    .stTabs > div > div > div:not([aria-selected="true"]):hover {
-        background: rgba(255, 255, 255, 0.1) !important;
-        color: #ffffff !important;
-    }
-    
-    /* Metrics styling */
-    .stMetric {
-        background: rgba(255, 255, 255, 0.05) !important;
-        padding: 20px !important;
-        border-radius: 15px !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    }
-    
-    /* Export section */
-    .export-section {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 20px;
-        padding: 30px;
-        margin-top: 30px;
-    }
-    
-    /* AI chat section */
-    .ai-chat {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 20px;
-        padding: 25px;
-        margin-top: 30px;
-    }
-    
-    /* Bottom branding */
-    .bottom-branding {
-        margin-top: 60px;
-        padding: 30px 0;
-        text-align: center;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .bottom-branding h1 {
-        font-size: 24px;
-        font-weight: 700;
-        background: linear-gradient(135deg, #00ff88, #00cc6a);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 10px;
-    }
-    
-    .bottom-branding p {
-        color: rgba(255, 255, 255, 0.6);
-        font-size: 14px;
-    }
-    
-    /* Alert styling */
-    .stAlert > div {
-        background: rgba(255, 255, 255, 0.05) !important;
-        border-radius: 15px !important;
-        border: 1px solid rgba(0, 255, 136, 0.3) !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
     }
     
     /* Progress bar styling */
     .stProgress > div > div > div {
-        background: linear-gradient(135deg, #00ff88, #00cc6a) !important;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
     
-    /* Responsive design */
-    @media (max-width: 768px) {
-        .analysis-tabs {
-            flex-direction: column;
-        }
-        
-        .tab-button {
-            text-align: center;
-            margin-bottom: 5px;
-        }
-        
-        .stat-card {
-            padding: 20px;
-        }
-        
-        .analysis-section {
-            padding: 20px;
-        }
+    /* Alert styling */
+    .stAlert > div {
+        border-radius: 10px;
+        border-left: 4px solid #667eea;
     }
     
-    /* END QUANTUMGUARD DARK THEME */
+    /* File uploader styling */
+    .stFileUploader > div {
+        border-radius: 10px;
+        border: 2px dashed #667eea;
+        background: rgba(102, 126, 234, 0.1);
+    }
+    
+    /* Tab styling */
+    .stTabs > div > div > div {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 10px 10px 0 0;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -625,50 +403,132 @@ if not st.session_state.keys_generated:
     st.session_state.public_key, st.session_state.private_key = generate_pq_keys()
     st.session_state.keys_generated = True
 
-# Minimal header for better focus on analysis
-st.markdown("""
-<div style="text-align: center; margin: 2rem 0;">
-    <h2 style="color: #ffffff; margin-bottom: 0.5rem;">Blockchain Transaction Analysis</h2>
-    <p style="color: rgba(255, 255, 255, 0.7); font-size: 16px;">Upload your data and configure analysis settings below</p>
-</div>
-""", unsafe_allow_html=True)
+# Enhanced Header with QuantumGuard AI logo
+col1, col2, col3 = st.columns([1, 2, 1])
+
+with col2:
+    st.image("attached_assets/generated_images/QuantumGuard_AI_professional_logo_740c9480.png", 
+             width=500, use_container_width=True)
+    
+    st.markdown("""
+    <div style="text-align: center; margin: 1rem 0;">
+        <h3 style="color: #64748b; margin: 0.5rem 0;">Advanced Blockchain Transaction Analytics & AUSTRAC Compliance</h3>
+        <p style="font-size: 1rem; color: #475569; margin: 0.5rem auto;">
+            Powered by Post-Quantum Cryptography | AI-Driven Risk Assessment | Real-Time Compliance Monitoring
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
 # Initialize variables for run_analysis and progress_placeholder
 run_analysis = False
 progress_placeholder = None
 
-# Enhanced Sidebar navigation - HTML Design Inspired
+# Enhanced Sidebar navigation
 with st.sidebar:
-    # QuantumGuard AI logo and branding 
+    st.markdown("### 🚀 Navigation Dashboard")
+    
+    # Add logo/branding area
     st.markdown("""
-    <div class="quantum-logo">
-        <h1>QuantumGuard AI</h1>
-        <p>Blockchain Analytics Platform</p>
+    <div style="text-align: center; padding: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; margin-bottom: 1rem;">
+        <h2 style="color: white; margin: 0;">🛡️ QuantumGuard</h2>
+        <p style="color: rgba(255,255,255,0.8); margin: 0; font-size: 0.8rem;">AI-Powered Security</p>
     </div>
     """, unsafe_allow_html=True)
     
-    # Streamlined Navigation Menu
+    # Address Watchlist Management
     st.markdown("---")
+    st.markdown("### 🏷️ Address Watchlist")
     
-    # Quick tools section
-    with st.expander("🔧 Quick Tools", expanded=False):
-        # Watchlist shortcut
-        st.markdown("**Address Watchlist**")
-        new_address = st.text_input("Add Address", key="quick_address")
-        new_label = st.text_input("Label", key="quick_label")
-        if st.button("Add to Watchlist", key="quick_add") and new_address and new_label:
-            try:
-                add_address_to_watchlist(new_address, new_label, "Medium", "")
-                st.success("Added to watchlist")
-                st.rerun()
-            except Exception as e:
-                st.error(f"Error: {str(e)}")
+    with st.expander("Manage Watchlist", expanded=False):
+        # Add new address
+        st.markdown("**Add Address to Watchlist**")
+        new_address = st.text_input("Wallet Address", key="watchlist_address")
+        new_label = st.text_input("Label/Description", key="watchlist_label")
+        new_risk_level = st.selectbox("Risk Level", ["Low", "Medium", "High", "Critical"], key="watchlist_risk")
+        new_notes = st.text_area("Notes", key="watchlist_notes", height=70)
+        
+        if st.button("Add to Watchlist", key="add_watchlist"):
+            if new_address and new_label:
+                try:
+                    add_address_to_watchlist(new_address, new_label, new_risk_level, new_notes)
+                    st.success(f"Added {new_label} to watchlist")
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Error adding to watchlist: {str(e)}")
+            else:
+                st.warning("Please enter both address and label")
+        
+        # Display current watchlist
+        st.markdown("**Current Watchlist**")
+        try:
+            watchlist = get_watchlist_addresses()
+            if watchlist:
+                for entry in watchlist:
+                    col1, col2 = st.columns([3, 1])
+                    with col1:
+                        risk_color = {"Low": "🟢", "Medium": "🟡", "High": "🟠", "Critical": "🔴"}
+                        st.write(f"{risk_color.get(entry['risk_level'], '⚪')} **{entry['label']}**")
+                        st.caption(f"{entry['address'][:10]}...{entry['address'][-6:]}")
+                    with col2:
+                        if st.button("❌", key=f"remove_{entry['id']}", help="Remove from watchlist"):
+                            remove_address_from_watchlist(entry['id'])
+                            st.rerun()
+            else:
+                st.info("No addresses in watchlist")
+        except Exception as e:
+            st.error(f"Error loading watchlist: {str(e)}")
     
-    # Analysis mode selection
+    # Saved Searches Management  
+    st.markdown("---")
+    st.markdown("### 💾 Saved Searches")
+    
+    with st.expander("Manage Saved Searches", expanded=False):
+        # Add new saved search
+        st.markdown("**Save New Search**")
+        search_name = st.text_input("Search Name", key="search_name")
+        search_query = st.text_area("Search Query", key="search_query", height=70)
+        search_type = st.selectbox("Search Type", ["general", "address", "value", "risk", "anomaly"], key="search_type")
+        
+        if st.button("Save Search", key="save_search"):
+            if search_name and search_query:
+                try:
+                    save_search_query(search_name, search_query, search_type)
+                    st.success(f"Saved search: {search_name}")
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Error saving search: {str(e)}")
+            else:
+                st.warning("Please enter both name and query")
+        
+        # Display saved searches
+        st.markdown("**Saved Searches**")
+        try:
+            saved_searches = get_saved_searches()
+            if saved_searches:
+                for search in saved_searches:
+                    col1, col2, col3 = st.columns([2, 1, 1])
+                    with col1:
+                        st.write(f"**{search['name']}**")
+                        st.caption(f"{search['type']} | Used {search['use_count']} times")
+                    with col2:
+                        if st.button("Use", key=f"use_{search['id']}", help="Use this search"):
+                            used_search = use_saved_search(search['id'])
+                            if used_search:
+                                st.session_state.last_search_query = used_search['query']
+                                st.success(f"Loaded: {used_search['name']}")
+                    with col3:
+                        if st.button("🗑️", key=f"delete_{search['id']}", help="Delete search"):
+                            delete_saved_search(search['id'])
+                            st.rerun()
+            else:
+                st.info("No saved searches")
+        except Exception as e:
+            st.error(f"Error loading saved searches: {str(e)}")
+    
     app_mode = st.radio(
-        "📊 Analysis Mode", 
-        ["🔍 New Analysis", "📂 Saved Analyses"],
-        help="Choose analysis mode"
+        "Select Analysis Mode", 
+        ["🔍 New Analysis", "📊 Saved Analyses"],
+        help="Choose whether to start a new analysis or view previously saved results"
     )
     
     # Add system status panel
@@ -1217,39 +1077,38 @@ else:
         
 
                                       
-        # Add AI Assistant to sidebar
-        with st.sidebar:
-            st.markdown("---")
-            st.markdown("### 🤖 AI Assistant")
-            with st.expander("🔍 Ask About Your Data", expanded=False):
-                st.markdown("Ask any question about your transaction data:")
-                sidebar_query = st.text_input("Your question:", key="sidebar_search_query")
-                
-                if st.button("Search", key="sidebar_search_button"):
-                    if sidebar_query and st.session_state.df is not None:
-                        with st.spinner("Analyzing with OpenAI GPT-4o..."):
-                            try:
-                                response = ai_transaction_search(
-                                    sidebar_query,
-                                    st.session_state.df,
-                                    st.session_state.risk_assessment,
-                                    st.session_state.anomalies,
-                                    st.session_state.network_metrics
-                                )
-                                st.session_state.search_result = response
-                                
-                                # Show the results directly in the sidebar
-                                st.success("AI Analysis Complete")
-                                st.markdown("### AI Analysis Results")
-                                st.markdown(response)
-                                st.info("The complete results are also available in the 'AI Insights' tab.")
-                            except Exception as e:
-                                st.error(f"Error: {str(e)}")
+        # Enhanced sidebar AI search
+        st.sidebar.markdown("---")
+        st.sidebar.markdown("### 🤖 AI Assistant")
+        with st.sidebar.expander("🔍 Ask About Your Data", expanded=True):
+            st.markdown("Ask any question about your transaction data:")
+            sidebar_query = st.text_input("Your question:", key="sidebar_search_query")
+            
+            if st.button("Search", key="sidebar_search_button"):
+                if sidebar_query and st.session_state.df is not None:
+                    with st.spinner("Analyzing with OpenAI GPT-4o..."):
+                        try:
+                            response = ai_transaction_search(
+                                sidebar_query,
+                                st.session_state.df,
+                                st.session_state.risk_assessment,
+                                st.session_state.anomalies,
+                                st.session_state.network_metrics
+                            )
+                            st.session_state.search_result = response
+                            
+                            # Show the results directly in the sidebar
+                            st.success("AI Analysis Complete")
+                            st.markdown("### AI Analysis Results")
+                            st.markdown(response)
+                            st.info("The complete results are also available in the 'AI Transaction Search' tab.")
+                        except Exception as e:
+                            st.error(f"Error: {str(e)}")
+                else:
+                    if st.session_state.df is None:
+                        st.warning("Please upload and analyze data first.")
                     else:
-                        if st.session_state.df is None:
-                            st.warning("Please upload and analyze data first.")
-                        else:
-                            st.warning("Please enter a search query.")
+                        st.warning("Please enter a search query.")
         
         with tab1:
             # Enhanced Network Analysis Tab
@@ -1943,15 +1802,6 @@ else:
                 except Exception as save_error:
                     st.error(f"Error saving analysis: {str(save_error)}")
                     st.expander("Technical Details").code(traceback.format_exc())
-        
-        # QuantumGuard AI branding at bottom after analysis
-        st.markdown("""
-        <div class="bottom-branding">
-            <h1>QuantumGuard AI</h1>
-            <p>Advanced Blockchain Transaction Analytics & AUSTRAC Compliance</p>
-            <p style="font-size: 12px; margin-top: 10px;">Powered by Post-Quantum Cryptography | AI-Driven Risk Assessment | Real-Time Compliance Monitoring</p>
-        </div>
-        """, unsafe_allow_html=True)
     else:
         # Show placeholder when no analysis results exist
         st.info("📊 **Ready for Analysis**")
