@@ -645,112 +645,38 @@ with col2:
 run_analysis = False
 progress_placeholder = None
 
-# Enhanced Sidebar navigation
+# Enhanced Sidebar navigation - HTML Design Inspired
 with st.sidebar:
-    st.markdown("### 🚀 Navigation Dashboard")
-    
-    # Add logo/branding area
+    # QuantumGuard AI logo and branding 
     st.markdown("""
-    <div style="text-align: center; padding: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; margin-bottom: 1rem;">
-        <h2 style="color: white; margin: 0;">🛡️ QuantumGuard</h2>
-        <p style="color: rgba(255,255,255,0.8); margin: 0; font-size: 0.8rem;">AI-Powered Security</p>
+    <div class="quantum-logo">
+        <h1>QuantumGuard AI</h1>
+        <p>Blockchain Analytics Platform</p>
     </div>
     """, unsafe_allow_html=True)
     
-    # Address Watchlist Management
+    # Streamlined Navigation Menu
     st.markdown("---")
-    st.markdown("### 🏷️ Address Watchlist")
     
-    with st.expander("Manage Watchlist", expanded=False):
-        # Add new address
-        st.markdown("**Add Address to Watchlist**")
-        new_address = st.text_input("Wallet Address", key="watchlist_address")
-        new_label = st.text_input("Label/Description", key="watchlist_label")
-        new_risk_level = st.selectbox("Risk Level", ["Low", "Medium", "High", "Critical"], key="watchlist_risk")
-        new_notes = st.text_area("Notes", key="watchlist_notes", height=70)
-        
-        if st.button("Add to Watchlist", key="add_watchlist"):
-            if new_address and new_label:
-                try:
-                    add_address_to_watchlist(new_address, new_label, new_risk_level, new_notes)
-                    st.success(f"Added {new_label} to watchlist")
-                    st.rerun()
-                except Exception as e:
-                    st.error(f"Error adding to watchlist: {str(e)}")
-            else:
-                st.warning("Please enter both address and label")
-        
-        # Display current watchlist
-        st.markdown("**Current Watchlist**")
-        try:
-            watchlist = get_watchlist_addresses()
-            if watchlist:
-                for entry in watchlist:
-                    col1, col2 = st.columns([3, 1])
-                    with col1:
-                        risk_color = {"Low": "🟢", "Medium": "🟡", "High": "🟠", "Critical": "🔴"}
-                        st.write(f"{risk_color.get(entry['risk_level'], '⚪')} **{entry['label']}**")
-                        st.caption(f"{entry['address'][:10]}...{entry['address'][-6:]}")
-                    with col2:
-                        if st.button("❌", key=f"remove_{entry['id']}", help="Remove from watchlist"):
-                            remove_address_from_watchlist(entry['id'])
-                            st.rerun()
-            else:
-                st.info("No addresses in watchlist")
-        except Exception as e:
-            st.error(f"Error loading watchlist: {str(e)}")
+    # Quick tools section
+    with st.expander("🔧 Quick Tools", expanded=False):
+        # Watchlist shortcut
+        st.markdown("**Address Watchlist**")
+        new_address = st.text_input("Add Address", key="quick_address")
+        new_label = st.text_input("Label", key="quick_label")
+        if st.button("Add to Watchlist", key="quick_add") and new_address and new_label:
+            try:
+                add_address_to_watchlist(new_address, new_label, "Medium", "")
+                st.success("Added to watchlist")
+                st.rerun()
+            except Exception as e:
+                st.error(f"Error: {str(e)}")
     
-    # Saved Searches Management  
-    st.markdown("---")
-    st.markdown("### 💾 Saved Searches")
-    
-    with st.expander("Manage Saved Searches", expanded=False):
-        # Add new saved search
-        st.markdown("**Save New Search**")
-        search_name = st.text_input("Search Name", key="search_name")
-        search_query = st.text_area("Search Query", key="search_query", height=70)
-        search_type = st.selectbox("Search Type", ["general", "address", "value", "risk", "anomaly"], key="search_type")
-        
-        if st.button("Save Search", key="save_search"):
-            if search_name and search_query:
-                try:
-                    save_search_query(search_name, search_query, search_type)
-                    st.success(f"Saved search: {search_name}")
-                    st.rerun()
-                except Exception as e:
-                    st.error(f"Error saving search: {str(e)}")
-            else:
-                st.warning("Please enter both name and query")
-        
-        # Display saved searches
-        st.markdown("**Saved Searches**")
-        try:
-            saved_searches = get_saved_searches()
-            if saved_searches:
-                for search in saved_searches:
-                    col1, col2, col3 = st.columns([2, 1, 1])
-                    with col1:
-                        st.write(f"**{search['name']}**")
-                        st.caption(f"{search['type']} | Used {search['use_count']} times")
-                    with col2:
-                        if st.button("Use", key=f"use_{search['id']}", help="Use this search"):
-                            used_search = use_saved_search(search['id'])
-                            if used_search:
-                                st.session_state.last_search_query = used_search['query']
-                                st.success(f"Loaded: {used_search['name']}")
-                    with col3:
-                        if st.button("🗑️", key=f"delete_{search['id']}", help="Delete search"):
-                            delete_saved_search(search['id'])
-                            st.rerun()
-            else:
-                st.info("No saved searches")
-        except Exception as e:
-            st.error(f"Error loading saved searches: {str(e)}")
-    
+    # Analysis mode selection
     app_mode = st.radio(
-        "Select Analysis Mode", 
-        ["🔍 New Analysis", "📊 Saved Analyses"],
-        help="Choose whether to start a new analysis or view previously saved results"
+        "📊 Analysis Mode", 
+        ["🔍 New Analysis", "📂 Saved Analyses"],
+        help="Choose analysis mode"
     )
     
     # Add system status panel
