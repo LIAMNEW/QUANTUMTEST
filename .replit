@@ -1,4 +1,4 @@
-modules = ["python-3.11", "python3"]
+modules = ["python-3.11", "python3", "nodejs-20"]
 
 [nix]
 channel = "stable-24_05"
@@ -30,12 +30,20 @@ args = "streamlit run app.py --server.port 5000"
 waitForPort = 5000
 
 [[ports]]
+localPort = 3000
+externalPort = 3002
+
+[[ports]]
 localPort = 5000
 externalPort = 80
 
 [[ports]]
 localPort = 35871
 externalPort = 3000
+
+[[ports]]
+localPort = 36275
+externalPort = 3001
 
 [agent]
 integrations = ["python_openai==1.0.0", "web_scraper==1.0.0", "python_anthropic==1.0.0"]
