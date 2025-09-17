@@ -1429,7 +1429,8 @@ else:
         # Enhanced tabs with better styling and icons
         st.markdown("### 📊 Comprehensive Analysis Results")
         
-        tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
+        tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
+            "📊 Dashboard Overview",
             "🌐 Network Visualization", 
             "🎯 Risk Assessment", 
             "🚨 Anomaly Detection", 
@@ -1476,6 +1477,10 @@ else:
                             st.warning("Please enter a search query.")
         
         with tab1:
+            # Dashboard Overview Tab
+            create_dashboard_section()
+        
+        with tab2:
             # Enhanced Network Analysis Tab
             st.markdown("""
             <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%); padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem;">
@@ -1521,18 +1526,6 @@ else:
                     st.text("The system is processing your transaction data for network analysis.")
             else:
                 st.warning("No transaction data available for network analysis")
-        
-        with tab2:
-            # Enhanced Risk Assessment Tab
-            st.markdown("""
-            <div style="background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(238, 90, 82, 0.1) 100%); padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem;">
-                <h3>🎯 Risk Assessment Analysis</h3>
-                <p>Advanced risk scoring based on transaction patterns, amounts, and behavioral analysis. Higher scores indicate greater potential risk.</p>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            # Date filtering controls
-            start_date, end_date = create_date_filter_controls("risk")
             
             # Risk Level Guide
             st.markdown("### Risk Level Guide")
