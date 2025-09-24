@@ -30,27 +30,22 @@ def calculate_austrac_risk_score(df: pd.DataFrame) -> Dict:
         row = df.iloc[i]
         
         # Create transaction record for AUSTRAC classification
+        # Use actual data from upload instead of random values
         transaction = {
             "transaction_id": f"TX_{i+1:06d}",
-            "amount": float(row.get('amount', np.random.uniform(500, 25000))),
+            "amount": float(row.get('value', row.get('amount', 1000))),  # Use 'value' or 'amount' from actual data
             "currency": "AUD",
-            "from_country": "Australia",
-            "to_country": np.random.choice([
-                "Australia", "Singapore", "USA", "UK", "China", 
-                "Japan", "New Zealand", "Malaysia", "Thailand"
-            ]),
+            "from_country": "Australia",  # Default to domestic unless specified
+            "to_country": "Australia",     # Default to domestic unless specified  
             "customer_name": f"Customer_{i+1}",
             "customer_id": f"CUST_{i+1:06d}",
-            "verification_status": np.random.choice(
-                ["Verified", "Pending", "Incomplete"], 
-                p=[0.85, 0.10, 0.05]
-            ),
-            "timestamp": datetime.now().isoformat(),
-            "high_frequency_flag": np.random.choice([True, False], p=[0.08, 0.92]),
-            "complexity_score": np.random.randint(1, 10),
-            "fraud_indicators": np.random.choice([True, False], p=[0.03, 0.97]),
-            "tax_haven_flag": np.random.choice([True, False], p=[0.02, 0.98]),
-            "velocity_flag": np.random.choice([True, False], p=[0.05, 0.95])
+            "verification_status": "Verified",  # Default to verified instead of random
+            "timestamp": row.get('timestamp', datetime.now().isoformat()),
+            "high_frequency_flag": False,   # Default to false instead of random
+            "complexity_score": 1,          # Default to low complexity
+            "fraud_indicators": False,      # Default to no fraud indicators
+            "tax_haven_flag": False,        # Default to no tax haven involvement
+            "velocity_flag": False          # Default to no velocity flags
         }
         
         # Classify transaction
@@ -74,9 +69,9 @@ def calculate_austrac_risk_score(df: pd.DataFrame) -> Dict:
     
     # Calculate percentage-based risk score (0-100%)
     # Weight factors: average risk + high-risk transaction percentage + critical transaction penalty
-    base_risk = avg_risk_score  # 0-100 from individual scores
-    high_risk_penalty = (high_risk_count / sample_size) * 30  # Up to 30% penalty
-    critical_penalty = (critical_count / sample_size) * 50  # Up to 50% penalty
+    base_risk = avg_risk_score * 0.5  # Reduce base weight to prevent over-scoring
+    high_risk_penalty = (high_risk_count / sample_size) * 20  # Reduced from 30% to 20%
+    critical_penalty = (critical_count / sample_size) * 30    # Reduced from 50% to 30%
     
     overall_risk_percentage = min(float(base_risk + high_risk_penalty + critical_penalty), 100.0)
     
