@@ -4,11 +4,15 @@ address = "0.0.0.0"
 port = 5000
 
 [theme]
-primaryColor = "#FF6B35"
+primaryColor = "#667eea"
 backgroundColor = "#0E1117"
-secondaryBackgroundColor = "#262730"
+secondaryBackgroundColor = "#1e2027"
 textColor = "#FAFAFA"
 font = "sans serif"
 
 [browser]
 gatherUsageStats = false
+
+[client]
+showErrorDetails = false
+toolbarMode = "minimal"
