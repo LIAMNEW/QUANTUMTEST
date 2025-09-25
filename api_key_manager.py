@@ -8,26 +8,31 @@ class APIKeyManager:
     REQUIRED_KEYS = {
         'Bitcoin': {
             'BITCOIN_NODE_URL': {
-                'description': 'Bitcoin node URL (e.g., https://blockstream.info/api)',
-                'default': 'https://blockstream.info/api',
+                'description': 'Bitcoin Core node JSON-RPC URL (e.g., http://localhost:8332)',
+                'default': 'http://localhost:8332',
                 'required': False
             },
-            'BITCOIN_API_KEY': {
-                'description': 'Bitcoin node API key (if required by your node)',
+            'BITCOIN_RPC_USER': {
+                'description': 'Bitcoin Core RPC username',
+                'default': 'bitcoin',
+                'required': False
+            },
+            'BITCOIN_RPC_PASSWORD': {
+                'description': 'Bitcoin Core RPC password',
                 'default': '',
                 'required': False
             }
         },
         'Ethereum': {
             'ETHEREUM_NODE_URL': {
-                'description': 'Ethereum node URL (default: Etherscan)',
-                'default': 'https://api.etherscan.io/api',
+                'description': 'Ethereum node JSON-RPC URL (e.g., http://localhost:8545, or Infura/Alchemy)',
+                'default': 'http://localhost:8545',
                 'required': False
             },
             'ETHERSCAN_API_KEY': {
-                'description': 'Etherscan API key (get from https://etherscan.io/apis)',
+                'description': 'Etherscan API key (fallback - get from https://etherscan.io/apis)',
                 'default': '',
-                'required': True
+                'required': False
             }
         },
         'Coinbase': {
@@ -162,16 +167,20 @@ class APIKeyManager:
         
         with st.expander("🚀 Getting Started with Blockchain APIs"):
             st.markdown("""
-            ### Step 1: Essential Setup (Required)
-            1. **Etherscan API Key** (Required for Ethereum)
-               - Visit https://etherscan.io/apis
-               - Create free account and generate API key
-               - Enter key in Ethereum configuration above
+            ### Step 1: Direct Node Connections (Recommended)
+            1. **Bitcoin Core Node** 
+               - Set BITCOIN_NODE_URL to your bitcoind RPC endpoint
+               - Configure RPC username/password in bitcoin.conf
+               - Example: http://localhost:8332
             
-            ### Step 2: Optional Enhancements
-            2. **Bitcoin Node** (Optional)
-               - Using free Blockstream API by default
-               - For higher limits, consider running own node
+            2. **Ethereum Node**
+               - Set ETHEREUM_NODE_URL to your geth/node RPC endpoint  
+               - Example: http://localhost:8545, wss://mainnet.infura.io/ws/v3/YOUR-PROJECT-ID
+            
+            ### Step 2: API Fallbacks (Optional)
+            3. **Etherscan API Key** (Ethereum fallback)
+               - Visit https://etherscan.io/apis
+               - Only needed if no direct Ethereum node available
             
             3. **Exchange APIs** (Optional - for market data)
                - **Coinbase Pro**: Create API key at https://pro.coinbase.com/profile/api
@@ -194,17 +203,19 @@ class APIKeyManager:
         
         results = {}
         
-        # Test Bitcoin API
+        # Test Bitcoin connections
         try:
-            btc_client = blockchain_api_clients['bitcoin']
-            latest_blocks = btc_client.get_latest_blocks(1)
-            results['Bitcoin'] = {
-                'status': 'success' if latest_blocks else 'failed',
-                'message': f"✅ Connected - Latest block available" if latest_blocks else "❌ Connection failed",
-                'data': len(latest_blocks) if latest_blocks else 0
-            }
+            from direct_node_clients import node_manager
+            connection_tests = node_manager.test_all_connections()
+            
+            for service, test_result in connection_tests.items():
+                results[service] = {
+                    'status': test_result.get('status', 'failed'),
+                    'message': f"✅ {test_result.get('preferred', 'Connected')}" if test_result.get('status') == 'success' else f"❌ {test_result.get('message', 'Connection failed')}",
+                    'details': test_result
+                }
         except Exception as e:
-            results['Bitcoin'] = {
+            results['Connection Test'] = {
                 'status': 'error',
                 'message': f"❌ Error: {str(e)[:50]}",
                 'data': 0

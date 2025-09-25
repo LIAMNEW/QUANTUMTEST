@@ -48,6 +48,7 @@ from blockchain_api_integrations import (
     blockchain_api_clients
 )
 from api_key_manager import APIKeyManager
+from direct_node_clients import NodeConnectionManager, node_manager
 
 # PDF Generation imports
 from reportlab.pdfgen import canvas
