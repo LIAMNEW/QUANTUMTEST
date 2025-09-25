@@ -503,9 +503,24 @@ with st.sidebar:
             st.session_state.show_api_config = True
         
         if st.button("🔍 Test Connections", key="test_api_btn"):
-            with st.spinner("Testing API connections..."):
-                test_results = APIKeyManager.test_api_connections()
-                st.success("API connection tests completed!")
+            with st.spinner("Testing blockchain connections..."):
+                # Test direct node connections
+                connection_tests = node_manager.test_all_connections()
+                
+                st.success("✅ Blockchain connection tests completed!")
+                
+                # Display results
+                for service, result in connection_tests.items():
+                    if result['status'] == 'success':
+                        st.success(f"**{service}**: {result.get('preferred', 'Connected')}")
+                        if 'direct_node' in result:
+                            direct = "✅" if result['direct_node'] else "❌"
+                            fallback = "✅" if result['rest_api'] else "❌"
+                            st.caption(f"Direct Node: {direct} | REST Fallback: {fallback}")
+                    elif result['status'] == 'warning':
+                        st.warning(f"**{service}**: {result.get('message', 'Limited access')}")
+                    else:
+                        st.error(f"**{service}**: {result.get('message', 'Connection failed')}")
     
     # Saved Searches Management  
     st.markdown("---")
@@ -640,11 +655,13 @@ with st.sidebar:
                     with st.spinner(f"Fetching {blockchain_type} transactions for {target_address[:10]}..."):
                         try:
                             if blockchain_type == "Bitcoin":
-                                client = blockchain_api_clients['bitcoin']
+                                # Use direct node connection with fallback
+                                client = node_manager.get_bitcoin_client()
                                 raw_data = client.get_address_transactions(target_address, transaction_limit)
                                 df = convert_blockchain_data_to_standard_format(raw_data, 'bitcoin')
                             else:  # Ethereum
-                                client = blockchain_api_clients['ethereum']
+                                # Use direct node connection with fallback
+                                client = node_manager.get_ethereum_client()
                                 raw_data = client.get_address_transactions(target_address, limit=transaction_limit)
                                 df = convert_blockchain_data_to_standard_format(raw_data, 'ethereum')
                             
