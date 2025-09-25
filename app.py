@@ -37,6 +37,18 @@ from austrac_risk_calculator import calculate_austrac_risk_score
 from quantum_security_test import run_quantum_security_test
 from simple_quantum_backend import get_simple_security_status
 
+# Blockchain API Integration imports
+from blockchain_api_integrations import (
+    BitcoinAPIClient, 
+    EthereumAPIClient, 
+    CoinbaseAPIClient, 
+    BinanceAPIClient,
+    CrossChainAnalyzer,
+    convert_blockchain_data_to_standard_format,
+    blockchain_api_clients
+)
+from api_key_manager import APIKeyManager
+
 # PDF Generation imports
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter, A4
@@ -478,6 +490,22 @@ with st.sidebar:
         except Exception as e:
             st.error(f"Error loading watchlist: {str(e)}")
     
+    # Blockchain API Configuration
+    st.markdown("---")
+    st.markdown("### 🔗 Blockchain APIs")
+    
+    with st.expander("API Configuration", expanded=False):
+        api_status = APIKeyManager.get_api_status_summary()
+        st.info(api_status)
+        
+        if st.button("⚙️ Configure API Keys", key="api_config_btn"):
+            st.session_state.show_api_config = True
+        
+        if st.button("🔍 Test Connections", key="test_api_btn"):
+            with st.spinner("Testing API connections..."):
+                test_results = APIKeyManager.test_api_connections()
+                st.success("API connection tests completed!")
+    
     # Saved Searches Management  
     st.markdown("---")
     st.markdown("### 💾 Saved Searches")
@@ -551,16 +579,184 @@ with st.sidebar:
     if app_mode == "🔍 New Analysis":
         st.session_state.view_saved_analysis = False
         
-        st.markdown("### 📁 Data Upload")
-        st.markdown("Upload your blockchain transaction dataset for analysis")
+        st.markdown("### 📊 Data Source Selection")
+        st.markdown("Choose your data source for blockchain transaction analysis")
         
-        uploaded_file = st.file_uploader(
-            "Choose your transaction file",
-            type=["csv", "xlsx", "json"],
-            help="Supported formats: CSV, Excel, JSON. Maximum file size: 200MB"
+        # Data source selection
+        data_source = st.radio(
+            "Select Data Source:",
+            ["📁 Upload File", "🔗 Blockchain API", "🔍 Cross-Chain Analysis"],
+            horizontal=True,
+            help="Choose between file upload, direct blockchain API fetch, or cross-chain analysis"
         )
         
-        if uploaded_file is not None:
+        if data_source == "📁 Upload File":
+            st.markdown("#### 📁 File Upload")
+            uploaded_file = st.file_uploader(
+                "Choose your transaction file",
+                type=["csv", "xlsx", "json"],
+                help="Supported formats: CSV, Excel, JSON. Maximum file size: 200MB"
+            )
+        
+        elif data_source == "🔗 Blockchain API":
+            st.markdown("#### 🔗 Direct Blockchain Data")
+            
+            # Check API configuration status
+            api_status = APIKeyManager.check_api_configuration()
+            
+            col1, col2 = st.columns([2, 1])
+            with col1:
+                blockchain_type = st.selectbox(
+                    "Select Blockchain:",
+                    ["Bitcoin", "Ethereum"],
+                    help="Choose the blockchain network to fetch data from"
+                )
+            with col2:
+                if not api_status.get(blockchain_type, False) and blockchain_type == "Ethereum":
+                    st.warning("⚠️ API key required")
+                else:
+                    st.success("✅ Ready")
+            
+            # Address input
+            target_address = st.text_input(
+                f"Enter {blockchain_type} Address:",
+                placeholder=f"Enter a valid {blockchain_type.lower()} address",
+                help=f"Enter the {blockchain_type} address to analyze transactions for"
+            )
+            
+            # Transaction limit
+            transaction_limit = st.slider(
+                "Transaction Limit:",
+                min_value=10,
+                max_value=1000,
+                value=100,
+                help="Maximum number of transactions to fetch"
+            )
+            
+            # Fetch data button
+            if st.button(f"🔍 Fetch {blockchain_type} Data", key="fetch_blockchain_data"):
+                if target_address:
+                    with st.spinner(f"Fetching {blockchain_type} transactions for {target_address[:10]}..."):
+                        try:
+                            if blockchain_type == "Bitcoin":
+                                client = blockchain_api_clients['bitcoin']
+                                raw_data = client.get_address_transactions(target_address, transaction_limit)
+                                df = convert_blockchain_data_to_standard_format(raw_data, 'bitcoin')
+                            else:  # Ethereum
+                                client = blockchain_api_clients['ethereum']
+                                raw_data = client.get_address_transactions(target_address, limit=transaction_limit)
+                                df = convert_blockchain_data_to_standard_format(raw_data, 'ethereum')
+                            
+                            if not df.empty:
+                                st.session_state.df = df
+                                st.session_state.current_dataset_name = f"{blockchain_type}_{target_address[:10]}_{len(df)}txs"
+                                st.session_state.encrypted_data = {"data": df.to_dict()}
+                                st.success(f"✅ Fetched {len(df)} {blockchain_type} transactions successfully!")
+                                
+                                # Show preview
+                                with st.expander("Data Preview", expanded=True):
+                                    st.dataframe(df.head(10))
+                                    st.info(f"Dataset: {len(df)} transactions | Blockchain: {blockchain_type} | Address: {target_address[:10]}...")
+                            else:
+                                st.error("No transactions found for this address")
+                        except Exception as e:
+                            st.error(f"Error fetching {blockchain_type} data: {str(e)}")
+                else:
+                    st.warning("Please enter a valid address")
+        
+        elif data_source == "🔍 Cross-Chain Analysis":
+            st.markdown("#### 🔍 Cross-Chain Transaction Analysis")
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                btc_address = st.text_input(
+                    "Bitcoin Address (Optional):",
+                    placeholder="Enter Bitcoin address",
+                    help="Bitcoin address for cross-chain analysis"
+                )
+            with col2:
+                eth_address = st.text_input(
+                    "Ethereum Address (Optional):",
+                    placeholder="Enter Ethereum address",
+                    help="Ethereum address for cross-chain analysis"
+                )
+            
+            if st.button("🔍 Analyze Cross-Chain Patterns", key="cross_chain_analysis"):
+                if btc_address or eth_address:
+                    with st.spinner("Performing cross-chain analysis..."):
+                        try:
+                            analyzer = blockchain_api_clients['cross_chain']
+                            analysis_results = analyzer.analyze_address_across_chains(
+                                btc_address=btc_address if btc_address else None,
+                                eth_address=eth_address if eth_address else None
+                            )
+                            
+                            # Store results in session state
+                            st.session_state.cross_chain_results = analysis_results
+                            st.session_state.current_dataset_name = f"CrossChain_Analysis_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+                            
+                            # Display results
+                            st.success("✅ Cross-chain analysis completed!")
+                            
+                            with st.expander("Cross-Chain Analysis Results", expanded=True):
+                                if analysis_results.get('bitcoin_analysis') and analysis_results['bitcoin_analysis'].get('transactions'):
+                                    st.subheader("🟠 Bitcoin Analysis")
+                                    btc_data = analysis_results['bitcoin_analysis']
+                                    col1, col2, col3 = st.columns(3)
+                                    with col1:
+                                        st.metric("Transactions", btc_data.get('transaction_count', 0))
+                                    with col2:
+                                        st.metric("Total Volume", f"{btc_data.get('total_volume', 0):.8f} BTC")
+                                    with col3:
+                                        st.metric("Address", f"{btc_data.get('address', '')[:10]}...")
+                                
+                                if analysis_results.get('ethereum_analysis') and analysis_results['ethereum_analysis'].get('transactions'):
+                                    st.subheader("🔷 Ethereum Analysis")
+                                    eth_data = analysis_results['ethereum_analysis']
+                                    col1, col2, col3 = st.columns(3)
+                                    with col1:
+                                        st.metric("Transactions", eth_data.get('transaction_count', 0))
+                                    with col2:
+                                        st.metric("Token Transfers", eth_data.get('token_transfer_count', 0))
+                                    with col3:
+                                        st.metric("Total Volume", f"{eth_data.get('total_volume_eth', 0):.4f} ETH")
+                                
+                                # Cross-chain patterns
+                                patterns = analysis_results.get('cross_chain_patterns', {})
+                                if patterns:
+                                    st.subheader("🔍 Cross-Chain Patterns")
+                                    col1, col2 = st.columns(2)
+                                    with col1:
+                                        if patterns.get('timing_correlation'):
+                                            st.warning("⚠️ Timing correlation detected")
+                                        else:
+                                            st.success("✅ No timing correlation")
+                                    with col2:
+                                        if patterns.get('amount_correlation'):
+                                            st.warning("⚠️ Amount correlation detected")
+                                        else:
+                                            st.success("✅ No amount correlation")
+                                    
+                                    if patterns.get('suspicious_patterns'):
+                                        st.error("🚨 Suspicious patterns found:")
+                                        for pattern in patterns['suspicious_patterns']:
+                                            st.error(f"• {pattern}")
+                                    
+                                    risk_score = patterns.get('risk_score', 0)
+                                    if risk_score > 0.5:
+                                        st.error(f"🔴 High Risk Score: {risk_score:.1%}")
+                                    elif risk_score > 0.2:
+                                        st.warning(f"🟡 Medium Risk Score: {risk_score:.1%}")
+                                    else:
+                                        st.success(f"🟢 Low Risk Score: {risk_score:.1%}")
+                        
+                        except Exception as e:
+                            st.error(f"Error in cross-chain analysis: {str(e)}")
+                else:
+                    st.warning("Please enter at least one address (Bitcoin or Ethereum)")
+        
+        # Process uploaded file (existing logic)
+        if data_source == "📁 Upload File" and 'uploaded_file' in locals() and uploaded_file is not None:
             try:
                 df = None
                 # Store the dataset name

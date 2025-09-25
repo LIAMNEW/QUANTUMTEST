@@ -1,6 +1,6 @@
 import streamlit as st
 import os
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 
 class APIKeyManager:
     """Secure API key management system for blockchain integrations"""
