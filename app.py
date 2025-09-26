@@ -654,7 +654,50 @@ with st.sidebar:
         st.markdown("---")
         rbac.render_role_selector()
     
-    if app_mode == "🔍 New Analysis":
+    # Enhanced UX: Live Dashboard
+    if app_mode == "📊 Live Dashboard" and HAS_ENHANCED_UX:
+        # Role-based access check
+        if rbac.has_permission(rbac.Permission.VIEW_ANALYSIS):
+            dashboard_manager.render_dashboard(st.session_state.get('df'))
+        else:
+            st.error("⛔ Access denied: Dashboard viewing requires analysis permissions")
+    
+    # Enhanced UX: Advanced Search
+    elif app_mode == "🔍 Advanced Search" and HAS_ENHANCED_UX:
+        if rbac.has_permission(rbac.Permission.CREATE_ANALYSIS):
+            col1, col2 = st.columns([2, 1])
+            
+            with col1:
+                # Query builder interface
+                filter_config = query_builder.render_query_builder()
+                
+                # Apply filters to current dataset
+                if filter_config and 'df' in st.session_state:
+                    filtered_df = query_builder.apply_filter(st.session_state.df, filter_config)
+                    
+                    if not filtered_df.empty:
+                        st.success(f"✅ Filter applied! Found {len(filtered_df)} matching transactions out of {len(st.session_state.df)}")
+                        
+                        # Update session state with filtered data
+                        st.session_state.df = filtered_df
+                        
+                        # Show filtered results preview
+                        with st.expander("📊 Filtered Results Preview", expanded=True):
+                            st.dataframe(filtered_df.head(20))
+                    else:
+                        st.warning("⚠️ No transactions match the selected filters")
+                elif not filter_config and 'df' in st.session_state:
+                    st.info("💡 Use the filters above to narrow down your transaction analysis")
+                else:
+                    st.info("📁 Please load transaction data first to use advanced search features")
+            
+            with col2:
+                # Saved searches manager
+                query_builder.render_saved_searches_manager()
+        else:
+            st.error("⛔ Access denied: Advanced search requires analysis creation permissions")
+    
+    elif app_mode == "🔍 New Analysis":
         st.session_state.view_saved_analysis = False
         
         st.markdown("### 📊 Data Source Selection")
