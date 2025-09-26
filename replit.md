@@ -9,6 +9,13 @@ Security Focus: Backend quantum safety for customer financial data protection (n
 
 # System Architecture
 
+## Enterprise Security Infrastructure
+- **Production Quantum Security**: AES-256-GCM encryption with PBKDF2 key derivation, RSA-4096 hybrid encryption, and certified cryptographic libraries
+- **Enterprise Key Management**: Secure key vault with master key encryption, automatic key rotation, and audit trails
+- **Multi-Factor Authentication**: TOTP-based MFA with backup codes, rate limiting, and account lockout protection
+- **API Security Middleware**: Rate limiting, DDoS protection, IP blocking, and suspicious pattern detection
+- **Backup & Disaster Recovery**: Automated encrypted backups, compression, retention policies, and disaster recovery procedures
+
 ## Frontend Architecture
 - **Streamlit Web Application**: The main user interface built with Streamlit (`app.py`) providing an interactive dashboard for blockchain analysis
 - **Interactive Visualizations**: Plotly-based visualizations (`visualizations.py`) for network graphs, risk heatmaps, anomaly detection plots, and transaction timelines
