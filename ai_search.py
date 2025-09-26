@@ -5,6 +5,8 @@ from openai import OpenAI
 import json
 
 # Initialize OpenAI client with API key from environment variable
+# the newest OpenAI model is "gpt-5" which was released August 7, 2025.
+# do not change this unless explicitly requested by the user
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 def prepare_transaction_context(df, risk_assessment=None, anomalies=None, network_metrics=None):
@@ -97,16 +99,16 @@ Be specific, concise, and provide evidence from the transaction data to support 
 Present quantitative insights when possible, and highlight any suspicious patterns or anomalies.
 If you don't know the answer or there's insufficient data, say so rather than making up information."""
 
-        # The newest OpenAI model is "gpt-4o" which was released May 13, 2024.
+        # The newest OpenAI model is "gpt-5" which was released August 7, 2025.
         # do not change this unless explicitly requested by the user
         response = client.chat.completions.create(
-            model="gpt-4o-mini",  # Using the specified model
+            model="gpt-5",  # Using the latest GPT-5 model
             messages=[
                 {"role": "system", "content": system_message},
                 {"role": "user", "content": f"Here is the blockchain transaction data for analysis:\n\n{transaction_context}"},
                 {"role": "user", "content": f"Based on this transaction data, please answer the following question: {query}"}
             ],
-            temperature=0.3,  # Lower temperature for more factual responses
+            # Note: GPT-5 doesn't support temperature parameter
             max_tokens=1000
         )
         

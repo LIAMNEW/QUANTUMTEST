@@ -296,10 +296,10 @@ class AdvancedAnalytics:
             # Prepare context for AI analysis
             context = self._prepare_analysis_context(df, risk_data, network_metrics)
             
-            # The newest OpenAI model is "gpt-4o" which was released May 13, 2024.
+            # The newest OpenAI model is "gpt-5" which was released August 7, 2025.
             # do not change this unless explicitly requested by the user
             response = client.chat.completions.create(
-                model="gpt-4o-mini",
+                model="gpt-5",
                 messages=[
                     {"role": "system", "content": "You are an expert financial transaction analyst. Provide concise, actionable insights based on the transaction data analysis."},
                     {"role": "user", "content": f"Based on this transaction analysis data, provide key insights and recommendations:\n\n{context}"}

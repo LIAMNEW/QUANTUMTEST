@@ -5,9 +5,21 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import DBSCAN
 from typing import List, Tuple, Any, Dict
 
+# Import enhanced anomaly detection system
+try:
+    from enhanced_anomaly_detection import (
+        enhanced_anomaly_detector,
+        train_enhanced_anomaly_detection,
+        detect_enhanced_anomalies
+    )
+    HAS_ENHANCED_DETECTION = True
+except ImportError:
+    HAS_ENHANCED_DETECTION = False
+
 def train_anomaly_detection(features: pd.DataFrame) -> Any:
     """
-    Train an anomaly detection model using Isolation Forest.
+    Train an enhanced anomaly detection model using advanced ML algorithms.
+    Falls back to traditional Isolation Forest if enhanced models unavailable.
     
     Args:
         features: DataFrame containing extracted features
@@ -15,11 +27,21 @@ def train_anomaly_detection(features: pd.DataFrame) -> Any:
     Returns:
         Trained anomaly detection model
     """
-    # Standardize features
+    if HAS_ENHANCED_DETECTION:
+        print("🚀 Training Enhanced Anomaly Detection System with advanced ML models...")
+        try:
+            # Use enhanced system with LSTM autoencoders, VAE, and ensemble methods
+            enhanced_anomaly_detector.fit(features)
+            print("✅ Enhanced anomaly detection training completed")
+            return enhanced_anomaly_detector
+        except Exception as e:
+            print(f"⚠️ Enhanced training failed: {e}, falling back to traditional method")
+    
+    # Traditional Isolation Forest fallback
+    print("📊 Training traditional Isolation Forest model...")
     scaler = StandardScaler()
     scaled_features = scaler.fit_transform(features)
     
-    # Initialize and train Isolation Forest model
     model = IsolationForest(
         n_estimators=100,
         max_samples='auto',
@@ -28,38 +50,54 @@ def train_anomaly_detection(features: pd.DataFrame) -> Any:
     )
     
     model.fit(scaled_features)
-    
-    # Store scaler with the model for future use
     model.scaler = scaler
     
+    print("✅ Traditional anomaly detection training completed")
     return model
 
 def detect_anomalies(model: Any, features: pd.DataFrame, sensitivity: float = 0.8) -> List[int]:
     """
-    Detect anomalies in blockchain transaction data.
+    Detect anomalies using enhanced ML models or traditional methods.
     
     Args:
-        model: Trained anomaly detection model
-        features: DataFrame containing extracted features
+        model: Trained anomaly detection model (enhanced or traditional)
+        features: DataFrame containing extracted features  
         sensitivity: Threshold adjustment for anomaly detection (0.0-1.0)
     
     Returns:
         List of indices corresponding to anomalous transactions
     """
-    # Scale features using the same scaler
+    # Check if this is an enhanced detection system
+    if HAS_ENHANCED_DETECTION and hasattr(model, 'detect_anomalies'):
+        print("🔍 Using Enhanced Anomaly Detection with advanced ML models...")
+        try:
+            anomalies, anomaly_indices, detection_results = model.detect_anomalies(features)
+            print(f"✅ Enhanced detection completed: {len(anomaly_indices)} anomalies found")
+            
+            # Store detection results for analysis
+            if hasattr(model, 'last_detection_results'):
+                model.last_detection_results = detection_results
+                
+            return anomaly_indices
+            
+        except Exception as e:
+            print(f"⚠️ Enhanced detection failed: {e}, falling back to traditional method")
+    
+    # Traditional Isolation Forest method
+    print("📊 Using traditional Isolation Forest detection...")
     scaled_features = model.scaler.transform(features)
     
     # Predict anomaly scores (-1 for anomalies, 1 for normal)
     anomaly_scores = model.decision_function(scaled_features)
     
     # Adjust threshold based on sensitivity
-    # Lower values = more sensitive (more anomalies detected)
-    base_threshold = -0.2  # Base threshold for anomaly scores
-    adjusted_threshold = base_threshold - (sensitivity * 0.5)  # Scale with sensitivity
+    base_threshold = -0.2
+    adjusted_threshold = base_threshold - (sensitivity * 0.5)
     
     # Find anomalies based on adjusted threshold
     anomalies = np.where(anomaly_scores < adjusted_threshold)[0].tolist()
     
+    print(f"✅ Traditional detection completed: {len(anomalies)} anomalies found")
     return anomalies
 
 def cluster_transactions(features: pd.DataFrame) -> np.ndarray:
