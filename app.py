@@ -50,6 +50,17 @@ from blockchain_api_integrations import (
 from api_key_manager import APIKeyManager
 from direct_node_clients import NodeConnectionManager, node_manager
 
+# Enhanced UX imports (simplified versions)
+try:
+    from dashboard_manager_simple import DashboardManager, dashboard_manager
+    from query_builder_simple import QueryBuilder, query_builder
+    from timeline_visualization import TimelineVisualization, timeline_viz
+    from role_manager import RoleBasedAccessControl, rbac
+    HAS_ENHANCED_UX = True
+except ImportError:
+    HAS_ENHANCED_UX = False
+    st.warning("Enhanced UX features not available")
+
 # PDF Generation imports
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter, A4
@@ -416,6 +427,47 @@ if not st.session_state.keys_generated:
     st.session_state.public_key, st.session_state.private_key = generate_pq_keys()
     st.session_state.keys_generated = True
 
+# Mobile-responsive CSS
+st.markdown("""
+    <style>
+    .main > div {
+        padding-top: 2rem;
+    }
+    
+    @media (max-width: 768px) {
+        .main > div {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        
+        .stSelectbox > label {
+            font-size: 0.9rem;
+        }
+        
+        .metric-container {
+            margin: 0.5rem 0;
+        }
+    }
+    
+    .dashboard-widget {
+        background: white;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .role-badge {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 0.25rem 0.5rem;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        display: inline-block;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # Enhanced Header with QuantumGuard AI logo
 col1, col2, col3 = st.columns([1, 2, 1])
 
@@ -439,6 +491,11 @@ progress_placeholder = None
 # Enhanced Sidebar navigation
 with st.sidebar:
     st.markdown("### 🚀 Navigation Dashboard")
+    
+    # User role display
+    current_role = rbac.current_user.role.value.title()
+    st.markdown(f'<div class="role-badge">👤 {current_role}</div>', unsafe_allow_html=True)
+    st.markdown("")
     
     # Add logo/branding area
     st.markdown("""
@@ -591,6 +648,11 @@ with st.sidebar:
     
     # AUSTRAC Compliance status
     st.markdown("**AUSTRAC Compliance:** 🟢 Enabled")
+    
+    # Role management (Admin only)
+    if rbac.has_permission(rbac.Permission.MANAGE_USERS):
+        st.markdown("---")
+        rbac.render_role_selector()
     
     if app_mode == "🔍 New Analysis":
         st.session_state.view_saved_analysis = False
