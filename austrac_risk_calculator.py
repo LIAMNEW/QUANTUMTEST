@@ -99,15 +99,15 @@ def calculate_austrac_risk_score(df: pd.DataFrame) -> Dict:
     
     # Generate user-friendly summary
     summary_message = f"""
-    **AUSTRAC Compliance Assessment Summary:**
+    AUSTRAC Compliance Assessment Summary:
     
-    • **Overall Risk Level:** {risk_level}
-    • **Transactions Analyzed:** {sample_size:,}
-    • **Reporting Required:** {reporting_required_count} transactions
-    • **High Risk Transactions:** {high_risk_count}
-    • **Critical Risk Transactions:** {critical_count}
+    • Overall Risk Level: {risk_level}
+    • Transactions Analyzed: {sample_size:,}
+    • Reporting Required: {reporting_required_count} transactions
+    • High Risk Transactions: {high_risk_count}
+    • Critical Risk Transactions: {critical_count}
     
-    **Regulatory Compliance Status:**
+    Regulatory Compliance Status:
     """
     
     if overall_risk_percentage >= 60:
