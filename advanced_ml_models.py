@@ -344,16 +344,17 @@ class GraphNeuralNetwork:
             node_features[addr_idx] = [
                 len(out_txs),  # Number of outgoing transactions
                 len(in_txs),   # Number of incoming transactions
-                out_txs['amount'].sum() if len(out_txs) > 0 else 0,  # Total sent
-                in_txs['amount'].sum() if len(in_txs) > 0 else 0,    # Total received
-                out_txs['amount'].mean() if len(out_txs) > 0 else 0, # Average sent
-                in_txs['amount'].mean() if len(in_txs) > 0 else 0    # Average received
+                float(out_txs['amount'].sum()) if len(out_txs) > 0 else 0.0,  # Total sent
+                float(in_txs['amount'].sum()) if len(in_txs) > 0 else 0.0,    # Total received
+                float(out_txs['amount'].mean()) if len(out_txs) > 0 else 0.0, # Average sent
+                float(in_txs['amount'].mean()) if len(in_txs) > 0 else 0.0    # Average received
             ]
             
             # Create edges in adjacency matrix
             for _, tx in out_txs.iterrows():
-                to_idx = address_to_idx[tx['to_address']]
-                adjacency_matrix[addr_idx][to_idx] = 1
+                if tx['to_address'] in address_to_idx:
+                    to_idx = address_to_idx[tx['to_address']]
+                    adjacency_matrix[addr_idx, to_idx] = 1.0
         
         return adjacency_matrix, node_features, address_to_idx
     
