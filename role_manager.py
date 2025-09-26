@@ -48,6 +48,9 @@ class User:
 class RoleBasedAccessControl:
     """Role-based access control system"""
     
+    # Expose Permission enum as class attribute for easy access
+    Permission = Permission
+    
     def __init__(self):
         self.role_permissions = self._define_role_permissions()
         self.current_user = self._get_current_user()

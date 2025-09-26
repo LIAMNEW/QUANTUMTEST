@@ -55,7 +55,7 @@ try:
     from dashboard_manager_simple import DashboardManager, dashboard_manager
     from query_builder_simple import QueryBuilder, query_builder
     from timeline_visualization import TimelineVisualization, timeline_viz
-    from role_manager import RoleBasedAccessControl, rbac
+    from role_manager import RoleBasedAccessControl, rbac, Permission
     HAS_ENHANCED_UX = True
 except ImportError:
     HAS_ENHANCED_UX = False
@@ -650,21 +650,21 @@ with st.sidebar:
     st.markdown("**AUSTRAC Compliance:** 🟢 Enabled")
     
     # Role management (Admin only)
-    if rbac.has_permission(rbac.Permission.MANAGE_USERS):
+    if rbac.has_permission(Permission.MANAGE_USERS):
         st.markdown("---")
         rbac.render_role_selector()
     
     # Enhanced UX: Live Dashboard
     if app_mode == "📊 Live Dashboard" and HAS_ENHANCED_UX:
         # Role-based access check
-        if rbac.has_permission(rbac.Permission.VIEW_ANALYSIS):
+        if rbac.has_permission(Permission.VIEW_ANALYSIS):
             dashboard_manager.render_dashboard(st.session_state.get('df'))
         else:
             st.error("⛔ Access denied: Dashboard viewing requires analysis permissions")
     
     # Enhanced UX: Advanced Search
     elif app_mode == "🔍 Advanced Search" and HAS_ENHANCED_UX:
-        if rbac.has_permission(rbac.Permission.CREATE_ANALYSIS):
+        if rbac.has_permission(Permission.CREATE_ANALYSIS):
             col1, col2 = st.columns([2, 1])
             
             with col1:
