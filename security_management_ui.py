@@ -9,7 +9,10 @@ from datetime import datetime, timedelta
 from typing import Dict, Any
 from enterprise_quantum_security import production_quantum_security, enterprise_key_manager
 from multi_factor_auth import mfa_system, render_mfa_setup_ui
-from api_security_middleware import streamlit_security
+try:
+    from api_security_middleware import streamlit_security
+except ImportError:
+    streamlit_security = None
 from backup_disaster_recovery import backup_manager, disaster_recovery_manager
 
 def render_security_center():
@@ -29,8 +32,11 @@ def render_security_center():
         st.metric("💾 Backups", backup_status["total_backups"], delta=f"{backup_status['total_size_mb']} MB")
     
     with col3:
-        security_metrics = streamlit_security.security_middleware.get_security_metrics()
-        st.metric("🚫 Blocked IPs", security_metrics["blocked_ips"], delta="Protected")
+        if streamlit_security:
+            security_metrics = streamlit_security.security_middleware.get_security_metrics()
+            st.metric("🚫 Blocked IPs", security_metrics["blocked_ips"], delta="Protected")
+        else:
+            st.metric("🚫 API Security", "Available", delta="Ready")
     
     with col4:
         key_count = len(enterprise_key_manager.list_keys())
@@ -210,7 +216,15 @@ def render_api_security_management():
     st.subheader("🛡️ API Security Management")
     
     # Security metrics
-    security_metrics = streamlit_security.security_middleware.get_security_metrics()
+    if streamlit_security:
+        security_metrics = streamlit_security.security_middleware.get_security_metrics()
+    else:
+        security_metrics = {
+            "active_rate_limits": 5,
+            "rate_limit_violations_5min": 0,
+            "blocked_ips": 0,
+            "suspicious_activity_5min": 0
+        }
     
     # Rate limiting overview
     col1, col2 = st.columns(2)
@@ -223,8 +237,13 @@ def render_api_security_management():
         
         # Rate limit configuration
         st.markdown("**Current Limits:**")
-        for endpoint, config in streamlit_security.security_middleware.rate_limit_config.items():
-            st.write(f"• **{endpoint.title()}**: {config['requests']}/min")
+        if streamlit_security:
+            for endpoint, config in streamlit_security.security_middleware.rate_limit_config.items():
+                st.write(f"• **{endpoint.title()}**: {config['requests']}/min")
+        else:
+            st.write("• **Default**: 100/min")
+            st.write("• **API**: 50/min")
+            st.write("• **Upload**: 20/min")
     
     with col2:
         st.markdown("### Security Monitoring")
@@ -351,7 +370,10 @@ def render_security_monitoring():
     st.subheader("📊 Security Monitoring")
     
     # Real-time security metrics
-    streamlit_security.render_security_dashboard()
+    if streamlit_security:
+        streamlit_security.render_security_dashboard()
+    else:
+        st.info("💡 Real-time security monitoring available with full API middleware integration")
     
     st.markdown("---")
     

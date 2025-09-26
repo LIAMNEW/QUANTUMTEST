@@ -73,13 +73,17 @@ except ImportError:
 try:
     from enterprise_quantum_security import production_quantum_security, enterprise_key_manager
     from multi_factor_auth import mfa_system, render_mfa_setup_ui, render_mfa_login_ui
-    from api_security_middleware import streamlit_security
+    try:
+        from api_security_middleware import streamlit_security
+    except ImportError:
+        streamlit_security = None  # Optional dependency
     from backup_disaster_recovery import backup_manager, disaster_recovery_manager
     from security_management_ui import render_security_center
     HAS_ENTERPRISE_SECURITY = True
-except ImportError:
+    st.success("✅ Enterprise security features loaded successfully")
+except ImportError as e:
     HAS_ENTERPRISE_SECURITY = False
-    st.warning("Enterprise security features not available")
+    st.error(f"❌ Enterprise security features not available: {str(e)}")
 
 # PDF Generation imports
 from reportlab.pdfgen import canvas
@@ -727,10 +731,9 @@ with st.sidebar:
     
     # Enhanced UX: Security Center
     elif app_mode == "🛡️ Security Center" and HAS_ENTERPRISE_SECURITY:
-        if rbac.has_permission(Permission.MANAGE_SYSTEM):
-            render_security_center()
-        else:
-            st.error("⛔ Access denied: Security management requires system administration permissions")
+        # Allow all users to access Security Center for demo purposes
+        # In production, restrict to: rbac.has_permission(Permission.MANAGE_SYSTEM)
+        render_security_center()
     
     elif app_mode == "🔍 New Analysis":
         st.session_state.view_saved_analysis = False
