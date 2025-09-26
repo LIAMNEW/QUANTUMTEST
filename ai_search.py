@@ -109,7 +109,7 @@ If you don't know the answer or there's insufficient data, say so rather than ma
                 {"role": "user", "content": f"Based on this transaction data, please answer the following question: {query}"}
             ],
             # Note: GPT-5 doesn't support temperature parameter
-            max_tokens=1000
+            max_completion_tokens=1000
         )
         
         # Extract and return the model's response

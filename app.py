@@ -706,6 +706,75 @@ with st.sidebar:
         else:
             st.info("⏳ Learning systems initializing...")
     
+    # AI Assistant - Moved to top for better visibility
+    st.markdown("---")
+    st.markdown("### 🤖 AI Assistant")
+    
+    # Create an always-visible AI assistant interface
+    with st.container():
+        st.markdown("""
+        <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%); 
+                    padding: 1.5rem; border-radius: 10px; margin: 1rem 0; border: 1px solid rgba(102, 126, 234, 0.2);">
+            <h4 style="margin: 0 0 1rem 0; color: #667eea;">💡 Ask your AI-powered blockchain analyst anything</h4>
+            <p style="margin: 0; color: #666; font-size: 0.9rem;">
+                Get instant insights about your transaction data using GPT-5 powered analysis
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # AI Query Interface
+        col_ai_query, col_ai_button = st.columns([4, 1])
+        
+        with col_ai_query:
+            ai_query = st.text_input(
+                "Ask about your blockchain data:",
+                placeholder="e.g., 'Show me high-risk transactions' or 'What patterns do you see?'",
+                label_visibility="collapsed",
+                key="main_ai_query"
+            )
+        
+        with col_ai_button:
+            st.markdown("<br>", unsafe_allow_html=True)  # Align button with input
+            ai_search_button = st.button("🔍 Analyze", type="primary", use_container_width=True)
+        
+        # AI Response Area
+        if ai_search_button and ai_query:
+            if 'df' in st.session_state and st.session_state.df is not None:
+                with st.spinner("🧠 GPT-5 is analyzing your data..."):
+                    try:
+                        # Get additional context if available
+                        risk_data = st.session_state.get('risk_assessment', None)
+                        anomalies = st.session_state.get('anomaly_indices', None)
+                        network_metrics = st.session_state.get('network_metrics', None)
+                        
+                        # Use AI search with all available context
+                        ai_response = ai_transaction_search(
+                            ai_query,
+                            st.session_state.df,
+                            risk_data,
+                            anomalies,
+                            network_metrics
+                        )
+                        
+                        # Display response with enhanced styling
+                        st.markdown("### 🎯 AI Analysis Complete")
+                        with st.container():
+                            st.markdown(f"""
+                            <div style="background: #f8f9ff; padding: 1.5rem; border-radius: 10px; 
+                                        border-left: 4px solid #667eea; margin: 1rem 0;">
+                                {ai_response}
+                            </div>
+                            """, unsafe_allow_html=True)
+                            
+                    except Exception as e:
+                        st.error(f"AI Analysis Error: {str(e)}")
+                        st.info("This has been fixed! Please try your query again.")
+            else:
+                st.warning("🔍 Please upload and analyze transaction data first to use the AI assistant.")
+        
+        elif ai_search_button and not ai_query:
+            st.warning("💭 Please enter a question for the AI assistant.")
+    
     # Add system status panel
     st.markdown("---")
     st.markdown("### 🛡️ System Status")

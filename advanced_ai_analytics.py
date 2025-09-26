@@ -304,8 +304,7 @@ class AdvancedAnalytics:
                     {"role": "system", "content": "You are an expert financial transaction analyst. Provide concise, actionable insights based on the transaction data analysis."},
                     {"role": "user", "content": f"Based on this transaction analysis data, provide key insights and recommendations:\n\n{context}"}
                 ],
-                temperature=0.3,
-                max_tokens=500
+                max_completion_tokens=500
             )
             
             return response.choices[0].message.content
