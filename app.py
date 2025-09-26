@@ -1,4 +1,12 @@
 import streamlit as st
+
+# Configure page FIRST before any other Streamlit commands or imports
+st.set_page_config(
+    page_title="QuantumGuard AI - Blockchain Analytics",
+    page_icon="🛡️",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 import pandas as pd
 import numpy as np
 import io
@@ -60,6 +68,18 @@ try:
 except ImportError:
     HAS_ENHANCED_UX = False
     st.warning("Enhanced UX features not available")
+
+# Enterprise Security imports
+try:
+    from enterprise_quantum_security import production_quantum_security, enterprise_key_manager
+    from multi_factor_auth import mfa_system, render_mfa_setup_ui, render_mfa_login_ui
+    from api_security_middleware import streamlit_security
+    from backup_disaster_recovery import backup_manager, disaster_recovery_manager
+    from security_management_ui import render_security_center
+    HAS_ENTERPRISE_SECURITY = True
+except ImportError:
+    HAS_ENTERPRISE_SECURITY = False
+    st.warning("Enterprise security features not available")
 
 # PDF Generation imports
 from reportlab.pdfgen import canvas
@@ -261,13 +281,7 @@ def create_date_filter_controls(key_prefix: str = "") -> tuple[date, date]:
         else:
             return None, None
 
-# Set page configuration
-st.set_page_config(
-    page_title="QuantumGuard AI - Blockchain Analytics",
-    page_icon="🛡️",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
+# Page configuration already set at the top of the file
 
 # Custom CSS for enhanced UI
 st.markdown("""
@@ -626,11 +640,25 @@ with st.sidebar:
         except Exception as e:
             st.error(f"Error loading saved searches: {str(e)}")
     
-    app_mode = st.radio(
-        "Select Analysis Mode", 
-        ["🔍 New Analysis", "📊 Saved Analyses"],
-        help="Choose whether to start a new analysis or view previously saved results"
-    )
+    # Add security options if enterprise security is available
+    if HAS_ENHANCED_UX and HAS_ENTERPRISE_SECURITY:
+        app_mode = st.radio(
+            "Select Mode", 
+            ["🔍 New Analysis", "📊 Saved Analyses", "📊 Live Dashboard", "🔍 Advanced Search", "🛡️ Security Center"],
+            help="Choose analysis mode, enhanced features, or security management"
+        )
+    elif HAS_ENHANCED_UX:
+        app_mode = st.radio(
+            "Select Mode", 
+            ["🔍 New Analysis", "📊 Saved Analyses", "📊 Live Dashboard", "🔍 Advanced Search"],
+            help="Choose analysis mode or enhanced features"
+        )
+    else:
+        app_mode = st.radio(
+            "Select Analysis Mode", 
+            ["🔍 New Analysis", "📊 Saved Analyses"],
+            help="Choose whether to start a new analysis or view previously saved results"
+        )
     
     # Add system status panel
     st.markdown("---")
@@ -696,6 +724,13 @@ with st.sidebar:
                 query_builder.render_saved_searches_manager()
         else:
             st.error("⛔ Access denied: Advanced search requires analysis creation permissions")
+    
+    # Enhanced UX: Security Center
+    elif app_mode == "🛡️ Security Center" and HAS_ENTERPRISE_SECURITY:
+        if rbac.has_permission(Permission.MANAGE_SYSTEM):
+            render_security_center()
+        else:
+            st.error("⛔ Access denied: Security management requires system administration permissions")
     
     elif app_mode == "🔍 New Analysis":
         st.session_state.view_saved_analysis = False
