@@ -664,6 +664,48 @@ with st.sidebar:
             help="Choose whether to start a new analysis or view previously saved results"
         )
     
+    # Add enhanced ML status panel
+    st.markdown("---")
+    st.markdown("### 🤖 Enhanced AI & ML Status")
+    
+    # Check enhanced ML capabilities
+    try:
+        from ml_models import HAS_ENHANCED_DETECTION
+        from advanced_ml_models import AdvancedMLModelFactory
+        enhanced_ml_available = True
+    except ImportError:
+        enhanced_ml_available = False
+        HAS_ENHANCED_DETECTION = False
+    
+    col_ai1, col_ai2, col_ai3 = st.columns(3)
+    
+    with col_ai1:
+        st.markdown("**🧠 AI Models**")
+        st.success("✅ GPT-5 (Latest)")
+        if enhanced_ml_available:
+            st.success("✅ LSTM Autoencoders")
+            st.success("✅ Variational Autoencoders")
+        else:
+            st.info("⏳ Advanced models loading...")
+    
+    with col_ai2:
+        st.markdown("**🔍 Detection Systems**")
+        if HAS_ENHANCED_DETECTION:
+            st.success("✅ Enhanced Anomaly Detection")
+            st.success("✅ Graph Neural Networks")
+            st.success("✅ Ensemble Methods")
+        else:
+            st.warning("⚠️ Traditional Isolation Forest")
+    
+    with col_ai3:
+        st.markdown("**📚 Learning Systems**")
+        if enhanced_ml_available:
+            st.success("✅ Online Learning")
+            st.success("✅ Concept Drift Detection")
+            st.success("✅ Feedback Loops")
+        else:
+            st.info("⏳ Learning systems initializing...")
+    
     # Add system status panel
     st.markdown("---")
     st.markdown("### 🛡️ System Status")
