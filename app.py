@@ -621,6 +621,145 @@ with st.sidebar:
             st.caption("• Configure analysis settings")
             st.caption("• Run blockchain analysis")
     
+    # ═══════════════════════════════════════════════════════════════
+    # 📊 DATA SOURCE SELECTION - Below AI Assistant
+    # ═══════════════════════════════════════════════════════════════
+    st.markdown("---")
+    st.markdown("### 📊 Data Source")
+    
+    with st.expander("📁 Upload & Configure Data", expanded=True):
+        # Data source selection
+        data_source_sidebar = st.radio(
+            "Select Data Source:",
+            ["📁 File", "🔗 API", "🔍 Cross-Chain"],
+            horizontal=True,
+            help="Choose between file upload, blockchain API, or cross-chain analysis",
+            key="sidebar_data_source"
+        )
+        
+        if data_source_sidebar == "📁 File":
+            uploaded_file_sidebar = st.file_uploader(
+                "Upload transaction file",
+                type=["csv", "xlsx", "json"],
+                help="CSV, Excel, or JSON format",
+                key="sidebar_file_upload"
+            )
+            
+            # Process file immediately
+            if uploaded_file_sidebar is not None:
+                try:
+                    df = None
+                    st.session_state.current_dataset_name = uploaded_file_sidebar.name
+                    
+                    if uploaded_file_sidebar.name.endswith('.csv'):
+                        df = pd.read_csv(uploaded_file_sidebar)
+                    elif uploaded_file_sidebar.name.endswith('.xlsx'):
+                        df = pd.read_excel(uploaded_file_sidebar)
+                    elif uploaded_file_sidebar.name.endswith('.json'):
+                        df = pd.read_json(uploaded_file_sidebar)
+                    
+                    if df is not None and not df.empty:
+                        # Map columns if needed
+                        required_cols = ['from_address', 'to_address']
+                        for col in required_cols:
+                            if col not in df.columns:
+                                if col == 'from_address' and any(c in df.columns for c in ['sender', 'source', 'src']):
+                                    for alt in ['sender', 'source', 'src']:
+                                        if alt in df.columns:
+                                            df['from_address'] = df[alt]
+                                            break
+                                elif col == 'to_address' and any(c in df.columns for c in ['receiver', 'target', 'dst']):
+                                    for alt in ['receiver', 'target', 'dst']:
+                                        if alt in df.columns:
+                                            df['to_address'] = df[alt]
+                                            break
+                        
+                        if 'value' not in df.columns and 'amount' in df.columns:
+                            df['value'] = df['amount']
+                        
+                        st.session_state.df = df
+                        st.session_state.encrypted_data = {"data": df.to_dict()}
+                        st.success(f"✅ {len(df)} transactions loaded")
+                        st.caption(f"📊 {uploaded_file_sidebar.name}")
+                    else:
+                        st.error("File is empty")
+                except Exception as e:
+                    st.error(f"Error: {str(e)}")
+        
+        elif data_source_sidebar == "🔗 API":
+            blockchain_type_sidebar = st.selectbox(
+                "Blockchain:",
+                ["Bitcoin", "Ethereum"],
+                key="sidebar_blockchain_type"
+            )
+            
+            target_address_sidebar = st.text_input(
+                f"{blockchain_type_sidebar} Address:",
+                placeholder="Enter address...",
+                key="sidebar_address"
+            )
+            
+            transaction_limit_sidebar = st.slider(
+                "Limit:",
+                min_value=10,
+                max_value=500,
+                value=100,
+                key="sidebar_limit"
+            )
+            
+            if st.button(f"🔍 Fetch Data", key="sidebar_fetch", use_container_width=True):
+                if target_address_sidebar:
+                    with st.spinner(f"Fetching..."):
+                        try:
+                            if blockchain_type_sidebar == "Bitcoin":
+                                client = node_manager.get_bitcoin_client()
+                                raw_data = client.get_address_transactions(target_address_sidebar, transaction_limit_sidebar)
+                                df = convert_blockchain_data_to_standard_format(raw_data, 'bitcoin')
+                            else:
+                                client = node_manager.get_ethereum_client()
+                                raw_data = client.get_address_transactions(target_address_sidebar, limit=transaction_limit_sidebar)
+                                df = convert_blockchain_data_to_standard_format(raw_data, 'ethereum')
+                            
+                            if not df.empty:
+                                st.session_state.df = df
+                                st.session_state.current_dataset_name = f"{blockchain_type_sidebar}_{target_address_sidebar[:10]}"
+                                st.session_state.encrypted_data = {"data": df.to_dict()}
+                                st.success(f"✅ {len(df)} transactions")
+                            else:
+                                st.error("No data found")
+                        except Exception as e:
+                            st.error(f"Error: {str(e)}")
+                else:
+                    st.warning("Enter address")
+        
+        elif data_source_sidebar == "🔍 Cross-Chain":
+            st.caption("Cross-chain analysis")
+            btc_addr_sidebar = st.text_input("BTC Address:", key="sidebar_btc")
+            eth_addr_sidebar = st.text_input("ETH Address:", key="sidebar_eth")
+            
+            if st.button("Analyze", key="sidebar_cross_chain", use_container_width=True):
+                if btc_addr_sidebar or eth_addr_sidebar:
+                    with st.spinner("Analyzing..."):
+                        try:
+                            analyzer = blockchain_api_clients['cross_chain']
+                            results = analyzer.analyze_address_across_chains(
+                                btc_address=btc_addr_sidebar if btc_addr_sidebar else None,
+                                eth_address=eth_addr_sidebar if eth_addr_sidebar else None
+                            )
+                            st.session_state.cross_chain_results = results
+                            st.success("✅ Complete")
+                        except Exception as e:
+                            st.error(f"Error: {str(e)}")
+                else:
+                    st.warning("Enter at least one address")
+        
+        # Show data status
+        if st.session_state.get('df') is not None:
+            st.markdown("---")
+            st.success(f"📊 **Data Loaded**: {len(st.session_state.df)} transactions")
+            if st.session_state.get('current_dataset_name'):
+                st.caption(f"Dataset: {st.session_state.current_dataset_name}")
+    
     # Address Watchlist Management
     st.markdown("---")
     st.markdown("### 🏷️ Address Watchlist")
@@ -878,337 +1017,124 @@ with st.sidebar:
     elif app_mode == "🔍 New Analysis":
         st.session_state.view_saved_analysis = False
         
-        st.markdown("### 📊 Data Source Selection")
-        st.markdown("Choose your data source for blockchain transaction analysis")
-        
-        # Data source selection
-        data_source = st.radio(
-            "Select Data Source:",
-            ["📁 Upload File", "🔗 Blockchain API", "🔍 Cross-Chain Analysis"],
-            horizontal=True,
-            help="Choose between file upload, direct blockchain API fetch, or cross-chain analysis"
-        )
-        
-        if data_source == "📁 Upload File":
-            st.markdown("#### 📁 File Upload")
-            uploaded_file = st.file_uploader(
-                "Choose your transaction file",
-                type=["csv", "xlsx", "json"],
-                help="Supported formats: CSV, Excel, JSON. Maximum file size: 200MB"
-            )
-        
-        elif data_source == "🔗 Blockchain API":
-            st.markdown("#### 🔗 Direct Blockchain Data")
-            
-            # Check API configuration status
-            api_status = APIKeyManager.check_api_configuration()
-            
-            col1, col2 = st.columns([2, 1])
-            with col1:
-                blockchain_type = st.selectbox(
-                    "Select Blockchain:",
-                    ["Bitcoin", "Ethereum"],
-                    help="Choose the blockchain network to fetch data from"
-                )
-            with col2:
-                if not api_status.get(blockchain_type, False) and blockchain_type == "Ethereum":
-                    st.warning("⚠️ API key required")
-                else:
-                    st.success("✅ Ready")
-            
-            # Address input
-            target_address = st.text_input(
-                f"Enter {blockchain_type} Address:",
-                placeholder=f"Enter a valid {blockchain_type.lower()} address",
-                help=f"Enter the {blockchain_type} address to analyze transactions for"
-            )
-            
-            # Transaction limit
-            transaction_limit = st.slider(
-                "Transaction Limit:",
-                min_value=10,
-                max_value=1000,
-                value=100,
-                help="Maximum number of transactions to fetch"
-            )
-            
-            # Fetch data button
-            if st.button(f"🔍 Fetch {blockchain_type} Data", key="fetch_blockchain_data"):
-                if target_address:
-                    with st.spinner(f"Fetching {blockchain_type} transactions for {target_address[:10]}..."):
-                        try:
-                            if blockchain_type == "Bitcoin":
-                                # Use direct node connection with fallback
-                                client = node_manager.get_bitcoin_client()
-                                raw_data = client.get_address_transactions(target_address, transaction_limit)
-                                df = convert_blockchain_data_to_standard_format(raw_data, 'bitcoin')
-                            else:  # Ethereum
-                                # Use direct node connection with fallback
-                                client = node_manager.get_ethereum_client()
-                                raw_data = client.get_address_transactions(target_address, limit=transaction_limit)
-                                df = convert_blockchain_data_to_standard_format(raw_data, 'ethereum')
-                            
-                            if not df.empty:
-                                st.session_state.df = df
-                                st.session_state.current_dataset_name = f"{blockchain_type}_{target_address[:10]}_{len(df)}txs"
-                                st.session_state.encrypted_data = {"data": df.to_dict()}
-                                st.success(f"✅ Fetched {len(df)} {blockchain_type} transactions successfully!")
-                                
-                                # Show preview
-                                with st.expander("Data Preview", expanded=True):
-                                    st.dataframe(df.head(10))
-                                    st.info(f"Dataset: {len(df)} transactions | Blockchain: {blockchain_type} | Address: {target_address[:10]}...")
-                            else:
-                                st.error("No transactions found for this address")
-                        except Exception as e:
-                            st.error(f"Error fetching {blockchain_type} data: {str(e)}")
-                else:
-                    st.warning("Please enter a valid address")
-        
-        elif data_source == "🔍 Cross-Chain Analysis":
-            st.markdown("#### 🔍 Cross-Chain Transaction Analysis")
-            
-            col1, col2 = st.columns(2)
-            with col1:
-                btc_address = st.text_input(
-                    "Bitcoin Address (Optional):",
-                    placeholder="Enter Bitcoin address",
-                    help="Bitcoin address for cross-chain analysis"
-                )
-            with col2:
-                eth_address = st.text_input(
-                    "Ethereum Address (Optional):",
-                    placeholder="Enter Ethereum address",
-                    help="Ethereum address for cross-chain analysis"
-                )
-            
-            if st.button("🔍 Analyze Cross-Chain Patterns", key="cross_chain_analysis"):
-                if btc_address or eth_address:
-                    with st.spinner("Performing cross-chain analysis..."):
-                        try:
-                            analyzer = blockchain_api_clients['cross_chain']
-                            analysis_results = analyzer.analyze_address_across_chains(
-                                btc_address=btc_address if btc_address else None,
-                                eth_address=eth_address if eth_address else None
-                            )
-                            
-                            # Store results in session state
-                            st.session_state.cross_chain_results = analysis_results
-                            st.session_state.current_dataset_name = f"CrossChain_Analysis_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
-                            
-                            # Display results
-                            st.success("✅ Cross-chain analysis completed!")
-                            
-                            with st.expander("Cross-Chain Analysis Results", expanded=True):
-                                if analysis_results.get('bitcoin_analysis') and analysis_results['bitcoin_analysis'].get('transactions'):
-                                    st.subheader("🟠 Bitcoin Analysis")
-                                    btc_data = analysis_results['bitcoin_analysis']
-                                    col1, col2, col3 = st.columns(3)
-                                    with col1:
-                                        st.metric("Transactions", btc_data.get('transaction_count', 0))
-                                    with col2:
-                                        st.metric("Total Volume", f"{btc_data.get('total_volume', 0):.8f} BTC")
-                                    with col3:
-                                        st.metric("Address", f"{btc_data.get('address', '')[:10]}...")
-                                
-                                if analysis_results.get('ethereum_analysis') and analysis_results['ethereum_analysis'].get('transactions'):
-                                    st.subheader("🔷 Ethereum Analysis")
-                                    eth_data = analysis_results['ethereum_analysis']
-                                    col1, col2, col3 = st.columns(3)
-                                    with col1:
-                                        st.metric("Transactions", eth_data.get('transaction_count', 0))
-                                    with col2:
-                                        st.metric("Token Transfers", eth_data.get('token_transfer_count', 0))
-                                    with col3:
-                                        st.metric("Total Volume", f"{eth_data.get('total_volume_eth', 0):.4f} ETH")
-                                
-                                # Cross-chain patterns
-                                patterns = analysis_results.get('cross_chain_patterns', {})
-                                if patterns:
-                                    st.subheader("🔍 Cross-Chain Patterns")
-                                    col1, col2 = st.columns(2)
-                                    with col1:
-                                        if patterns.get('timing_correlation'):
-                                            st.warning("⚠️ Timing correlation detected")
-                                        else:
-                                            st.success("✅ No timing correlation")
-                                    with col2:
-                                        if patterns.get('amount_correlation'):
-                                            st.warning("⚠️ Amount correlation detected")
-                                        else:
-                                            st.success("✅ No amount correlation")
-                                    
-                                    if patterns.get('suspicious_patterns'):
-                                        st.error("🚨 Suspicious patterns found:")
-                                        for pattern in patterns['suspicious_patterns']:
-                                            st.error(f"• {pattern}")
-                                    
-                                    risk_score = patterns.get('risk_score', 0)
-                                    if risk_score > 0.5:
-                                        st.error(f"🔴 High Risk Score: {risk_score:.1%}")
-                                    elif risk_score > 0.2:
-                                        st.warning(f"🟡 Medium Risk Score: {risk_score:.1%}")
-                                    else:
-                                        st.success(f"🟢 Low Risk Score: {risk_score:.1%}")
-                        
-                        except Exception as e:
-                            st.error(f"Error in cross-chain analysis: {str(e)}")
-                else:
-                    st.warning("Please enter at least one address (Bitcoin or Ethereum)")
-        
-        # Process uploaded file (existing logic)
-        if data_source == "📁 Upload File" and 'uploaded_file' in locals() and uploaded_file is not None:
-            try:
-                df = None
-                # Store the dataset name
-                st.session_state.current_dataset_name = uploaded_file.name
-                
-                if uploaded_file.name.endswith('.csv'):
-                    df = pd.read_csv(uploaded_file)
-                elif uploaded_file.name.endswith('.xlsx'):
-                    df = pd.read_excel(uploaded_file)
-                elif uploaded_file.name.endswith('.json'):
-                    df = pd.read_json(uploaded_file)
-                
-                if df is not None and not df.empty:
-                    # Check if we have the minimum required columns
-                    required_cols = ['from_address', 'to_address']
-                    
-                    # Try to map columns if possible
-                    for col in required_cols:
-                        if col not in df.columns:
-                            if col == 'from_address' and any(c in df.columns for c in ['sender', 'source', 'src']):
-                                for alt in ['sender', 'source', 'src']:
-                                    if alt in df.columns:
-                                        df['from_address'] = df[alt]
-                                        break
-                            elif col == 'to_address' and any(c in df.columns for c in ['receiver', 'target', 'dst']):
-                                for alt in ['receiver', 'target', 'dst']:
-                                    if alt in df.columns:
-                                        df['to_address'] = df[alt]
-                                        break
-                    
-                    # Add the value column if missing
-                    if 'value' not in df.columns and 'amount' in df.columns:
-                        df['value'] = df['amount']
-                    
-                    # Save to session state
-                    st.session_state.df = df
-                    st.success(f"File uploaded successfully! Found {len(df)} transactions.")
-                    
-                    # Store the original data without encryption for reliability
-                    st.session_state.encrypted_data = {"data": df.to_dict()}
-                    
-                    # Calculate AUSTRAC risk score immediately after upload
-                    with st.spinner("Calculating AUSTRAC compliance risk score..."):
-                        st.session_state.austrac_risk_score = calculate_austrac_risk_score(df)
-                    
-                    # Display enhanced AUSTRAC risk score
-                    risk_data = st.session_state.austrac_risk_score
-                    risk_percentage = risk_data["risk_percentage"]
-                    risk_color = risk_data["risk_color"]
-                    
-                    # Determine CSS class based on risk level
-                    if risk_percentage >= 80:
-                        risk_class = "risk-score-critical"
-                    elif risk_percentage >= 60:
-                        risk_class = "risk-score-critical"
-                    elif risk_percentage >= 40:
-                        risk_class = "risk-score-high"
-                    elif risk_percentage >= 20:
-                        risk_class = "risk-score-medium"
-                    else:
-                        risk_class = "risk-score-low"
-                    
-                    st.markdown("---")
-                    
-                    # Enhanced risk score display with custom styling
-                    st.markdown(f"""
-                    <div class="risk-score-container {risk_class}">
-                        <h2 style="margin: 0; font-size: 3rem;">{risk_percentage}%</h2>
-                        <h3 style="margin: 0.5rem 0;">AUSTRAC Compliance Risk Score</h3>
-                        <p style="margin: 0; font-size: 1.2rem;">{risk_data['risk_status']}</p>
-                    </div>
-                    """, unsafe_allow_html=True)
-                    
-                    # Professional horizontal metrics display
-                    st.markdown("""
-                    <div style="display: flex; justify-content: space-between; gap: 1rem; margin: 2rem 0;">
-                        <div class="metric-card" style="flex: 1;">
-                            <h4>📊 Analyzed</h4>
-                            <h2>{:,}</h2>
-                            <p>Transactions</p>
-                        </div>
-                        <div class="metric-card" style="flex: 1;">
-                            <h4>⚠️ High Risk</h4>
-                            <h2>{}</h2>
-                            <p>Transactions</p>
-                        </div>
-                        <div class="metric-card" style="flex: 1;">
-                            <h4>📋 Reports Due</h4>
-                            <h2>{}</h2>
-                            <p>AUSTRAC Reports</p>
-                        </div>
-                        <div class="metric-card" style="flex: 1;">
-                            <h4>🎯 Risk Level</h4>
-                            <h2>{}</h2>
-                            <p>Classification</p>
-                        </div>
-                    </div>
-                    """.format(
-                        risk_data['transactions_analyzed'],
-                        risk_data['high_risk_count'], 
-                        risk_data['reporting_required'],
-                        risk_data['risk_level']
-                    ), unsafe_allow_html=True)
-                    
-                    # Show summary in expandable section
-                    with st.expander("📋 Detailed AUSTRAC Assessment", expanded=False):
-                        st.markdown(risk_data["summary_message"])
-                        
-                        st.markdown("**🔍 Compliance Recommendations:**")
-                        for rec in risk_data["compliance_recommendations"]:
-                            st.markdown(f"• {rec}")
-                    
-                    st.markdown("---")
-                    st.info("👇 Use the analysis settings below to run detailed blockchain analysis")
-                else:
-                    st.error("The uploaded file appears to be empty or has no valid data.")
-            except Exception as e:
-                st.error(f"Error loading file: {str(e)}")
-                st.expander("Technical Details").code(traceback.format_exc())
-        
-        st.markdown("---")
+        # Note: Data source selection has been moved to sidebar for better UX
         st.markdown("### ⚙️ Analysis Configuration")
-        st.markdown("Configure the parameters for your blockchain analysis")
         
-        # Enhanced settings with better UI
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            risk_threshold = st.slider(
-                "🎯 Risk Assessment Threshold", 
-                0.0, 1.0, 0.7, 0.05,
-                help="Higher values will identify fewer but higher-confidence risks"
-            )
+        # Check if data is loaded
+        if st.session_state.get('df') is not None:
+            st.success(f"✅ Data loaded: {len(st.session_state.df)} transactions from {st.session_state.get('current_dataset_name', 'dataset')}")
             
-        with col2:
-            anomaly_sensitivity = st.slider(
-                "🔍 Anomaly Detection Sensitivity", 
-                0.0, 1.0, 0.8, 0.05,
-                help="Higher values will detect more anomalies but may increase false positives"
+            # Display AUSTRAC risk score if available
+            if st.session_state.get('austrac_risk_score') is None and st.session_state.get('df') is not None:
+                with st.spinner("Calculating AUSTRAC compliance risk score..."):
+                    st.session_state.austrac_risk_score = calculate_austrac_risk_score(st.session_state.df)
+            
+            if st.session_state.get('austrac_risk_score'):
+                risk_data = st.session_state.austrac_risk_score
+                risk_percentage = risk_data["risk_percentage"]
+                
+                # Determine CSS class based on risk level
+                if risk_percentage >= 80:
+                    risk_class = "risk-score-critical"
+                elif risk_percentage >= 60:
+                    risk_class = "risk-score-critical"
+                elif risk_percentage >= 40:
+                    risk_class = "risk-score-high"
+                elif risk_percentage >= 20:
+                    risk_class = "risk-score-medium"
+                else:
+                    risk_class = "risk-score-low"
+                
+                st.markdown("---")
+                
+                # Enhanced risk score display
+                st.markdown(f"""
+                <div class="risk-score-container {risk_class}">
+                    <h2 style="margin: 0; font-size: 3rem;">{risk_percentage}%</h2>
+                    <h3 style="margin: 0.5rem 0;">AUSTRAC Compliance Risk Score</h3>
+                    <p style="margin: 0; font-size: 1.2rem;">{risk_data['risk_status']}</p>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                # Professional metrics display
+                st.markdown("""
+                <div style="display: flex; justify-content: space-between; gap: 1rem; margin: 2rem 0;">
+                    <div class="metric-card" style="flex: 1;">
+                        <h4>📊 Analyzed</h4>
+                        <h2>{:,}</h2>
+                        <p>Transactions</p>
+                    </div>
+                    <div class="metric-card" style="flex: 1;">
+                        <h4>⚠️ High Risk</h4>
+                        <h2>{}</h2>
+                        <p>Transactions</p>
+                    </div>
+                    <div class="metric-card" style="flex: 1;">
+                        <h4>📋 Reports Due</h4>
+                        <h2>{}</h2>
+                        <p>AUSTRAC Reports</p>
+                    </div>
+                    <div class="metric-card" style="flex: 1;">
+                        <h4>🎯 Risk Level</h4>
+                        <h2>{}</h2>
+                        <p>Classification</p>
+                    </div>
+                </div>
+                """.format(
+                    risk_data['transactions_analyzed'],
+                    risk_data['high_risk_count'], 
+                    risk_data['reporting_required'],
+                    risk_data['risk_level']
+                ), unsafe_allow_html=True)
+                
+                # Show summary
+                with st.expander("📋 Detailed AUSTRAC Assessment", expanded=False):
+                    st.markdown(risk_data["summary_message"])
+                    st.markdown("**🔍 Compliance Recommendations:**")
+                    for rec in risk_data["compliance_recommendations"]:
+                        st.markdown(f"• {rec}")
+                
+                st.markdown("---")
+        else:
+            st.info("👈 Upload data using the sidebar to begin analysis")
+        
+        # Analysis configuration section (only show if data is loaded)
+        if st.session_state.get('df') is not None:
+            st.markdown("### ⚙️ Configure Analysis Parameters")
+            
+            # Enhanced settings with better UI
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                risk_threshold = st.slider(
+                    "🎯 Risk Assessment Threshold", 
+                    0.0, 1.0, 0.7, 0.05,
+                    help="Higher values will identify fewer but higher-confidence risks"
+                )
+                
+            with col2:
+                anomaly_sensitivity = st.slider(
+                    "🔍 Anomaly Detection Sensitivity", 
+                    0.0, 1.0, 0.8, 0.05,
+                    help="Higher values will detect more anomalies but may increase false positives"
+                )
+            
+            # Create a progress placeholder
+            progress_placeholder = st.empty()
+            
+            # Enhanced run analysis button
+            st.markdown("### 🚀 Start Analysis")
+            run_analysis = st.button(
+                "🔬 Run Complete Blockchain Analysis",
+                help="Start comprehensive analysis including risk assessment, anomaly detection, and network analysis"
             )
-        
-        # Create a progress placeholder
-        progress_placeholder = st.empty()
-        
-        # Enhanced run analysis button
-        st.markdown("### 🚀 Start Analysis")
-        run_analysis = st.button(
-            "🔬 Run Complete Blockchain Analysis",
-            help="Start comprehensive analysis including risk assessment, anomaly detection, and network analysis"
-        )
-        
+        else:
+            # Show placeholder when no data
+            run_analysis = False
+            progress_placeholder = None
+            risk_threshold = 0.7
+            anomaly_sensitivity = 0.8
+    
     elif app_mode == "📊 Saved Analyses":
         st.session_state.view_saved_analysis = True
         st.markdown("### 📊 Saved Analysis Sessions")
