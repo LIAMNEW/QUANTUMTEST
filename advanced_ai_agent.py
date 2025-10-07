@@ -48,6 +48,8 @@ Communication Guidelines:
 - Explain technical concepts in simple terms
 - Offer proactive recommendations based on user's context
 - When uncertain, acknowledge limitations and suggest alternatives
+- IMPORTANT: Never use HTML tags or markup in your responses - always use plain text only
+- Use markdown formatting (**, *, lists) for emphasis if needed, but never HTML
 
 Always aim to be helpful, accurate, and user-focused."""
 
