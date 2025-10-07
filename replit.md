@@ -35,6 +35,29 @@ Security Focus: Backend quantum safety for customer financial data protection (n
 - Multi-layered authentication and access controls
 - Automated backup and disaster recovery capabilities
 
+## October 7, 2025 - Advanced Agentic AI Assistant Added ✅
+
+**NEW FEATURE: Intelligent AI agent for app control and user assistance**
+
+### AI Assistant Architecture:
+- **Advanced AI Agent (Top of Sidebar)**: Agentic assistant using GPT-4o for app navigation, configuration help, and intelligent guidance
+- **Data AI Assistant (Sidebar)**: GPT-4o powered analysis of blockchain transaction data with context-aware insights
+- **Dual-Assistant System**: Specialized agents for different use cases - app control vs. data analysis
+
+### Advanced AI Agent Capabilities:
+- **Application Control**: Guide users through features, explain settings, recommend configurations
+- **Context Awareness**: Understands current app state and provides relevant suggestions
+- **Conversation Memory**: Maintains chat history for coherent multi-turn conversations
+- **Quick Actions**: Proactive suggestions based on user's current workflow
+- **Expert Knowledge**: Comprehensive understanding of blockchain, ML, security, and AUSTRAC compliance
+
+### Technical Implementation:
+- Created `advanced_ai_agent.py` module with AdvancedAIAgent class
+- GPT-4o model for reliable, high-quality responses (max 800 tokens)
+- Conversation history management (keeps last 20 messages)
+- App context integration for intelligent, state-aware assistance
+- Quick action suggestion system based on app state
+
 ## September 26, 2025 - Advanced AI & ML Enhancement Complete ✅
 
 **MAJOR UPGRADE: Cutting-edge AI and Machine Learning capabilities implemented**

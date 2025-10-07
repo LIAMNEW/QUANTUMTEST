@@ -523,6 +523,104 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
     
+    # ═══════════════════════════════════════════════════════════════
+    # 🤖 ADVANCED AI ASSISTANT - Top of Sidebar
+    # ═══════════════════════════════════════════════════════════════
+    st.markdown("### 🧠 AI Agent")
+    
+    from advanced_ai_agent import get_agent_response, get_quick_suggestions
+    
+    with st.expander("💬 Advanced AI Assistant", expanded=True):
+        st.markdown("""
+        <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%); 
+                    padding: 1rem; border-radius: 8px; margin-bottom: 0.5rem; border: 1px solid rgba(102, 126, 234, 0.3);">
+            <p style="margin: 0; font-size: 0.85rem; color: #555;">
+                🚀 <strong>Agentic AI Assistant</strong> - I can help you navigate the app, configure settings, analyze data, and answer questions about blockchain security.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # AI Chat Interface
+        agent_query = st.text_area(
+            "Ask me anything:",
+            placeholder="e.g., 'How do I upload data?' or 'Explain quantum security' or 'What should I do next?'",
+            height=80,
+            key="advanced_agent_query",
+            label_visibility="collapsed"
+        )
+        
+        col_send, col_clear = st.columns([3, 1])
+        
+        with col_send:
+            send_button = st.button("🚀 Ask AI Agent", type="primary", use_container_width=True)
+        
+        with col_clear:
+            clear_button = st.button("🔄", help="Clear conversation", use_container_width=True)
+        
+        # Handle agent interactions
+        if send_button and agent_query:
+            with st.spinner("🧠 AI Agent thinking..."):
+                try:
+                    # Build app context
+                    app_context = {
+                        "has_data": st.session_state.get('df') is not None,
+                        "analysis_complete": st.session_state.get('analysis_results') is not None,
+                        "high_risk_found": False,
+                        "anomalies_found": False
+                    }
+                    
+                    # Check for high risk and anomalies
+                    if st.session_state.get('risk_assessment') is not None:
+                        high_risk_count = len(st.session_state.risk_assessment[
+                            st.session_state.risk_assessment['risk_score'] > 0.7
+                        ]) if 'risk_score' in st.session_state.risk_assessment.columns else 0
+                        app_context["high_risk_found"] = high_risk_count > 0
+                    
+                    if st.session_state.get('anomalies') is not None:
+                        app_context["anomalies_found"] = len(st.session_state.anomalies) > 0
+                    
+                    # Get AI response
+                    agent_response = get_agent_response(agent_query, app_context)
+                    
+                    # Display response
+                    st.markdown("**🎯 AI Agent Response:**")
+                    st.markdown(f"""
+                    <div style="background: #f0f4ff; padding: 1rem; border-radius: 8px; 
+                                border-left: 3px solid #667eea; margin: 0.5rem 0;">
+                        {agent_response}
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                except Exception as e:
+                    st.error(f"Agent Error: {str(e)}")
+        
+        elif send_button and not agent_query:
+            st.warning("💭 Please enter a question for the AI agent.")
+        
+        if clear_button:
+            from advanced_ai_agent import advanced_agent
+            advanced_agent.reset_conversation()
+            st.success("✅ Conversation cleared!")
+            st.rerun()
+        
+        # Quick action suggestions
+        st.markdown("**💡 Quick Actions:**")
+        try:
+            app_state = {
+                "has_data": st.session_state.get('df') is not None,
+                "analysis_complete": st.session_state.get('analysis_results') is not None,
+                "high_risk_found": False,
+                "anomalies_found": False
+            }
+            
+            suggestions = get_quick_suggestions(app_state)
+            for suggestion in suggestions[:3]:  # Show top 3 suggestions
+                st.caption(f"• {suggestion}")
+        except:
+            st.caption("• Upload data to begin")
+            st.caption("• Configure analysis settings")
+            st.caption("• Run blockchain analysis")
+    
     # Address Watchlist Management
     st.markdown("---")
     st.markdown("### 🏷️ Address Watchlist")
@@ -705,75 +803,6 @@ with st.sidebar:
             st.success("✅ Feedback Loops")
         else:
             st.info("⏳ Learning systems initializing...")
-    
-    # AI Assistant - Moved to top for better visibility
-    st.markdown("---")
-    st.markdown("### 🤖 AI Assistant")
-    
-    # Create an always-visible AI assistant interface
-    with st.container():
-        st.markdown("""
-        <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%); 
-                    padding: 1.5rem; border-radius: 10px; margin: 1rem 0; border: 1px solid rgba(102, 126, 234, 0.2);">
-            <h4 style="margin: 0 0 1rem 0; color: #667eea;">💡 Ask your AI-powered blockchain analyst anything</h4>
-            <p style="margin: 0; color: #666; font-size: 0.9rem;">
-                Get instant insights about your transaction data using GPT-5 powered analysis
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # AI Query Interface
-        col_ai_query, col_ai_button = st.columns([4, 1])
-        
-        with col_ai_query:
-            ai_query = st.text_input(
-                "Ask about your blockchain data:",
-                placeholder="e.g., 'Show me high-risk transactions' or 'What patterns do you see?'",
-                label_visibility="collapsed",
-                key="main_ai_query"
-            )
-        
-        with col_ai_button:
-            st.markdown("<br>", unsafe_allow_html=True)  # Align button with input
-            ai_search_button = st.button("🔍 Analyze", type="primary", use_container_width=True)
-        
-        # AI Response Area
-        if ai_search_button and ai_query:
-            if 'df' in st.session_state and st.session_state.df is not None:
-                with st.spinner("🧠 GPT-5 is analyzing your data..."):
-                    try:
-                        # Get additional context if available
-                        risk_data = st.session_state.get('risk_assessment', None)
-                        anomalies = st.session_state.get('anomaly_indices', None)
-                        network_metrics = st.session_state.get('network_metrics', None)
-                        
-                        # Use AI search with all available context
-                        ai_response = ai_transaction_search(
-                            ai_query,
-                            st.session_state.df,
-                            risk_data,
-                            anomalies,
-                            network_metrics
-                        )
-                        
-                        # Display response with enhanced styling
-                        st.markdown("### 🎯 AI Analysis Complete")
-                        with st.container():
-                            st.markdown(f"""
-                            <div style="background: #f8f9ff; padding: 1.5rem; border-radius: 10px; 
-                                        border-left: 4px solid #667eea; margin: 1rem 0;">
-                                {ai_response}
-                            </div>
-                            """, unsafe_allow_html=True)
-                            
-                    except Exception as e:
-                        st.error(f"AI Analysis Error: {str(e)}")
-                        st.info("This has been fixed! Please try your query again.")
-            else:
-                st.warning("🔍 Please upload and analyze transaction data first to use the AI assistant.")
-        
-        elif ai_search_button and not ai_query:
-            st.warning("💭 Please enter a question for the AI assistant.")
     
     # Add system status panel
     st.markdown("---")
