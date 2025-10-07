@@ -532,10 +532,20 @@ with st.sidebar:
     
     with st.expander("💬 Advanced AI Assistant", expanded=True):
         st.markdown("""
-        <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%); 
-                    padding: 1rem; border-radius: 8px; margin-bottom: 0.5rem; border: 1px solid rgba(102, 126, 234, 0.3);">
-            <p style="margin: 0; font-size: 0.85rem; color: #555;">
-                🚀 <strong>Agentic AI Assistant</strong> - I can help you navigate the app, configure settings, analyze data, and answer questions about blockchain security.
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                    padding: 1.2rem; 
+                    border-radius: 12px; 
+                    margin-bottom: 0.8rem; 
+                    box-shadow: 0 4px 6px rgba(102, 126, 234, 0.3);">
+            <p style="margin: 0; 
+                      font-size: 0.9rem; 
+                      color: #ffffff; 
+                      font-weight: 500;
+                      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);">
+                🤖 <strong>Agentic AI Assistant</strong><br>
+                <span style="font-size: 0.85rem; opacity: 0.95;">
+                    I can help navigate the app, configure settings, analyze data, and answer blockchain questions.
+                </span>
             </p>
         </div>
         """, unsafe_allow_html=True)
@@ -582,11 +592,17 @@ with st.sidebar:
                     # Get AI response
                     agent_response = get_agent_response(agent_query, app_context)
                     
-                    # Display response
+                    # Display response with enhanced styling
                     st.markdown("**🎯 AI Agent Response:**")
                     st.markdown(f"""
-                    <div style="background: #f0f4ff; padding: 1rem; border-radius: 8px; 
-                                border-left: 3px solid #667eea; margin: 0.5rem 0;">
+                    <div style="background: linear-gradient(135deg, #f0f4ff 0%, #e8f0ff 100%); 
+                                padding: 1.2rem; 
+                                border-radius: 10px; 
+                                border-left: 4px solid #667eea; 
+                                margin: 0.5rem 0;
+                                box-shadow: 0 2px 4px rgba(102, 126, 234, 0.1);
+                                color: #1a1a1a;
+                                line-height: 1.6;">
                         {agent_response}
                     </div>
                     """, unsafe_allow_html=True)
@@ -603,8 +619,22 @@ with st.sidebar:
             st.success("✅ Conversation cleared!")
             st.rerun()
         
-        # Quick action suggestions
-        st.markdown("**💡 Quick Actions:**")
+        # Quick action suggestions with better styling
+        st.markdown("""
+        <div style="margin-top: 0.8rem; 
+                    padding: 0.8rem; 
+                    background: rgba(102, 126, 234, 0.05); 
+                    border-radius: 8px;
+                    border: 1px solid rgba(102, 126, 234, 0.15);">
+            <p style="margin: 0 0 0.5rem 0; 
+                      font-weight: 600; 
+                      color: #667eea; 
+                      font-size: 0.85rem;">
+                💡 Quick Actions
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+        
         try:
             app_state = {
                 "has_data": st.session_state.get('df') is not None,
@@ -615,11 +645,24 @@ with st.sidebar:
             
             suggestions = get_quick_suggestions(app_state)
             for suggestion in suggestions[:3]:  # Show top 3 suggestions
-                st.caption(f"• {suggestion}")
+                st.markdown(f"""
+                <p style="margin: 0.3rem 0; 
+                          padding-left: 0.5rem; 
+                          color: #555; 
+                          font-size: 0.8rem;">
+                    • {suggestion}
+                </p>
+                """, unsafe_allow_html=True)
         except:
-            st.caption("• Upload data to begin")
-            st.caption("• Configure analysis settings")
-            st.caption("• Run blockchain analysis")
+            for suggestion in ["• Upload data to begin", "• Configure analysis settings", "• Run blockchain analysis"]:
+                st.markdown(f"""
+                <p style="margin: 0.3rem 0; 
+                          padding-left: 0.5rem; 
+                          color: #555; 
+                          font-size: 0.8rem;">
+                    {suggestion}
+                </p>
+                """, unsafe_allow_html=True)
     
     # ═══════════════════════════════════════════════════════════════
     # 📊 DATA SOURCE SELECTION - Below AI Assistant
@@ -901,47 +944,6 @@ with st.sidebar:
             help="Choose whether to start a new analysis or view previously saved results"
         )
     
-    # Add enhanced ML status panel
-    st.markdown("---")
-    st.markdown("### 🤖 Enhanced AI & ML Status")
-    
-    # Check enhanced ML capabilities
-    try:
-        from ml_models import HAS_ENHANCED_DETECTION
-        from advanced_ml_models import AdvancedMLModelFactory
-        enhanced_ml_available = True
-    except ImportError:
-        enhanced_ml_available = False
-        HAS_ENHANCED_DETECTION = False
-    
-    col_ai1, col_ai2, col_ai3 = st.columns(3)
-    
-    with col_ai1:
-        st.markdown("**🧠 AI Models**")
-        st.success("✅ GPT-5 (Latest)")
-        if enhanced_ml_available:
-            st.success("✅ LSTM Autoencoders")
-            st.success("✅ Variational Autoencoders")
-        else:
-            st.info("⏳ Advanced models loading...")
-    
-    with col_ai2:
-        st.markdown("**🔍 Detection Systems**")
-        if HAS_ENHANCED_DETECTION:
-            st.success("✅ Enhanced Anomaly Detection")
-            st.success("✅ Graph Neural Networks")
-            st.success("✅ Ensemble Methods")
-        else:
-            st.warning("⚠️ Traditional Isolation Forest")
-    
-    with col_ai3:
-        st.markdown("**📚 Learning Systems**")
-        if enhanced_ml_available:
-            st.success("✅ Online Learning")
-            st.success("✅ Concept Drift Detection")
-            st.success("✅ Feedback Loops")
-        else:
-            st.info("⏳ Learning systems initializing...")
     
     # Add system status panel
     st.markdown("---")
