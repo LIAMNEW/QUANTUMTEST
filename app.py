@@ -1829,78 +1829,200 @@ else:
                 st.warning("No timeline data available")
                 
         with tab5:
-            # Enhanced AI Insights Tab
+            # Initialize chat history if not exists
+            if 'ai_chat_history' not in st.session_state:
+                st.session_state.ai_chat_history = []
+            
+            # ChatGPT-style header
             st.markdown("""
-            <div style="background: linear-gradient(135deg, rgba(63, 81, 181, 0.1) 0%, rgba(48, 63, 159, 0.1) 100%); padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem;">
-                <h3>🔍 AI-Powered Transaction Insights</h3>
-                <p>Ask natural language questions about your blockchain data and get intelligent analysis powered by advanced AI. The system understands context and provides detailed explanations.</p>
+            <div style="background: linear-gradient(135deg, #10a37f 0%, #0d8a6a 100%); 
+                        padding: 1.5rem; 
+                        border-radius: 12px 12px 0 0; 
+                        margin-bottom: 0;
+                        box-shadow: 0 2px 8px rgba(16, 163, 127, 0.3);">
+                <h2 style="color: white; 
+                           margin: 0; 
+                           font-size: 1.8rem;
+                           font-weight: 600;">
+                    💬 AI Transaction Insights
+                </h2>
+                <p style="color: rgba(255, 255, 255, 0.9); 
+                          margin: 0.5rem 0 0 0;
+                          font-size: 0.95rem;">
+                    Ask questions about your blockchain data in natural language
+                </p>
             </div>
             """, unsafe_allow_html=True)
             
-            # AI Capabilities Guide
-            st.markdown("### What You Can Ask")
-            ai_col1, ai_col2, ai_col3 = st.columns(3)
-            with ai_col1:
-                st.info("**Pattern Analysis** 🔍 'What patterns do you see in the data?'")
-            with ai_col2:
-                st.info("**Risk Analysis** ⚠️ 'Which transactions are most concerning?'")
-            with ai_col3:
-                st.info("**Statistical Queries** 📊 'What are the key statistics?'")
+            # Chat container with messages
+            st.markdown("""
+            <div style="background: #f7f7f8; 
+                        padding: 1.5rem; 
+                        border-radius: 0 0 12px 12px;
+                        min-height: 400px;
+                        max-height: 500px;
+                        overflow-y: auto;
+                        margin-bottom: 1rem;
+                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+            """, unsafe_allow_html=True)
             
-            # Sample questions
-            st.markdown("### Sample Questions to Try")
-            sample_questions = [
-                "Which transactions have the highest risk scores?",
-                "Are there any unusual patterns in the transactions?", 
-                "What is the average transaction value?",
-                "Show me transactions between the most active addresses",
-                "What time patterns do you see in the transaction data?",
-                "Are there any concerning anomalies I should investigate?"
-            ]
+            # Display chat history
+            if len(st.session_state.ai_chat_history) == 0:
+                # Welcome message
+                st.markdown("""
+                <div style="background: white; 
+                            padding: 1.5rem; 
+                            border-radius: 12px; 
+                            margin: 1rem 0;
+                            border-left: 4px solid #10a37f;
+                            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
+                    <p style="color: #1a1a1a; 
+                              margin: 0 0 0.5rem 0;
+                              font-weight: 600;">
+                        👋 Welcome to AI Insights!
+                    </p>
+                    <p style="color: #666; 
+                              margin: 0;
+                              font-size: 0.9rem;
+                              line-height: 1.5;">
+                        I can help you analyze your blockchain data. Try asking questions like:
+                    </p>
+                    <ul style="color: #666; 
+                               margin: 0.5rem 0 0 1.5rem;
+                               font-size: 0.9rem;
+                               line-height: 1.6;">
+                        <li>Which transactions have the highest risk scores?</li>
+                        <li>Are there any unusual patterns in the transactions?</li>
+                        <li>What is the average transaction value?</li>
+                        <li>Show me transactions between the most active addresses</li>
+                    </ul>
+                </div>
+                """, unsafe_allow_html=True)
+            else:
+                # Display conversation history
+                for i, message in enumerate(st.session_state.ai_chat_history):
+                    if message['role'] == 'user':
+                        # User message (right aligned, blue)
+                        st.markdown(f"""
+                        <div style="display: flex; 
+                                    justify-content: flex-end; 
+                                    margin: 1rem 0;">
+                            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                                        color: white; 
+                                        padding: 1rem 1.25rem; 
+                                        border-radius: 18px 18px 4px 18px;
+                                        max-width: 70%;
+                                        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+                                        font-size: 0.95rem;
+                                        line-height: 1.5;">
+                                <strong>You</strong><br>
+                                {message['content']}
+                            </div>
+                        </div>
+                        """, unsafe_allow_html=True)
+                    else:
+                        # AI message (left aligned, white/green)
+                        st.markdown(f"""
+                        <div style="display: flex; 
+                                    justify-content: flex-start; 
+                                    margin: 1rem 0;">
+                            <div style="background: white; 
+                                        color: #1a1a1a; 
+                                        padding: 1rem 1.25rem; 
+                                        border-radius: 18px 18px 18px 4px;
+                                        max-width: 85%;
+                                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                                        border-left: 3px solid #10a37f;
+                                        font-size: 0.95rem;
+                                        line-height: 1.6;">
+                                <strong style="color: #10a37f;">🤖 AI Assistant</strong><br><br>
+                                {message['content'].replace(chr(10), '<br>')}
+                            </div>
+                        </div>
+                        """, unsafe_allow_html=True)
             
-            selected_question = st.selectbox("Choose a sample question or type your own:", [""] + sample_questions)
+            st.markdown("</div>", unsafe_allow_html=True)
             
-            # Enhanced search input
-            search_query = st.text_input(
-                "Ask your question about the blockchain transactions:",
-                value=selected_question,
-                key="new_analysis_search_query",
-                help="Type any question about your transaction data in natural language"
-            )
-            
-            if st.button("Search", key="new_analysis_search_button"):
-                if search_query:
-                    with st.spinner("Analyzing your query with AI..."):
-                        try:
-                            # Use the AI search function
-                            response = ai_transaction_search(
-                                search_query,
-                                st.session_state.df,
-                                st.session_state.risk_assessment,
-                                st.session_state.anomalies,
-                                st.session_state.network_metrics
-                            )
-                            
-                            # Store the result in session state
-                            st.session_state.search_result = response
-                            
-                            # Display the response
-                            st.markdown("### AI Analysis Results")
-                            st.markdown(response)
-                        except Exception as e:
-                            st.error(f"Error performing AI search: {str(e)}")
-                            st.expander("Technical Details").code(traceback.format_exc())
-                else:
-                    st.warning("Please enter a search query.")
-            
-            # Display previous search result if available
-            if 'search_result' in st.session_state and st.session_state.search_result and not search_query:
-                st.markdown("### Previous Search Results")
-                st.markdown(st.session_state.search_result)
+            # Quick suggestions (pill buttons)
+            if len(st.session_state.ai_chat_history) == 0:
+                st.markdown("##### 💡 Quick Questions")
+                col1, col2, col3 = st.columns(3)
                 
-                # Option to clear results
-                if st.button("Clear Results"):
-                    st.session_state.search_result = None
+                sample_questions = [
+                    "Highest risk transactions",
+                    "Unusual patterns detected",
+                    "Average transaction value",
+                    "Most active addresses",
+                    "Time-based patterns",
+                    "Concerning anomalies"
+                ]
+                
+                for idx, question in enumerate(sample_questions[:3]):
+                    with [col1, col2, col3][idx]:
+                        if st.button(f"💬 {question}", key=f"quick_q_{idx}", use_container_width=True):
+                            st.session_state.quick_question = question
+                            st.rerun()
+            
+            # Input area (ChatGPT style)
+            st.markdown("<br>", unsafe_allow_html=True)
+            
+            col_input, col_button = st.columns([5, 1])
+            
+            with col_input:
+                # Check for quick question
+                default_value = ""
+                if 'quick_question' in st.session_state:
+                    default_value = st.session_state.quick_question
+                    del st.session_state.quick_question
+                
+                search_query = st.text_input(
+                    "Message",
+                    value=default_value,
+                    placeholder="Ask a question about your blockchain data...",
+                    key="ai_chat_input",
+                    label_visibility="collapsed"
+                )
+            
+            with col_button:
+                send_button = st.button("📤 Send", type="primary", use_container_width=True)
+            
+            # Handle send
+            if send_button and search_query:
+                # Add user message to history
+                st.session_state.ai_chat_history.append({
+                    'role': 'user',
+                    'content': search_query
+                })
+                
+                # Get AI response
+                with st.spinner("🤔 AI is thinking..."):
+                    try:
+                        response = ai_transaction_search(
+                            search_query,
+                            st.session_state.df,
+                            st.session_state.risk_assessment,
+                            st.session_state.anomalies,
+                            st.session_state.network_metrics
+                        )
+                        
+                        # Add AI response to history
+                        st.session_state.ai_chat_history.append({
+                            'role': 'assistant',
+                            'content': response
+                        })
+                        
+                        st.rerun()
+                        
+                    except Exception as e:
+                        st.error(f"Error: {str(e)}")
+                        # Remove the user message if AI failed
+                        st.session_state.ai_chat_history.pop()
+            
+            # Clear conversation button
+            if len(st.session_state.ai_chat_history) > 0:
+                st.markdown("<br>", unsafe_allow_html=True)
+                if st.button("🗑️ Clear Conversation", use_container_width=False):
+                    st.session_state.ai_chat_history = []
                     st.rerun()
         
         with tab6:
