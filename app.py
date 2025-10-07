@@ -1829,27 +1829,109 @@ else:
                 st.warning("No timeline data available")
                 
         with tab5:
-            # Enhanced AI Insights Tab
+            # Dark UI Chatbot Interface for Transaction Insights
             st.markdown("""
-            <div style="background: linear-gradient(135deg, rgba(63, 81, 181, 0.1) 0%, rgba(48, 63, 159, 0.1) 100%); padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem;">
-                <h3>🔍 AI-Powered Transaction Insights</h3>
-                <p>Ask natural language questions about your blockchain data and get intelligent analysis powered by advanced AI. The system understands context and provides detailed explanations.</p>
+            <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); 
+                        padding: 1.5rem; 
+                        border-radius: 15px; 
+                        margin-bottom: 1rem;
+                        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);">
+                <h3 style="color: #00d4ff; margin-bottom: 0.5rem;">💬 AI Transaction Assistant</h3>
+                <p style="color: #a8b3cf; margin: 0; font-size: 0.95rem;">
+                    Chat with your AI assistant to analyze blockchain transactions and get intelligent insights
+                </p>
             </div>
             """, unsafe_allow_html=True)
             
-            # AI Capabilities Guide
-            st.markdown("### What You Can Ask")
-            ai_col1, ai_col2, ai_col3 = st.columns(3)
-            with ai_col1:
-                st.info("**Pattern Analysis** 🔍 'What patterns do you see in the data?'")
-            with ai_col2:
-                st.info("**Risk Analysis** ⚠️ 'Which transactions are most concerning?'")
-            with ai_col3:
-                st.info("**Statistical Queries** 📊 'What are the key statistics?'")
+            # Initialize chat history in session state
+            if 'transaction_chat_history' not in st.session_state:
+                st.session_state.transaction_chat_history = []
             
-            # Sample questions
-            st.markdown("### Sample Questions to Try")
-            sample_questions = [
+            # Chat container with dark theme
+            st.markdown("""
+            <style>
+            .chat-container {
+                background: #0f0f1e;
+                border-radius: 12px;
+                padding: 1.5rem;
+                margin-bottom: 1rem;
+                max-height: 500px;
+                overflow-y: auto;
+                box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4);
+            }
+            .user-message {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 1rem;
+                border-radius: 18px 18px 4px 18px;
+                margin: 0.8rem 0 0.8rem auto;
+                max-width: 75%;
+                box-shadow: 0 4px 6px rgba(102, 126, 234, 0.3);
+            }
+            .ai-message {
+                background: linear-gradient(135deg, #1e3a5f 0%, #2d5a7b 100%);
+                color: #e0e7ff;
+                padding: 1rem;
+                border-radius: 18px 18px 18px 4px;
+                margin: 0.8rem auto 0.8rem 0;
+                max-width: 75%;
+                border-left: 4px solid #00d4ff;
+                box-shadow: 0 4px 6px rgba(0, 212, 255, 0.2);
+            }
+            .message-label {
+                font-size: 0.75rem;
+                font-weight: 600;
+                margin-bottom: 0.3rem;
+                opacity: 0.8;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+            
+            # Display chat history
+            if st.session_state.transaction_chat_history:
+                chat_html = '<div class="chat-container">'
+                for message in st.session_state.transaction_chat_history:
+                    if message['role'] == 'user':
+                        chat_html += f'''
+                        <div class="user-message">
+                            <div class="message-label">YOU</div>
+                            <div>{message['content']}</div>
+                        </div>
+                        '''
+                    else:
+                        chat_html += f'''
+                        <div class="ai-message">
+                            <div class="message-label">🤖 AI ASSISTANT</div>
+                            <div>{message['content']}</div>
+                        </div>
+                        '''
+                chat_html += '</div>'
+                st.markdown(chat_html, unsafe_allow_html=True)
+            else:
+                # Welcome message
+                st.markdown("""
+                <div class="chat-container">
+                    <div class="ai-message">
+                        <div class="message-label">🤖 AI ASSISTANT</div>
+                        <div>
+                            Hello! I'm your AI Transaction Assistant. I can help you analyze your blockchain data, 
+                            identify patterns, assess risks, and answer questions about your transactions. 
+                            <br><br>
+                            Try asking me about:
+                            <ul style="margin-top: 0.5rem;">
+                                <li>High-risk transactions</li>
+                                <li>Unusual patterns or anomalies</li>
+                                <li>Transaction statistics</li>
+                                <li>Network analysis insights</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            # Quick action suggestions
+            st.markdown("**💡 Quick Questions:**")
+            quick_questions = [
                 "Which transactions have the highest risk scores?",
                 "Are there any unusual patterns in the transactions?", 
                 "What is the average transaction value?",
@@ -1858,50 +1940,100 @@ else:
                 "Are there any concerning anomalies I should investigate?"
             ]
             
-            selected_question = st.selectbox("Choose a sample question or type your own:", [""] + sample_questions)
+            cols = st.columns(3)
+            selected_quick_q = None
+            for idx, question in enumerate(quick_questions[:3]):
+                with cols[idx]:
+                    if st.button(f"💬 {question[:30]}...", key=f"quick_q_{idx}", use_container_width=True):
+                        selected_quick_q = question
             
-            # Enhanced search input
-            search_query = st.text_input(
-                "Ask your question about the blockchain transactions:",
-                value=selected_question,
-                key="new_analysis_search_query",
-                help="Type any question about your transaction data in natural language"
+            # Chat input at the bottom
+            chat_input = st.text_area(
+                "Your message:",
+                value=selected_quick_q if selected_quick_q else "",
+                placeholder="Ask me anything about your blockchain transactions...",
+                height=100,
+                key="transaction_chat_input",
+                label_visibility="collapsed"
             )
             
-            if st.button("Search", key="new_analysis_search_button"):
-                if search_query:
-                    with st.spinner("Analyzing your query with AI..."):
-                        try:
-                            # Use the AI search function
-                            response = ai_transaction_search(
-                                search_query,
-                                st.session_state.df,
-                                st.session_state.risk_assessment,
-                                st.session_state.anomalies,
-                                st.session_state.network_metrics
-                            )
-                            
-                            # Store the result in session state
-                            st.session_state.search_result = response
-                            
-                            # Display the response
-                            st.markdown("### AI Analysis Results")
-                            st.markdown(response)
-                        except Exception as e:
-                            st.error(f"Error performing AI search: {str(e)}")
-                            st.expander("Technical Details").code(traceback.format_exc())
-                else:
-                    st.warning("Please enter a search query.")
+            col_send, col_clear = st.columns([4, 1])
             
-            # Display previous search result if available
-            if 'search_result' in st.session_state and st.session_state.search_result and not search_query:
-                st.markdown("### Previous Search Results")
-                st.markdown(st.session_state.search_result)
-                
-                # Option to clear results
-                if st.button("Clear Results"):
-                    st.session_state.search_result = None
+            with col_send:
+                send_button = st.button("🚀 Send Message", type="primary", use_container_width=True)
+            
+            with col_clear:
+                if st.button("🔄 Clear", help="Clear conversation", use_container_width=True):
+                    st.session_state.transaction_chat_history = []
                     st.rerun()
+            
+            # Handle message sending
+            if send_button and chat_input:
+                # Add user message to history
+                st.session_state.transaction_chat_history.append({
+                    'role': 'user',
+                    'content': chat_input
+                })
+                
+                with st.spinner("🤖 AI Assistant is analyzing..."):
+                    try:
+                        from advanced_ai_agent import get_agent_response
+                        
+                        # Build comprehensive transaction context for the AI assistant
+                        transaction_context = {
+                            "has_data": st.session_state.get('df') is not None,
+                            "analysis_complete": st.session_state.get('analysis_results') is not None,
+                            "mode": "transaction_insights",
+                            "query_type": "transaction_analysis"
+                        }
+                        
+                        # Add transaction-specific data if available
+                        if st.session_state.get('df') is not None:
+                            df = st.session_state.df
+                            transaction_context["total_transactions"] = len(df)
+                            if 'value' in df.columns:
+                                transaction_context["total_value"] = float(df['value'].sum())
+                                transaction_context["avg_value"] = float(df['value'].mean())
+                        
+                        # Add risk assessment info
+                        if st.session_state.get('risk_assessment') is not None:
+                            high_risk_count = len(st.session_state.risk_assessment[
+                                st.session_state.risk_assessment['risk_score'] > 0.7
+                            ])
+                            transaction_context["high_risk_found"] = high_risk_count > 0
+                            transaction_context["high_risk_count"] = high_risk_count
+                        
+                        # Add anomaly info
+                        if st.session_state.get('anomalies') is not None:
+                            transaction_context["anomalies_found"] = len(st.session_state.anomalies) > 0
+                            transaction_context["anomaly_count"] = len(st.session_state.anomalies)
+                        
+                        # Add network metrics
+                        if st.session_state.get('network_metrics') is not None:
+                            transaction_context["network_metrics_available"] = True
+                        
+                        # Enhance the query with transaction analysis focus
+                        enhanced_query = f"[Transaction Analysis Query] {chat_input}"
+                        
+                        # Use the sidebar AI assistant with transaction context
+                        response = get_agent_response(enhanced_query, transaction_context)
+                        
+                        # Add AI response to history
+                        st.session_state.transaction_chat_history.append({
+                            'role': 'assistant',
+                            'content': response
+                        })
+                        
+                        # Rerun to display new messages
+                        st.rerun()
+                        
+                    except Exception as e:
+                        error_message = f"I encountered an error while analyzing your question: {str(e)}"
+                        st.session_state.transaction_chat_history.append({
+                            'role': 'assistant',
+                            'content': error_message
+                        })
+                        st.rerun()
         
         with tab6:
             # Enhanced Advanced Analytics Tab
