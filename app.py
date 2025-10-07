@@ -1102,34 +1102,74 @@ with st.sidebar:
         
         # Analysis configuration section (only show if data is loaded)
         if st.session_state.get('df') is not None:
-            st.markdown("### ⚙️ Configure Analysis Parameters")
+            # Create a prominent modal-style dialog for configuration
+            st.markdown("""
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                        padding: 2rem; 
+                        border-radius: 15px; 
+                        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+                        margin: 2rem 0;
+                        border: 2px solid rgba(255, 255, 255, 0.2);">
+                <h2 style="color: white; 
+                           margin: 0 0 0.5rem 0; 
+                           font-size: 2rem;
+                           text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">
+                    ⚙️ Configure Analysis Parameters
+                </h2>
+                <p style="color: rgba(255, 255, 255, 0.9); 
+                          margin: 0;
+                          font-size: 1.1rem;">
+                    Adjust settings to customize your blockchain analysis
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
             
-            # Enhanced settings with better UI
+            # Enhanced settings with better UI in a card
+            st.markdown("""
+            <div style="background: white; 
+                        padding: 2rem; 
+                        border-radius: 12px; 
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                        margin: 1rem 0;">
+            </div>
+            """, unsafe_allow_html=True)
+            
             col1, col2 = st.columns(2)
             
             with col1:
+                st.markdown("#### 🎯 Risk Assessment Threshold")
                 risk_threshold = st.slider(
-                    "🎯 Risk Assessment Threshold", 
+                    "Risk Threshold", 
                     0.0, 1.0, 0.7, 0.05,
-                    help="Higher values will identify fewer but higher-confidence risks"
+                    help="Higher values will identify fewer but higher-confidence risks",
+                    label_visibility="collapsed"
                 )
+                st.caption("Higher values = fewer, high-confidence risks")
                 
             with col2:
+                st.markdown("#### 🔍 Anomaly Detection Sensitivity")
                 anomaly_sensitivity = st.slider(
-                    "🔍 Anomaly Detection Sensitivity", 
+                    "Anomaly Sensitivity", 
                     0.0, 1.0, 0.8, 0.05,
-                    help="Higher values will detect more anomalies but may increase false positives"
+                    help="Higher values will detect more anomalies but may increase false positives",
+                    label_visibility="collapsed"
                 )
+                st.caption("Higher values = more anomalies detected")
             
             # Create a progress placeholder
             progress_placeholder = st.empty()
             
-            # Enhanced run analysis button
-            st.markdown("### 🚀 Start Analysis")
-            run_analysis = st.button(
-                "🔬 Run Complete Blockchain Analysis",
-                help="Start comprehensive analysis including risk assessment, anomaly detection, and network analysis"
-            )
+            st.markdown("<br>", unsafe_allow_html=True)
+            
+            # Prominent run analysis button
+            col_btn1, col_btn2, col_btn3 = st.columns([1, 2, 1])
+            with col_btn2:
+                run_analysis = st.button(
+                    "🚀 Run Complete Blockchain Analysis",
+                    type="primary",
+                    use_container_width=True,
+                    help="Start comprehensive analysis including risk assessment, anomaly detection, and network analysis"
+                )
         else:
             # Show placeholder when no data
             run_analysis = False
