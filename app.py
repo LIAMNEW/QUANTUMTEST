@@ -14,6 +14,7 @@ import time
 import traceback
 import os
 import html
+import re
 from datetime import datetime, date
 from blockchain_analyzer import analyze_blockchain_data, identify_risks
 from ml_models import train_anomaly_detection, detect_anomalies
@@ -2019,13 +2020,14 @@ else:
                         # Use the sidebar AI assistant with transaction context
                         response = get_agent_response(enhanced_query, transaction_context)
                         
-                        # Escape any HTML in the response to prevent it from rendering
-                        escaped_response = html.escape(response)
+                        # Strip any HTML tags from the response to prevent them from showing
+                        # This removes tags like <div>, <span>, etc. but keeps the text content
+                        cleaned_response = re.sub(r'<[^>]+>', '', response)
                         
                         # Add AI response to history
                         st.session_state.transaction_chat_history.append({
                             'role': 'assistant',
-                            'content': escaped_response
+                            'content': cleaned_response
                         })
                         
                         # Rerun to display new messages
