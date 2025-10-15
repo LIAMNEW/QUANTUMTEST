@@ -16,6 +16,13 @@ def calculate_austrac_risk_score(df: pd.DataFrame) -> Dict:
     Returns a user-friendly risk percentage and assessment details
     """
     
+    # Import bank transaction risk analyzer for enhanced detection
+    try:
+        from bank_transaction_risk_analyzer import bank_risk_analyzer
+        use_enhanced_detection = True
+    except:
+        use_enhanced_detection = False
+    
     classifier = AUSTRACClassifier()
     
     # Sample transactions for risk assessment
@@ -29,24 +36,51 @@ def calculate_austrac_risk_score(df: pd.DataFrame) -> Dict:
     for i in range(sample_size):
         row = df.iloc[i]
         
+        # Extract actual data from row
+        amount = float(row.get('value', row.get('amount', 1000)))
+        timestamp = row.get('timestamp', row.get('date', datetime.now().isoformat()))
+        merchant = row.get('merchant', row.get('description', ''))
+        country = row.get('country', row.get('location', 'Australia'))
+        
         # Create transaction record for AUSTRAC classification
-        # Use actual data from upload instead of random values
         transaction = {
             "transaction_id": f"TX_{i+1:06d}",
-            "amount": float(row.get('value', row.get('amount', 1000))),  # Use 'value' or 'amount' from actual data
+            "amount": amount,
             "currency": "AUD",
-            "from_country": "Australia",  # Default to domestic unless specified
-            "to_country": "Australia",     # Default to domestic unless specified  
+            "from_country": country if country != 'Australia' else "Australia",
+            "to_country": country if country != 'Australia' else "Australia",
             "customer_name": f"Customer_{i+1}",
             "customer_id": f"CUST_{i+1:06d}",
-            "verification_status": "Verified",  # Default to verified instead of random
-            "timestamp": row.get('timestamp', datetime.now().isoformat()),
-            "high_frequency_flag": False,   # Default to false instead of random
-            "complexity_score": 1,          # Default to low complexity
-            "fraud_indicators": False,      # Default to no fraud indicators
-            "tax_haven_flag": False,        # Default to no tax haven involvement
-            "velocity_flag": False          # Default to no velocity flags
+            "verification_status": "Verified",
+            "timestamp": timestamp,
+            "high_frequency_flag": False,
+            "complexity_score": 1,
+            "fraud_indicators": False,
+            "tax_haven_flag": False,
+            "velocity_flag": False
         }
+        
+        # Use enhanced bank transaction analyzer if available
+        if use_enhanced_detection:
+            bank_analysis = bank_risk_analyzer.analyze_transaction({
+                'amount': amount,
+                'merchant': merchant,
+                'timestamp': timestamp,
+                'country': country
+            })
+            
+            # Combine bank analysis with AUSTRAC classification
+            transaction["fraud_indicators"] = bank_analysis['risk_score'] >= 40
+            transaction["velocity_flag"] = 'HIGH_FREQUENCY' in bank_analysis.get('risk_flags', [])
+            transaction["tax_haven_flag"] = 'HIGH_RISK_COUNTRY' in bank_analysis.get('risk_flags', [])
+            transaction["high_frequency_flag"] = 'LATE_NIGHT_TRANSACTION' in bank_analysis.get('risk_flags', [])
+            
+            if 'HIGH_RISK_COUNTRY' in bank_analysis.get('risk_flags', []):
+                # Extract country from detail if it's a tax haven
+                for detail in bank_analysis.get('risk_details', []):
+                    if 'Tax Haven' in detail:
+                        transaction["from_country"] = country
+                        transaction["to_country"] = country
         
         # Classify transaction
         classification = classifier.classify_transaction(transaction)
