@@ -21,10 +21,11 @@ Security Focus: Backend quantum safety for customer financial data protection (n
 - **Velocity Anomalies**: Detects high-frequency transaction patterns and unusual volumes
 
 ### Technical Implementation:
-- Created `bank_transaction_risk_analyzer.py` - Comprehensive risk analysis engine (470 lines)
+- Created `bank_transaction_risk_analyzer.py` - Comprehensive risk analysis engine (520 lines)
 - Enhanced `austrac_risk_calculator.py` to integrate bank risk analysis with AUSTRAC compliance
 - Generated sample datasets: `sample_test_100_transactions.csv` (100 obvious cases), `sample_realistic_1000_transactions.csv` (1000 realistic transactions)
 - Created testing framework: `test_bank_risk_detection.py` for validation
+- **Column Format Handling**: Automatically detects and combines separate Date/Time columns, case-insensitive column matching
 
 ### Test Results:
 - 58% detection rate on test dataset (100 transactions)

@@ -137,10 +137,15 @@ Result: AUSTRAC reporting required
 
 1. Upload your CSV file through the main Streamlit app
 2. Enhanced detection automatically activates if CSV contains:
-   - `amount` or `value` column
-   - `merchant` or `description` column
-   - `date` or `timestamp` column (optional)
-   - `country` or `location` column (optional)
+   - `amount` or `value` column (case insensitive)
+   - `merchant` or `description` column (case insensitive)
+   - `date`/`timestamp` column OR separate `Date` and `Time` columns
+   - `country` or `location` column (optional, case insensitive)
+
+**Note:** The system automatically handles both formats:
+- ✅ Combined datetime (e.g., `timestamp: "2025-10-15 14:30:00"`)
+- ✅ Separate Date/Time columns (e.g., `Date: "2025-10-15", Time: "14:30:00"`)
+- ✅ Case insensitive column names (`Date` or `date`, `Amount` or `amount`)
 
 3. Risk analysis combines:
    - Bank transaction patterns

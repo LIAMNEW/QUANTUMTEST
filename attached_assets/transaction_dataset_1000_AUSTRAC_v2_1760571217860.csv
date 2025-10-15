@@ -1,0 +1,1001 @@
+TransactionID,Date,Time,CustomerID,AccountType,TransactionType,Amount,Merchant,Country,Counterparty,Channel
+T00180,2025-04-11,13:21:27,C9045,Savings,Online Payment,20262.33,ALDI,United States,Person_4472,Online
+T00430,2025-04-07,20:13:59,C2036,Checking,ATM Withdrawal,9218.72,W00lw0rths Services,Singapore,Company_3606,Mobile App
+T00324,2025-02-27,22:13:07,C2610,Business,Crypto Purchase,11418.64,Kmart,Singapore,Person_4653,Third Party
+T00810,2025-09-24,08:31:29,C3366,Savings,Wire Transfer,10522.2,JB Hi-Fi,United Kingdom,Company_7140,Third Party
+T00274,2025-05-21,05:45:04,C2019,Investment,ATM Withdrawal,2127.95,Apple Store,China,Entity_1242,Online
+T00621,2025-01-06,06:13:51,C6477,Savings,Crypto Purchase,1726.03,Caltex,UAE,Company_5544,Third Party
+T00554,2025-03-16,21:29:02,C3606,Checking,ATM Withdrawal,14535.68,Aldi Australia,Singapore,Person_9904,ATM
+T00532,2025-05-31,11:43:11,C6979,Business,Cash Deposit,1979.16,Amazon,United States,Entity_6733,Mobile App
+T00009,2025-09-06,18:02:47,C7640,Savings,Wire Transfer,20819.44,JB Hi-Fi,China,Person_7208,Third Party
+T00260,2025-03-03,01:58:54,C5510,Checking,Cash Deposit,19421.5,Telstra,Australia,Company_2042,Online
+T00263,2025-03-06,05:17:04,C7366,Savings,ATM Withdrawal,17012.13,Aldi Australia,United Kingdom,Company_7003,Online
+T00757,2025-06-27,00:54:10,C2951,Business,Online Payment,18361.05,BP Australia,Hong Kong,Person_2476,Third Party
+T00849,2025-04-23,21:09:28,C5918,Business,Crypto Purchase,23533.88,eBay,United States,Person_6715,ATM
+T00101,2025-03-09,14:37:39,C2979,Savings,Wire Transfer,15877.07,eBay,United States,Company_8175,ATM
+T00771,2025-06-11,08:51:52,C7857,Savings,ATM Withdrawal,13926.73,Coles Express,Australia,Person_4003,Branch
+T00546,2025-10-11,07:49:16,C2457,Investment,Cash Deposit,23077.86,NAB,Singapore,Company_7782,Branch
+T00142,2025-09-21,09:58:32,C9053,Investment,Wire Transfer,5645.52,ZipPay,UAE,Entity_4092,Branch
+T00746,2025-08-26,10:39:25,C7941,Checking,Cash Deposit,9552.48,InvoicePay Solutions,Singapore,Company_9589,ATM
+T00358,2025-07-02,06:57:30,C8923,Business,Cash Deposit,5220.33,Afterpay,UAE,Entity_1288,Mobile App
+T00770,2025-07-10,18:54:08,C2380,Business,Wire Transfer,4060.96,Amazon,United States,Company_3778,Third Party
+T00790,2025-03-04,03:52:41,C3575,Investment,Crypto Purchase,1191.26,Optus,UAE,Company_1235,Third Party
+T00067,2025-07-01,07:15:46,C4193,Savings,Crypto Purchase,5082.89,Microsoft Store,United States,Person_7063,Branch
+T00506,2025-10-11,21:13:19,C2082,Business,Cash Deposit,17865.9,Westpac,Hong Kong,Entity_3698,Online
+T00533,2025-01-13,19:05:26,C8421,Business,ATM Withdrawal,23362.46,Apple Store,UAE,Company_3188,Branch
+T00817,2025-05-16,12:37:59,C6036,Savings,Online Payment,17887.35,Myer,United Kingdom,Entity_2018,Mobile App
+T00685,2025-08-14,11:49:04,C6578,Investment,Wire Transfer,11053.75,Target,United Kingdom,Entity_2286,Online
+T00469,2025-01-12,23:18:56,C6343,Checking,Cash Deposit,117.64,Coles,Singapore,Entity_5604,Mobile App
+T00964,2025-05-24,23:58:39,C2935,Business,Wire Transfer,16929.01,IAG Insurance,Australia,Person_2905,ATM
+T00484,2025-03-13,13:47:08,C4516,Investment,Cash Deposit,16646.67,Myer,Australia,Company_9096,Online
+T00923,2025-04-26,19:40:04,C3099,Business,Crypto Purchase,3686.63,Coles,United States,Person_3794,Branch
+T00752,2025-10-02,15:01:23,C5200,Investment,Crypto Purchase,12403.91,Afterpay,Hong Kong,Company_1674,ATM
+T00400,2025-04-06,17:52:51,C6199,Business,ATM Withdrawal,11546.43,ALDI,Singapore,Company_5540,Online
+T00024,2025-01-17,20:26:38,C6249,Savings,Crypto Purchase,20219.51,Woolworths,United Kingdom,Person_3054,Third Party
+T00640,2025-03-05,21:43:25,C7884,Checking,ATM Withdrawal,11927.46,Woolworths,United States,Person_5482,Branch
+T00226,2025-02-18,09:38:42,C2891,Checking,Crypto Purchase,4371.39,Amazon,China,Entity_2316,Branch
+T00216,2025-07-06,02:23:20,C5731,Checking,Online Payment,15312.43,eBay,Singapore,Person_8425,Online
+T00244,2025-01-21,20:45:05,C6493,Business,Online Payment,1780.56,Officeworks,UAE,Company_7140,Branch
+T00889,2025-10-02,15:56:15,C9836,Checking,Wire Transfer,21163.82,Bunnings,Singapore,Company_8412,Third Party
+T00908,2025-01-24,00:16:49,C3450,Checking,Wire Transfer,12332.33,ALDI,United Kingdom,Person_6035,Branch
+T00479,2025-05-22,23:20:14,C5762,Savings,Wire Transfer,1249.96,Bunnings,Australia,Person_9141,Online
+T00634,2025-02-05,16:09:01,C6961,Investment,Wire Transfer,2115.83,eBay,Hong Kong,Company_5949,Online
+T00594,2025-04-07,23:49:37,C1367,Business,Cash Deposit,2183.44,Harvey Norman,United States,Company_2509,Mobile App
+T00682,2025-07-31,20:51:22,C8799,Savings,ATM Withdrawal,5788.72,Google Play,United States,Company_6000,Mobile App
+T00547,2025-08-06,22:26:05,C4830,Checking,Crypto Purchase,8706.48,ZipPay,UAE,Entity_2346,Mobile App
+T00523,2025-09-22,09:17:41,C8480,Checking,Cash Deposit,14676.43,Myer,China,Company_6919,Third Party
+T00353,2025-09-26,22:29:24,C3601,Savings,Crypto Purchase,19236.24,Commonwealth Bank,Hong Kong,Person_3905,Online
+T00993,2025-09-26,05:55:44,C6729,Investment,ATM Withdrawal,12005.59,Google Play,UAE,Company_2111,Online
+T00346,2025-08-10,20:22:31,C6453,Checking,Wire Transfer,14248.58,Telstra,China,Person_2541,Branch
+T00600,2025-02-15,15:33:37,C2887,Savings,Wire Transfer,6522.61,Domain,Hong Kong,Entity_9088,Online
+T00442,2025-01-30,07:42:06,C3107,Investment,ATM Withdrawal,2242.8,Microsoft Store,UAE,Entity_1008,ATM
+T00922,2025-06-26,18:34:44,C1272,Checking,Online Payment,8458.23,eBay,Australia,Person_2130,Mobile App
+T00105,2025-06-09,10:44:21,C2415,Investment,Wire Transfer,2067.29,BP Australia,United Kingdom,Company_5673,Online
+T00023,2025-05-30,11:24:59,C6869,Checking,Online Payment,23557.93,Aldi Australia,UAE,Entity_1744,Branch
+T00316,2025-06-10,13:59:52,C1112,Savings,Crypto Purchase,24234.1,ZipPay,UAE,Company_2945,Third Party
+T00878,2025-05-16,20:31:11,C1725,Business,Wire Transfer,10869.7,Qantas,United Kingdom,Entity_2963,Mobile App
+T00396,2025-06-02,00:08:11,C3043,Savings,Wire Transfer,1069.67,Commonwealth Bank,Australia,Company_2163,Mobile App
+T00630,2025-04-01,18:53:52,C2059,Checking,Online Payment,10498.32,Amazon,China,Person_1160,Third Party
+T00862,2025-01-07,19:57:45,C8234,Checking,Online Payment,13555.34,Kmart,Hong Kong,Person_5643,Mobile App
+T00664,2025-04-25,03:54:04,C3340,Checking,Crypto Purchase,16486.64,Woolworths,UAE,Entity_5390,ATM
+T00329,2025-09-30,19:00:03,C5790,Investment,Wire Transfer,9040.61,Optus,Singapore,Company_6816,Third Party
+T00780,2025-07-15,12:02:55,C3956,Business,ATM Withdrawal,13554.6,Google Play,United States,Company_4685,Third Party
+T00577,2025-05-15,08:32:26,C3973,Investment,Crypto Purchase,10247.92,Coles Express,UAE,Entity_6930,Branch
+T00015,2025-03-26,22:16:42,C9829,Checking,ATM Withdrawal,9220.11,RemitHub Overseas,Singapore,Person_2477,Online
+T00539,2025-03-22,03:14:37,C2766,Checking,Online Payment,12995.01,Myer,UAE,Company_8579,Mobile App
+T00774,2025-06-01,17:43:26,C9640,Business,Wire Transfer,15442.33,Amazon,Australia,Person_1447,Branch
+T00875,2025-06-25,13:06:20,C3189,Checking,Cash Deposit,9260.79,Global Gold Traders,Singapore,Person_7701,Branch
+T00410,2025-02-11,04:17:14,C3054,Business,Cash Deposit,24657.11,Target,United States,Company_6805,Branch
+T00980,2025-08-18,21:39:18,C9565,Investment,Wire Transfer,7456.89,Woolworths,Australia,Company_7316,Online
+T00034,2025-08-22,22:01:48,C4743,Savings,Cash Deposit,24241.14,ANZ,UAE,Company_8644,Branch
+T00058,2025-09-06,12:26:26,C3202,Savings,Wire Transfer,18253.67,ANZ,China,Person_5423,Online
+T00417,2025-05-17,06:00:53,C3089,Investment,Crypto Purchase,22385.41,IKEA,Hong Kong,Company_2273,ATM
+T00842,2025-06-20,19:15:42,C7247,Checking,Cash Deposit,1038.49,NAB,Singapore,Entity_6943,Third Party
+T00473,2025-05-29,04:12:38,C4701,Checking,Cash Deposit,9457.79,Global Gold Traders,Singapore,Company_6188,Branch
+T00936,2025-06-24,16:38:00,C8562,Savings,Cash Deposit,23418.31,eBay,UAE,Company_1069,ATM
+T00614,2025-08-16,07:58:12,C1682,Investment,Cash Deposit,3526.93,Woolworths,UAE,Entity_9379,Online
+T00042,2025-07-14,01:51:51,C3407,Checking,ATM Withdrawal,20727.0,JB Hi-Fi,Australia,Entity_4921,Mobile App
+T00145,2025-03-18,00:22:03,C6169,Investment,Online Payment,9193.4,Microsoft Store,United Kingdom,Person_2983,Third Party
+T00440,2025-01-21,20:14:24,C9709,Savings,Crypto Purchase,9165.65,Afterpay,United States,Entity_3608,Third Party
+T00190,2025-05-08,15:26:54,C9260,Checking,Cash Deposit,13588.98,Telstra,China,Entity_3004,ATM
+T00671,2025-04-12,21:26:55,C5932,Investment,Cash Deposit,24983.87,Seek,Australia,Person_6841,ATM
+T00130,2025-01-31,22:44:55,C3898,Business,Wire Transfer,7007.84,ANZ,Singapore,Entity_5899,Third Party
+T00730,2025-09-02,23:41:21,C2821,Checking,ATM Withdrawal,9417.34,W00lw0rths Services,Singapore,Person_3589,Online
+T00666,2025-06-12,13:45:41,C6105,Savings,Cash Deposit,6279.22,Domain,United Kingdom,Company_6803,Third Party
+T00229,2025-07-08,20:00:07,C8473,Investment,Cash Deposit,22172.68,Target,Hong Kong,Entity_4262,Mobile App
+T00683,2025-08-02,07:48:06,C1717,Savings,Online Payment,12052.49,ALDI,Australia,Person_1777,Branch
+T00829,2025-04-17,09:27:10,C7976,Checking,Online Payment,3173.39,Apple Store,Hong Kong,Company_5967,Third Party
+T00486,2025-07-24,13:20:27,C8559,Business,Wire Transfer,21936.15,JB Hi-Fi,United States,Entity_1920,Online
+T00106,2025-01-24,11:12:37,C4365,Investment,Cash Deposit,5979.06,Telstra,United Kingdom,Company_7000,Third Party
+T00516,2025-02-14,10:16:19,C7266,Savings,Wire Transfer,9020.54,RemitHub Overseas,UAE,Entity_5194,Mobile App
+T00268,2025-06-13,12:30:00,C5361,Investment,Crypto Purchase,22393.3,Optus,Hong Kong,Entity_3891,Online
+T00398,2025-01-26,23:26:18,C7969,Investment,Wire Transfer,4466.41,NAB,Australia,Entity_2417,Third Party
+T00976,2025-03-28,01:17:43,C7913,Savings,Cash Deposit,10982.4,Domain,United Kingdom,Person_4821,Online
+T00491,2025-01-02,16:11:27,C2754,Savings,Online Payment,10996.68,Amazon,Hong Kong,Person_7795,ATM
+T00053,2025-09-03,11:52:57,C1080,Investment,Online Payment,9637.88,UAE Trade Co,Singapore,Company_9763,ATM
+T00231,2025-03-25,12:01:20,C3261,Business,Crypto Purchase,23339.24,Google Play,China,Entity_6784,Branch
+T00497,2025-10-13,21:38:42,C2606,Investment,Crypto Purchase,8353.75,Microsoft Store,China,Company_2324,ATM
+T00249,2025-02-14,07:52:49,C6658,Checking,Crypto Purchase,17056.26,Amazon,Hong Kong,Entity_2097,Branch
+T00227,2025-10-05,17:25:20,C1578,Business,Wire Transfer,16261.85,Amazon,United States,Person_7201,Online
+T00933,2025-05-13,01:02:34,C1269,Savings,Online Payment,13520.65,Officeworks,United States,Person_5372,Online
+T00080,2025-10-04,23:27:16,C7506,Investment,Wire Transfer,13506.59,Optus,United States,Entity_7177,Third Party
+T00968,2025-07-22,19:25:21,C2696,Investment,Crypto Purchase,16463.24,PayPal,Singapore,Entity_6852,ATM
+T00281,2025-02-05,06:49:12,C4483,Savings,Cash Deposit,13760.75,NAB,United States,Company_1303,Branch
+T00879,2025-04-27,09:18:27,C6755,Savings,Wire Transfer,12479.98,ZipPay,Hong Kong,Company_3755,Third Party
+T00607,2025-08-24,08:21:21,C9972,Business,Online Payment,3545.82,Woolworths,Australia,Person_9258,Online
+T00273,2025-06-04,23:48:01,C3578,Checking,Wire Transfer,14357.28,Optus,UAE,Company_1358,Online
+T00739,2025-01-18,18:03:48,C4526,Investment,Wire Transfer,9809.69,Woolworths,Hong Kong,Entity_9765,ATM
+T00288,2025-03-23,16:20:41,C2509,Savings,Wire Transfer,5603.28,Domain,Australia,Company_8716,Third Party
+T00381,2025-08-24,16:42:57,C5309,Checking,Cash Deposit,11510.7,eBay,UAE,Person_9022,ATM
+T00287,2025-08-26,21:00:10,C9792,Investment,Online Payment,2148.46,Bunnings,Australia,Company_8386,Third Party
+T00737,2025-08-31,13:48:53,C9764,Savings,ATM Withdrawal,22378.29,BP Australia,UAE,Company_9023,Mobile App
+T00184,2025-01-27,03:20:07,C4714,Savings,Crypto Purchase,16266.6,Afterpay,United Kingdom,Person_9659,Mobile App
+T00238,2025-07-19,17:45:37,C4387,Savings,Wire Transfer,9734.84,David Jones,China,Person_9836,Third Party
+T00928,2025-06-17,20:17:26,C6628,Investment,Crypto Purchase,18423.23,Westpac,Hong Kong,Person_6691,Mobile App
+T00639,2025-06-07,19:04:15,C8892,Investment,Wire Transfer,15279.6,IAG Insurance,Hong Kong,Company_6186,Mobile App
+T00788,2025-05-02,00:52:05,C4410,Savings,Online Payment,14575.15,ALDI,Singapore,Company_7936,Branch
+T00744,2025-02-13,12:37:24,C2233,Savings,ATM Withdrawal,13793.89,eBay,China,Person_1351,Branch
+T00587,2025-09-18,03:05:25,C3656,Checking,ATM Withdrawal,20142.61,Uber,UAE,Company_8187,Branch
+T00460,2025-01-22,00:39:06,C3912,Checking,Cash Deposit,19206.1,eBay,Australia,Person_5683,Online
+T00931,2025-09-25,14:37:18,C8388,Checking,Cash Deposit,11186.9,Coles,Hong Kong,Entity_3072,Branch
+T00026,2025-05-17,14:22:14,C9252,Business,ATM Withdrawal,17121.61,JB Hi-Fi,UAE,Company_1149,Branch
+T00300,2025-02-18,01:59:18,C3784,Checking,ATM Withdrawal,8289.8,Myer,United Kingdom,Company_6517,Mobile App
+T00036,2025-02-17,16:03:00,C6081,Business,ATM Withdrawal,22375.94,eBay,UAE,Entity_2926,Mobile App
+T00351,2025-02-23,06:46:23,C1405,Business,ATM Withdrawal,24992.96,David Jones,Hong Kong,Person_8754,Mobile App
+T00865,2025-02-01,19:51:05,C2186,Investment,Crypto Purchase,19596.4,eBay,Australia,Person_6365,Branch
+T00332,2025-01-06,14:08:17,C2464,Business,Online Payment,228809.59,Offshore Investments LLC,China,Entity_8724,Branch
+T00037,2025-01-25,16:02:34,C5571,Investment,Crypto Purchase,9714.51,ShadySales Pty,UAE,Person_2615,Branch
+T00066,2025-09-16,21:05:16,C7652,Savings,Wire Transfer,684.21,ZipPay,United Kingdom,Company_3762,Mobile App
+T00576,2025-01-21,05:54:23,C5750,Checking,Crypto Purchase,22440.89,Uber,United Kingdom,Person_1194,Mobile App
+T00827,2025-03-20,08:28:31,C3254,Checking,Wire Transfer,19923.61,ALDI,China,Entity_6165,Third Party
+T00293,2025-01-04,22:41:57,C9322,Checking,ATM Withdrawal,9297.52,Afterpay,Australia,Person_8353,Branch
+T00090,2025-09-30,15:25:11,C1866,Checking,Crypto Purchase,23575.6,ALDI,Singapore,Person_5072,ATM
+T00131,2025-10-11,10:29:42,C2072,Business,Cash Deposit,18162.59,Target,China,Person_6813,Online
+T00913,2025-04-06,00:53:24,C9138,Business,ATM Withdrawal,16320.47,Telstra,Singapore,Entity_8048,Mobile App
+T00704,2025-03-14,03:55:33,C8046,Checking,Crypto Purchase,18452.68,Westpac,United Kingdom,Company_3951,Third Party
+T00395,2025-01-30,19:23:22,C4164,Business,Online Payment,15068.29,IAG Insurance,China,Entity_9821,Online
+T00264,2025-05-08,12:10:05,C5475,Business,Online Payment,18875.84,Apple Store,UAE,Company_4715,ATM
+T00228,2025-08-16,10:54:28,C5994,Business,Crypto Purchase,15415.46,Apple Store,United Kingdom,Entity_1163,Mobile App
+T00832,2025-06-17,12:55:49,C7036,Checking,Wire Transfer,4062.6,Qantas,UAE,Company_8078,Online
+T00119,2025-08-26,11:56:30,C3588,Investment,Cash Deposit,23421.41,ZipPay,Australia,Entity_1257,Branch
+T00590,2025-03-23,13:53:25,C6132,Business,Cash Deposit,9959.73,Google Play,United Kingdom,Entity_3802,ATM
+T00394,2025-09-26,17:30:38,C6594,Checking,Cash Deposit,9139.92,UAE Trade Co,Hong Kong,Person_7660,Third Party
+T00243,2025-07-04,21:58:09,C3409,Investment,Cash Deposit,5206.77,Officeworks,United Kingdom,Company_9603,Branch
+T00956,2025-04-08,00:16:37,C8340,Business,Wire Transfer,4469.89,Qantas,Singapore,Company_8748,Branch
+T00459,2025-04-28,14:05:56,C9645,Checking,Wire Transfer,2915.18,PayPal,United States,Company_1508,Third Party
+T00307,2025-02-05,16:36:24,C3181,Checking,ATM Withdrawal,10035.56,Afterpay,United Kingdom,Person_7965,Online
+T00663,2025-07-01,15:44:39,C9250,Savings,Online Payment,15991.79,ANZ,China,Company_1792,Online
+T00573,2025-07-07,16:01:58,C7972,Checking,Wire Transfer,4589.11,BP Australia,United States,Entity_7317,Third Party
+T00787,2025-06-07,08:33:50,C1112,Business,Cash Deposit,19286.06,Aldi Australia,Hong Kong,Entity_1663,Branch
+T00914,2025-04-30,00:46:37,C4418,Savings,Online Payment,24236.84,Commonwealth Bank,Hong Kong,Company_2069,Third Party
+T00174,2025-07-04,23:09:07,C9700,Savings,ATM Withdrawal,8998.24,JB Hi-Fi,Hong Kong,Entity_2157,ATM
+T00802,2025-08-11,11:43:44,C6606,Savings,Online Payment,4132.41,ZipPay,Singapore,Entity_2255,ATM
+T00662,2025-05-27,01:45:14,C6257,Checking,Crypto Purchase,21830.0,PayPal,Hong Kong,Entity_9920,ATM
+T00294,2025-06-28,12:11:50,C9193,Investment,Crypto Purchase,9080.93,ShadySales Pty,Hong Kong,Person_4710,ATM
+T00255,2025-09-12,01:22:40,C7629,Investment,Online Payment,24191.13,Bunnings,Singapore,Entity_2138,Third Party
+T00055,2025-08-11,06:30:51,C4503,Checking,Online Payment,11263.79,Westpac,United Kingdom,Person_2417,Third Party
+T00155,2025-01-13,04:55:31,C8938,Checking,Online Payment,16739.66,Optus,China,Company_2146,Mobile App
+T00794,2025-03-26,11:01:24,C1386,Business,Crypto Purchase,18968.67,JB Hi-Fi,China,Entity_4671,Branch
+T00172,2025-10-01,08:20:06,C4111,Savings,Online Payment,1806.88,Commonwealth Bank,China,Person_4824,Mobile App
+T00883,2025-06-15,17:19:31,C5677,Investment,ATM Withdrawal,16275.63,Caltex,Singapore,Person_4451,ATM
+T00014,2025-06-22,22:15:53,C8994,Checking,Wire Transfer,13143.13,IKEA,Hong Kong,Company_9630,Third Party
+T00850,2025-02-12,04:02:02,C7485,Business,Wire Transfer,12966.91,JB Hi-Fi,UAE,Entity_5633,Online
+T00527,2025-07-22,15:29:17,C8110,Savings,Online Payment,14150.07,David Jones,Australia,Entity_9139,Third Party
+T00895,2025-01-29,09:31:07,C8556,Savings,ATM Withdrawal,9918.1,Kmart,Singapore,Entity_7149,Online
+T00750,2025-01-21,14:58:03,C9869,Checking,ATM Withdrawal,17097.31,IKEA,United Kingdom,Person_3390,Branch
+T00765,2025-03-26,00:05:55,C9743,Savings,ATM Withdrawal,22046.85,BP Australia,China,Company_3018,Third Party
+T00957,2025-05-03,15:27:56,C3679,Checking,Cash Deposit,16557.73,Kmart,UAE,Entity_2920,Third Party
+T00051,2025-07-13,11:31:03,C9012,Checking,Wire Transfer,19764.88,Domain,UAE,Person_3547,Third Party
+T00133,2025-04-11,18:59:57,C9458,Checking,Wire Transfer,9672.04,MerchantServices Ltd,Hong Kong,Entity_1395,Mobile App
+T00606,2025-03-06,10:02:58,C5965,Checking,Online Payment,24364.95,ANZ,United Kingdom,Entity_3985,Third Party
+T00786,2025-09-04,10:06:43,C2460,Business,Crypto Purchase,7559.04,BP Australia,United States,Company_7977,Third Party
+T00624,2025-04-27,19:58:38,C8736,Business,Wire Transfer,324.35,IKEA,UAE,Person_7287,ATM
+T00383,2025-03-27,21:26:54,C2865,Investment,ATM Withdrawal,1702.59,Coles,UAE,Company_2826,Mobile App
+T00200,2025-05-07,05:45:00,C2322,Checking,Crypto Purchase,13538.85,Google Play,Hong Kong,Company_6934,Online
+T00510,2025-04-12,16:16:07,C6576,Investment,ATM Withdrawal,11452.16,Coles Express,China,Person_1129,Branch
+T00438,2025-06-18,07:17:15,C8332,Checking,Wire Transfer,23345.61,Qantas,Singapore,Person_6420,Online
+T00415,2025-02-22,01:33:00,C7032,Investment,Cash Deposit,965.25,Woolworths,United Kingdom,Person_4828,Mobile App
+T00534,2025-04-15,12:30:40,C8599,Investment,Wire Transfer,22771.62,NAB,Australia,Company_4854,ATM
+T00463,2025-04-24,02:54:23,C8763,Business,ATM Withdrawal,13338.11,Coles,Hong Kong,Company_9685,Branch
+T00945,2025-08-27,01:58:05,C2374,Savings,Cash Deposit,24328.79,Telstra,Hong Kong,Entity_4319,ATM
+T00808,2025-10-11,13:28:55,C8722,Business,Wire Transfer,3818.89,Apple Store,UAE,Company_6126,Branch
+T00482,2025-08-13,11:29:01,C7231,Savings,Cash Deposit,4133.22,David Jones,Australia,Person_1123,Third Party
+T00454,2025-02-01,03:55:47,C8860,Checking,Cash Deposit,11941.66,Domain,Hong Kong,Person_5462,Online
+T00467,2025-01-20,00:38:43,C2364,Business,Crypto Purchase,8092.73,eBay,UAE,Entity_9691,Branch
+T00658,2025-05-28,07:08:13,C7815,Business,Crypto Purchase,22936.97,Caltex,United Kingdom,Person_6691,Branch
+T00223,2025-05-25,11:24:35,C1398,Investment,Wire Transfer,4424.49,Coles Express,United Kingdom,Person_1872,Mobile App
+T00649,2025-05-20,01:36:31,C7703,Investment,Online Payment,8642.37,Microsoft Store,China,Person_3023,Branch
+T00501,2025-05-02,03:23:29,C5526,Savings,Crypto Purchase,22352.62,Kmart,China,Entity_5443,Branch
+T00994,2025-04-11,01:39:44,C5704,Savings,Wire Transfer,20353.47,Target,China,Entity_3285,Branch
+T00954,2025-02-28,06:39:45,C1817,Investment,ATM Withdrawal,16831.42,Harvey Norman,Australia,Person_9966,Online
+T00673,2025-07-03,21:49:16,C4742,Checking,Cash Deposit,7855.73,Westpac,Australia,Company_2850,Online
+T00498,2025-01-14,21:31:23,C8963,Checking,Online Payment,8405.9,Kmart,China,Company_3699,Branch
+T00348,2025-07-03,02:30:18,C3329,Investment,Cash Deposit,3389.61,JB Hi-Fi,United Kingdom,Person_5066,Mobile App
+T00099,2025-06-02,23:14:57,C7240,Savings,Crypto Purchase,10305.37,Commonwealth Bank,Singapore,Entity_4711,Branch
+T00186,2025-04-04,06:41:03,C8833,Business,ATM Withdrawal,22171.1,ALDI,Hong Kong,Person_5350,ATM
+T00823,2025-03-21,21:33:11,C7132,Savings,Crypto Purchase,13282.34,Apple Store,Hong Kong,Company_5108,Third Party
+T00667,2025-08-11,17:53:57,C3585,Checking,Wire Transfer,16184.29,Amazon,China,Person_7433,ATM
+T00690,2025-06-12,04:03:11,C3533,Investment,Wire Transfer,22155.14,NAB,Singapore,Company_5597,Third Party
+T00531,2025-04-27,16:06:04,C9277,Business,Cash Deposit,15187.54,Optus,United Kingdom,Person_8561,Branch
+T00114,2025-07-18,06:03:43,C9465,Investment,ATM Withdrawal,5545.01,Kmart,Singapore,Entity_1391,Third Party
+T00461,2025-01-10,09:39:17,C1998,Business,Wire Transfer,14551.89,Google Play,UAE,Person_2116,Mobile App
+T00349,2025-02-06,15:30:18,C2481,Checking,Cash Deposit,1456.57,Myer,Singapore,Entity_2004,Mobile App
+T00278,2025-09-26,08:22:58,C7920,Business,Online Payment,19543.34,Aldi Australia,Singapore,Person_1491,Mobile App
+T00393,2025-03-18,04:59:23,C4021,Savings,Online Payment,21864.22,Apple Store,United Kingdom,Person_8882,Third Party
+T00619,2025-05-25,21:39:02,C7474,Savings,Online Payment,13265.06,Woolworths,Singapore,Company_1534,Online
+T00997,2025-05-08,23:54:44,C6346,Business,Cash Deposit,13363.38,Optus,United States,Person_8845,Branch
+T00158,2025-02-17,22:12:44,C7768,Checking,ATM Withdrawal,656.68,Telstra,United Kingdom,Entity_1421,ATM
+T00359,2025-08-10,16:43:08,C3342,Savings,Online Payment,16808.93,Afterpay,United Kingdom,Company_2409,Branch
+T00356,2025-09-25,10:05:46,C3617,Investment,ATM Withdrawal,5165.88,Commonwealth Bank,Hong Kong,Person_3411,ATM
+T00149,2025-08-10,10:08:11,C5975,Investment,Cash Deposit,15926.5,Myer,United Kingdom,Person_1757,Branch
+T00470,2025-02-25,18:16:58,C5054,Business,Cash Deposit,14911.19,David Jones,Singapore,Person_5852,Mobile App
+T00627,2025-10-12,18:06:28,C4265,Investment,Wire Transfer,6305.73,Target,Singapore,Person_8743,ATM
+T00035,2025-05-15,14:29:41,C3294,Savings,Wire Transfer,11271.37,Commonwealth Bank,UAE,Company_4545,ATM
+T00766,2025-05-21,05:31:04,C2345,Checking,ATM Withdrawal,21802.5,Uber,United Kingdom,Company_6367,Third Party
+T00013,2025-01-21,03:16:22,C8963,Checking,Wire Transfer,10827.03,Bunnings,China,Person_6061,ATM
+T00402,2025-02-28,17:41:02,C2300,Checking,ATM Withdrawal,12610.26,Domain,United Kingdom,Entity_2665,Branch
+T00143,2025-05-27,20:03:05,C6425,Savings,Crypto Purchase,500.98,Optus,Australia,Company_2480,ATM
+T00872,2025-04-15,18:17:28,C4535,Business,Cash Deposit,18134.42,Microsoft Store,China,Entity_8305,Online
+T00259,2025-03-07,05:51:51,C8027,Business,Cash Deposit,3235.86,BP Australia,United States,Person_8759,Third Party
+T00236,2025-01-03,08:39:45,C4731,Investment,Cash Deposit,14665.1,PayPal,Hong Kong,Company_8078,Branch
+T00524,2025-02-22,04:25:56,C9628,Investment,Crypto Purchase,2564.83,Coles Express,Hong Kong,Company_3245,Online
+T00652,2025-06-10,04:17:25,C5649,Business,Cash Deposit,10898.94,Amazon,Singapore,Company_1066,Online
+T00719,2025-05-21,03:31:43,C6045,Business,Crypto Purchase,18596.65,Officeworks,Australia,Person_5087,Third Party
+T00276,2025-07-03,16:47:41,C7558,Business,Crypto Purchase,9153.6,Coles_Express_LLC,UAE,Person_4943,Branch
+T00861,2025-02-18,09:27:52,C9955,Investment,Online Payment,15434.28,NAB,United States,Person_1464,Mobile App
+T00091,2025-05-04,05:16:11,C2150,Savings,ATM Withdrawal,9547.3,Amaz0n Marketplace,Hong Kong,Person_2426,ATM
+T00031,2025-05-04,07:37:00,C4530,Checking,Online Payment,18896.27,ZipPay,Singapore,Entity_1493,ATM
+T00960,2025-07-24,17:14:04,C1813,Investment,Cash Deposit,15465.29,Microsoft Store,China,Person_8553,Online
+T00623,2025-03-14,11:07:45,C9075,Checking,Wire Transfer,18019.05,Afterpay,Australia,Entity_7706,ATM
+T00543,2025-03-20,00:09:41,C2856,Checking,ATM Withdrawal,165.57,ALDI,Australia,Person_6512,Online
+T00355,2025-06-12,10:30:43,C7951,Investment,Crypto Purchase,6221.34,ZipPay,United States,Entity_2524,Online
+T00027,2025-01-09,03:58:04,C4219,Savings,Wire Transfer,17097.42,Woolworths,Singapore,Person_7676,Third Party
+T00967,2025-09-19,06:39:19,C4499,Business,Cash Deposit,14450.77,ZipPay,United Kingdom,Company_4104,Mobile App
+T00995,2025-10-01,08:07:09,C3788,Checking,ATM Withdrawal,9535.88,Optus,United States,Company_4439,Third Party
+T00125,2025-09-25,08:12:53,C3209,Savings,Wire Transfer,13902.26,PayPal,United Kingdom,Company_7764,Online
+T00347,2025-08-27,10:29:51,C9607,Business,Crypto Purchase,11743.89,Target,Singapore,Company_6681,Mobile App
+T00225,2025-09-04,07:25:26,C3530,Savings,Online Payment,20182.48,Amazon,United Kingdom,Company_8831,Third Party
+T00075,2025-01-04,12:16:26,C9475,Checking,ATM Withdrawal,22017.67,IAG Insurance,UAE,Person_7768,Third Party
+T00298,2025-06-18,15:35:04,C8456,Business,Online Payment,9480.79,ALDI,UAE,Person_3071,Branch
+T00286,2025-06-06,20:34:16,C3645,Savings,Online Payment,21678.37,IKEA,Hong Kong,Company_5213,ATM
+T00541,2025-02-08,02:26:08,C1541,Investment,Wire Transfer,1416.3,Coles,China,Entity_9945,Branch
+T00688,2025-05-21,12:28:29,C5029,Investment,ATM Withdrawal,19778.54,JB Hi-Fi,UAE,Entity_1438,Mobile App
+T00077,2025-02-11,07:21:35,C9693,Investment,Wire Transfer,2682.08,Coles,Singapore,Company_8231,Online
+T00297,2025-02-01,17:00:46,C4828,Checking,Online Payment,9798.51,Global Gold Traders,Hong Kong,Person_1057,ATM
+T00388,2025-03-02,05:06:09,C5552,Business,Online Payment,3265.55,Coles Express,United States,Entity_4165,ATM
+T00157,2025-03-17,12:12:41,C3615,Checking,Cash Deposit,12504.87,PayPal,United States,Person_5357,Mobile App
+T00773,2025-08-09,02:09:19,C1079,Savings,Cash Deposit,4868.66,Coles,United Kingdom,Company_1005,Branch
+T00578,2025-04-28,22:03:37,C6375,Business,Cash Deposit,24474.34,Target,Hong Kong,Company_2977,Branch
+T00887,2025-08-20,15:37:15,C5932,Investment,Cash Deposit,4396.12,Seek,United States,Company_1945,Mobile App
+T00056,2025-03-31,17:20:28,C4844,Investment,Online Payment,1635.78,IKEA,UAE,Entity_2399,Mobile App
+T00217,2025-10-05,17:34:09,C5366,Investment,Crypto Purchase,1240.52,Commonwealth Bank,Hong Kong,Company_1797,Branch
+T00873,2025-02-19,01:40:14,C4825,Business,Wire Transfer,9322.35,UAE Trade Co,Hong Kong,Person_1237,Third Party
+T00919,2025-04-01,04:15:59,C2989,Checking,Crypto Purchase,5905.12,Target,China,Entity_4606,ATM
+T00513,2025-06-19,16:37:12,C9170,Checking,Cash Deposit,9658.21,Global Gold Traders,Hong Kong,Entity_2427,ATM
+T00633,2025-06-25,09:34:24,C9651,Investment,ATM Withdrawal,23967.75,Kmart,Singapore,Person_8960,ATM
+T00397,2025-07-21,04:27:27,C7642,Checking,Cash Deposit,8659.81,Qantas,United Kingdom,Company_4401,Branch
+T00944,2025-07-09,09:33:43,C6652,Business,Crypto Purchase,23797.7,Harvey Norman,UAE,Person_3526,Online
+T00005,2025-04-10,13:08:14,C2581,Checking,ATM Withdrawal,1499.19,ANZ,Hong Kong,Company_9699,Mobile App
+T00792,2025-02-02,12:01:15,C6364,Savings,ATM Withdrawal,24223.5,Telstra,United Kingdom,Entity_8094,Branch
+T00163,2025-04-18,00:44:14,C7500,Checking,ATM Withdrawal,23829.14,Domain,United Kingdom,Person_6568,Mobile App
+T00723,2025-05-01,05:16:33,C8911,Investment,Crypto Purchase,3052.45,Telstra,UAE,Entity_1394,Branch
+T00070,2025-02-11,18:30:27,C6608,Business,Wire Transfer,22693.78,Bunnings,United States,Person_5300,Branch
+T00373,2025-01-06,10:51:25,C5197,Savings,Crypto Purchase,8797.16,eBay,Australia,Company_4721,ATM
+T00935,2025-05-02,14:10:01,C6595,Business,Wire Transfer,3118.12,Commonwealth Bank,United Kingdom,Entity_8695,Online
+T00917,2025-01-02,18:24:31,C7586,Checking,Online Payment,14987.91,ANZ,Hong Kong,Company_7666,Third Party
+T00257,2025-02-01,08:13:59,C6973,Investment,ATM Withdrawal,14234.58,Kmart,Hong Kong,Company_3106,Branch
+T00709,2025-08-08,20:47:18,C1218,Business,Wire Transfer,6967.78,Microsoft Store,UAE,Person_6258,ATM
+T00602,2025-10-05,06:33:57,C4465,Investment,Cash Deposit,6738.19,ZipPay,China,Person_1202,Branch
+T00291,2025-05-16,05:39:24,C9561,Investment,Cash Deposit,2166.7,Bunnings,Hong Kong,Entity_6194,Mobile App
+T00456,2025-07-13,14:43:07,C6561,Investment,Online Payment,24201.45,IAG Insurance,Hong Kong,Person_4764,Mobile App
+T00074,2025-04-14,00:11:20,C5670,Investment,ATM Withdrawal,7279.3,Domain,China,Person_8253,Mobile App
+T00302,2025-09-05,06:32:05,C2072,Business,Wire Transfer,10159.79,Seek,United States,Person_1777,Mobile App
+T00110,2025-05-14,18:49:00,C4581,Checking,ATM Withdrawal,19968.71,ANZ,Singapore,Company_6197,Branch
+T00768,2025-05-25,17:37:00,C7416,Investment,ATM Withdrawal,3265.3,Aldi Australia,United Kingdom,Person_3649,ATM
+T00725,2025-06-03,23:39:50,C3268,Savings,Cash Deposit,966.46,Google Play,Singapore,Person_8737,Third Party
+T00545,2025-07-03,08:10:58,C4201,Investment,ATM Withdrawal,13458.02,Google Play,United States,Person_3403,Online
+T00906,2025-02-28,17:51:20,C2831,Savings,Online Payment,24286.31,Myer,Hong Kong,Entity_9216,Online
+T00910,2025-08-22,11:13:36,C2174,Checking,ATM Withdrawal,11160.37,Amazon,China,Entity_2596,Branch
+T00637,2025-01-29,23:46:55,C6801,Business,ATM Withdrawal,10957.98,Harvey Norman,UAE,Entity_2756,Branch
+T00885,2025-03-23,11:23:19,C1317,Business,Crypto Purchase,1851.35,PayPal,UAE,Person_4739,Mobile App
+T00698,2025-04-17,07:53:20,C1116,Business,ATM Withdrawal,19191.35,Uber,Hong Kong,Entity_6500,Third Party
+T00598,2025-01-07,07:36:26,C9007,Business,Cash Deposit,22322.16,Seek,United States,Company_5154,ATM
+T00775,2025-01-16,18:32:25,C2466,Checking,Crypto Purchase,14018.12,eBay,UAE,Person_5516,Mobile App
+T00847,2025-04-13,00:33:32,C9073,Investment,Online Payment,5298.22,Microsoft Store,Australia,Person_9615,Branch
+T00947,2025-04-25,16:14:42,C1551,Business,ATM Withdrawal,13067.16,Microsoft Store,United Kingdom,Person_6180,Third Party
+T00178,2025-03-21,01:59:14,C3459,Checking,Online Payment,9019.3,Amazon,United States,Entity_6653,Online
+T00002,2025-02-06,11:04:05,C4312,Savings,Online Payment,4626.7,IAG Insurance,Australia,Entity_8290,Mobile App
+T00722,2025-08-03,20:40:15,C2668,Investment,Online Payment,15213.03,Woolworths,UAE,Person_1544,Mobile App
+T00858,2025-05-27,19:18:23,C3507,Business,Wire Transfer,2658.97,Apple Store,China,Entity_4098,ATM
+T00328,2025-02-24,19:58:27,C2010,Investment,ATM Withdrawal,14612.22,Westpac,Australia,Company_3281,ATM
+T00613,2025-02-28,20:40:28,C2198,Business,Wire Transfer,10093.62,Westpac,United States,Company_9718,Mobile App
+T00371,2025-04-30,14:22:18,C4806,Savings,ATM Withdrawal,5363.46,Telstra,China,Entity_8673,ATM
+T00222,2025-01-11,20:03:27,C5289,Investment,Crypto Purchase,21393.74,Bunnings,UAE,Person_4651,Third Party
+T00492,2025-08-04,23:34:04,C1520,Checking,Wire Transfer,5843.71,BP Australia,Singapore,Company_7596,ATM
+T00642,2025-10-07,02:52:17,C1353,Savings,Wire Transfer,18327.67,Uber,United Kingdom,Person_8583,ATM
+T00429,2025-03-18,11:23:45,C5703,Investment,Crypto Purchase,12486.13,Microsoft Store,Singapore,Entity_2122,Branch
+T00806,2025-07-11,22:51:15,C2322,Business,ATM Withdrawal,16380.05,Caltex,Singapore,Company_8217,Mobile App
+T00499,2025-07-12,17:27:38,C6735,Investment,Wire Transfer,19860.93,Google Play,Singapore,Entity_4526,Mobile App
+T00008,2025-10-12,05:02:45,C6472,Business,ATM Withdrawal,1457.47,Domain,UAE,Person_5360,ATM
+T00016,2025-08-20,19:58:39,C8217,Checking,Online Payment,9190.73,JB Hi-Fi,Australia,Company_4696,Branch
+T00866,2025-10-10,02:25:21,C7979,Business,ATM Withdrawal,20379.89,IKEA,UAE,Person_3743,Online
+T00267,2025-03-16,05:51:08,C1365,Business,Wire Transfer,9770.97,David Jones,United States,Person_2764,Online
+T00522,2025-05-23,15:51:50,C7482,Savings,Online Payment,15393.01,Uber,United Kingdom,Company_6571,Third Party
+T00620,2025-09-16,03:27:37,C1843,Investment,Wire Transfer,14434.09,IKEA,China,Entity_1731,Third Party
+T00334,2025-04-11,19:11:31,C3663,Savings,ATM Withdrawal,4107.29,Afterpay,United Kingdom,Company_1892,Online
+T00435,2025-04-19,06:52:24,C9614,Savings,Wire Transfer,16165.64,Bunnings,Australia,Company_3357,Third Party
+T00629,2025-05-04,09:40:07,C7708,Checking,Crypto Purchase,14353.69,ZipPay,United Kingdom,Entity_9186,Mobile App
+T00064,2025-07-21,14:17:16,C1779,Savings,ATM Withdrawal,9816.39,W00lw0rths Services,UAE,Company_8289,Third Party
+T00538,2025-06-07,09:31:35,C6892,Checking,Online Payment,8337.05,Afterpay,Singapore,Entity_2238,ATM
+T00733,2025-02-11,02:15:23,C9367,Business,Crypto Purchase,24908.58,PayPal,Singapore,Company_2013,Online
+T00365,2025-02-10,11:44:55,C6931,Business,Online Payment,13820.08,JB Hi-Fi,United Kingdom,Company_6767,Online
+T00265,2025-03-05,09:30:59,C9907,Checking,Crypto Purchase,9474.34,Uber,United States,Person_5789,Online
+T00579,2025-08-30,18:10:08,C1189,Checking,ATM Withdrawal,17913.51,David Jones,Singapore,Person_8006,Mobile App
+T00711,2025-03-06,23:04:04,C5764,Investment,Wire Transfer,2781.22,Domain,United Kingdom,Company_3791,Branch
+T00912,2025-08-12,22:57:06,C6457,Checking,Cash Deposit,14844.12,NAB,Hong Kong,Company_5659,ATM
+T00406,2025-07-23,20:22:40,C7572,Business,Online Payment,21845.79,ALDI,United Kingdom,Company_3152,ATM
+T00044,2025-03-24,11:37:10,C6518,Investment,Wire Transfer,13590.27,IAG Insurance,Australia,Person_7752,Mobile App
+T00822,2025-07-30,07:24:24,C2995,Investment,Crypto Purchase,19284.5,Telstra,United Kingdom,Person_4090,Mobile App
+T00211,2025-07-08,06:12:41,C8362,Investment,Cash Deposit,6293.56,Target,Hong Kong,Person_7373,Third Party
+T00487,2025-01-07,11:03:39,C7110,Investment,Online Payment,17090.4,Uber,UAE,Person_7354,ATM
+T00350,2025-10-09,22:46:36,C9331,Checking,Crypto Purchase,17308.27,IKEA,United States,Company_8178,Third Party
+T00431,2025-02-11,00:16:45,C3332,Savings,Crypto Purchase,14691.69,Kmart,United States,Company_7576,Online
+T00712,2025-10-03,23:26:05,C2140,Savings,ATM Withdrawal,17007.2,Aldi Australia,Hong Kong,Person_6015,ATM
+T00478,2025-02-17,20:01:52,C2061,Investment,Cash Deposit,18540.96,Telstra,Australia,Entity_7635,Third Party
+T00250,2025-08-14,20:55:35,C1478,Business,Crypto Purchase,20370.99,Amazon,Hong Kong,Person_6002,Online
+T00476,2025-03-28,04:46:43,C2902,Business,ATM Withdrawal,23461.59,Microsoft Store,Singapore,Person_8015,Mobile App
+T00374,2025-06-10,01:44:47,C9070,Checking,Crypto Purchase,15934.28,Harvey Norman,Australia,Company_1974,Branch
+T00622,2025-01-10,18:31:25,C7775,Checking,Crypto Purchase,16302.94,BP Australia,United Kingdom,Company_4104,Third Party
+T00597,2025-03-15,01:02:32,C8302,Investment,Cash Deposit,16090.99,eBay,Australia,Company_1515,Online
+T00612,2025-02-08,10:59:00,C9467,Checking,ATM Withdrawal,13563.77,Woolworths,Australia,Person_4458,Branch
+T00880,2025-04-18,06:50:37,C7376,Checking,Cash Deposit,570.49,ZipPay,United Kingdom,Entity_3231,Branch
+T00159,2025-07-19,07:18:49,C9731,Business,Crypto Purchase,1137.91,Caltex,Hong Kong,Entity_1056,Mobile App
+T00567,2025-01-26,00:59:49,C2731,Savings,Cash Deposit,14142.79,Coles,Singapore,Person_4111,Branch
+T00657,2025-08-09,21:43:22,C4655,Checking,Crypto Purchase,7899.18,Seek,United States,Entity_2175,Online
+T00921,2025-09-09,17:28:26,C9377,Investment,Cash Deposit,8305.69,Myer,United Kingdom,Entity_8495,Mobile App
+T00900,2025-08-10,01:21:03,C2482,Investment,Cash Deposit,5306.02,Apple Store,UAE,Entity_5829,Mobile App
+T00852,2025-03-24,06:14:59,C2785,Savings,Cash Deposit,878.42,Kmart,Hong Kong,Company_2922,ATM
+T00107,2025-07-30,20:38:10,C6561,Savings,ATM Withdrawal,9226.19,Coles,United States,Entity_7801,Mobile App
+T00807,2025-05-17,21:38:29,C3376,Business,Wire Transfer,21707.96,David Jones,United Kingdom,Person_6496,Third Party
+T00601,2025-09-21,18:48:01,C6533,Investment,Online Payment,9108.33,JB Hi-Fi,Singapore,Person_6056,Third Party
+T00060,2025-09-03,00:36:31,C9475,Savings,Cash Deposit,11831.76,Microsoft Store,Singapore,Company_6416,ATM
+T00991,2025-08-13,06:08:04,C3920,Savings,Online Payment,9525.66,BP Australia,China,Company_2029,ATM
+T00811,2025-03-12,19:51:53,C8758,Savings,Cash Deposit,24114.79,Google Play,United Kingdom,Person_9463,Branch
+T00668,2025-01-26,03:36:54,C7838,Checking,Wire Transfer,9430.9,Qantass Travel,Singapore,Entity_5939,Mobile App
+T00962,2025-06-13,06:04:13,C9335,Business,Crypto Purchase,808.16,Microsoft Store,Australia,Company_1004,Branch
+T00447,2025-06-12,02:55:22,C7704,Savings,ATM Withdrawal,2845.37,BP Australia,Singapore,Entity_2130,Mobile App
+T00408,2025-04-30,16:25:32,C2400,Savings,Crypto Purchase,21714.11,Woolworths,United States,Company_1630,Online
+T00182,2025-07-25,01:37:27,C7155,Investment,Wire Transfer,12807.99,Coles,Singapore,Person_6188,Online
+T00789,2025-08-05,11:57:28,C4619,Savings,ATM Withdrawal,1495.12,Optus,China,Entity_2388,Branch
+T00386,2025-06-03,21:47:23,C5365,Checking,Online Payment,15853.35,Qantas,United States,Person_3181,Branch
+T00323,2025-03-03,01:41:05,C5662,Investment,ATM Withdrawal,9258.26,UAE Trade Co,Hong Kong,Entity_5756,Mobile App
+T00548,2025-03-19,14:12:10,C6529,Checking,Online Payment,22965.45,Microsoft Store,Australia,Person_7596,Branch
+T00972,2025-08-02,16:16:29,C7419,Checking,Wire Transfer,2307.52,Qantas,Hong Kong,Entity_6914,ATM
+T00721,2025-08-09,01:53:15,C1419,Investment,Online Payment,20953.75,Kmart,United States,Person_5976,Branch
+T00983,2025-04-22,01:40:59,C5923,Business,ATM Withdrawal,9026.54,PayQuick Offshore,Hong Kong,Person_7483,ATM
+T00687,2025-09-27,12:40:23,C6871,Investment,Crypto Purchase,20109.23,Officeworks,Australia,Person_5230,Online
+T00609,2025-02-05,02:40:34,C6201,Business,Online Payment,22369.08,Coles,Hong Kong,Person_5059,Mobile App
+T00502,2025-01-18,12:54:48,C9472,Business,Cash Deposit,24942.43,Microsoft Store,United States,Company_6900,ATM
+T00333,2025-06-26,15:49:27,C2041,Savings,Wire Transfer,15089.41,Aldi Australia,Australia,Company_3711,Online
+T00717,2025-03-25,21:24:04,C2360,Savings,Online Payment,78807.15,Global Gold Traders,China,Person_8726,Branch
+T00710,2025-04-19,04:13:24,C9164,Business,Wire Transfer,24693.67,David Jones,China,Company_7290,Branch
+T00173,2025-05-10,01:42:34,C6712,Checking,Cash Deposit,15394.43,IKEA,Australia,Company_5861,Third Party
+T00049,2025-08-07,12:40:45,C5568,Savings,Wire Transfer,401.29,Caltex,UAE,Person_4906,Mobile App
+T00778,2025-01-05,07:07:22,C5360,Investment,Online Payment,19507.14,Afterpay,Singapore,Person_4984,Online
+T00116,2025-07-20,16:37:30,C4852,Business,ATM Withdrawal,8749.22,Officeworks,Singapore,Person_7439,Online
+T00220,2025-07-21,17:14:07,C9128,Investment,Online Payment,2946.01,PayPal,Hong Kong,Person_8638,Third Party
+T00724,2025-08-13,02:14:21,C9306,Investment,Online Payment,9937.09,Qantass Travel,Hong Kong,Company_5960,Online
+T00292,2025-05-17,18:24:01,C2418,Business,ATM Withdrawal,9061.74,MerchantServices Ltd,Hong Kong,Company_4932,Third Party
+T00360,2025-02-22,15:54:21,C6800,Checking,ATM Withdrawal,1220.07,Seek,Hong Kong,Person_5249,Online
+T00860,2025-06-20,09:19:44,C8498,Checking,ATM Withdrawal,838.07,Amazon,China,Person_7631,ATM
+T00693,2025-08-26,06:29:59,C5878,Business,Wire Transfer,24759.02,Aldi Australia,United Kingdom,Entity_4790,Mobile App
+T00705,2025-01-03,00:20:37,C6210,Checking,Crypto Purchase,133.49,ANZ,Australia,Company_8245,Online
+T00795,2025-02-26,20:49:31,C2368,Investment,Cash Deposit,1687.37,Bunnings,United Kingdom,Entity_8318,Branch
+T00695,2025-07-09,00:51:22,C1773,Checking,Cash Deposit,9629.9,Telstra,United Kingdom,Person_8399,Branch
+T00136,2025-01-26,23:48:01,C7779,Checking,Crypto Purchase,16741.26,Caltex,Australia,Company_8238,ATM
+T00224,2025-09-07,19:50:54,C6338,Savings,Online Payment,2490.96,Target,China,Person_1599,ATM
+T00855,2025-01-10,21:02:43,C6025,Checking,Cash Deposit,5061.43,ALDI,United States,Entity_3396,ATM
+T00437,2025-01-13,17:29:12,C1778,Investment,Cash Deposit,24663.56,David Jones,UAE,Entity_9915,Online
+T00146,2025-08-22,12:53:54,C8790,Checking,Cash Deposit,21238.12,Seek,Hong Kong,Company_4799,Online
+T00232,2025-02-03,15:24:00,C3931,Checking,Cash Deposit,21419.42,NAB,United Kingdom,Company_7943,Third Party
+T00057,2025-02-05,15:19:53,C5237,Business,Online Payment,16737.59,Harvey Norman,Singapore,Person_5021,Online
+T00030,2025-09-23,00:25:43,C5904,Business,ATM Withdrawal,6506.56,Telstra,Singapore,Entity_1759,Mobile App
+T00942,2025-05-21,11:50:25,C5863,Checking,ATM Withdrawal,24666.42,Aldi Australia,United Kingdom,Person_3650,Mobile App
+T00564,2025-05-02,03:30:18,C7336,Checking,Online Payment,8767.21,Google Play,Hong Kong,Company_7986,ATM
+T00948,2025-06-12,21:19:24,C2108,Checking,Crypto Purchase,16688.26,Woolworths,Australia,Company_6823,Online
+T00466,2025-08-13,02:03:45,C9119,Business,Wire Transfer,13745.6,IAG Insurance,Hong Kong,Person_1680,Branch
+T00809,2025-08-27,01:13:53,C1549,Savings,ATM Withdrawal,18295.19,Optus,Singapore,Person_3893,Branch
+T00472,2025-08-29,16:22:10,C6835,Savings,Crypto Purchase,8754.26,Woolworths,Australia,Company_8746,Branch
+T00999,2025-04-21,16:10:54,C1081,Checking,Crypto Purchase,20333.99,Coles Express,Singapore,Company_3558,Branch
+T00233,2025-02-04,09:13:31,C6298,Business,Crypto Purchase,17114.9,Amazon,China,Entity_3014,Mobile App
+T00990,2025-06-28,10:06:34,C1964,Investment,Cash Deposit,18995.64,Caltex,UAE,Company_5811,Branch
+T00364,2025-06-18,11:33:43,C8203,Investment,Cash Deposit,7729.04,Optus,Australia,Entity_4292,Branch
+T00797,2025-04-24,14:41:42,C6421,Investment,Online Payment,20478.7,Harvey Norman,China,Entity_4270,Online
+T00086,2025-07-08,11:02:18,C8704,Business,Crypto Purchase,223.46,Amazon,Hong Kong,Entity_6223,Third Party
+T00441,2025-01-03,23:49:32,C7386,Savings,ATM Withdrawal,4059.0,Kmart,Australia,Entity_8002,Third Party
+T00321,2025-04-29,19:23:19,C6812,Checking,ATM Withdrawal,18440.66,Target,UAE,Person_2785,Mobile App
+T00540,2025-10-14,22:30:36,C3474,Savings,Online Payment,15216.97,Target,United Kingdom,Person_5565,Online
+T00120,2025-07-20,20:02:10,C4421,Savings,ATM Withdrawal,16908.47,Aldi Australia,Australia,Company_2406,ATM
+T00585,2025-02-23,19:57:22,C7864,Investment,ATM Withdrawal,22192.14,Commonwealth Bank,United States,Company_6006,ATM
+T00156,2025-02-23,10:50:04,C3346,Business,Crypto Purchase,4921.31,Coles Express,United Kingdom,Person_1929,Branch
+T00970,2025-08-24,15:33:09,C1672,Checking,Cash Deposit,21667.64,Uber,China,Entity_7873,Third Party
+T00982,2025-02-05,06:15:14,C1999,Checking,ATM Withdrawal,15773.71,IAG Insurance,China,Entity_8048,Mobile App
+T00144,2025-04-05,21:49:43,C6400,Savings,ATM Withdrawal,8168.72,Coles,UAE,Company_6941,Online
+T00380,2025-06-16,23:17:23,C8464,Investment,Crypto Purchase,23740.54,Coles Express,China,Entity_1745,ATM
+T00851,2025-03-08,04:40:07,C9238,Savings,Cash Deposit,22069.21,David Jones,Australia,Entity_1294,Branch
+T00117,2025-08-25,18:49:05,C1177,Business,Wire Transfer,218246.76,MerchantServices Ltd,UAE,Person_1616,Branch
+T00859,2025-01-02,06:39:33,C8226,Savings,Online Payment,3149.29,Qantas,China,Entity_9684,Third Party
+T00557,2025-08-30,00:38:29,C3718,Checking,Cash Deposit,24389.76,JB Hi-Fi,UAE,Entity_1187,Branch
+T00588,2025-06-24,01:22:21,C9612,Investment,Wire Transfer,18070.56,Kmart,China,Company_9963,Branch
+T00253,2025-05-28,01:57:52,C4398,Business,Cash Deposit,23419.37,Qantas,Singapore,Person_7461,ATM
+T00251,2025-09-30,07:36:15,C6302,Investment,Wire Transfer,12426.13,Domain,United States,Company_7893,Mobile App
+T00653,2025-02-26,08:24:51,C4250,Investment,Cash Deposit,1944.54,IKEA,Singapore,Company_2107,Online
+T00171,2025-08-05,17:16:05,C1998,Business,Cash Deposit,17415.94,Woolworths,Australia,Company_6198,Mobile App
+T00427,2025-08-12,09:03:00,C5846,Checking,Online Payment,14860.13,IAG Insurance,United States,Company_7731,Third Party
+T00062,2025-05-09,16:45:26,C9995,Checking,Wire Transfer,19031.59,JB Hi-Fi,Hong Kong,Company_9734,Mobile App
+T00241,2025-03-06,04:39:58,C4889,Savings,ATM Withdrawal,15667.19,Google Play,United States,Person_2155,Branch
+T00800,2025-01-12,13:34:06,C3444,Business,Cash Deposit,24928.26,ALDI,United Kingdom,Entity_3316,Mobile App
+T00678,2025-02-05,23:40:25,C3728,Business,Cash Deposit,21557.96,Seek,Singapore,Person_4282,ATM
+T00103,2025-06-01,13:58:07,C8052,Investment,Crypto Purchase,11222.19,Google Play,Australia,Entity_3801,Mobile App
+T00422,2025-08-19,10:35:27,C5242,Checking,Cash Deposit,18448.26,Afterpay,UAE,Person_5859,Branch
+T00529,2025-05-05,13:51:02,C3555,Savings,Crypto Purchase,17695.6,Myer,Australia,Entity_8117,ATM
+T00648,2025-05-20,08:06:33,C3335,Business,Crypto Purchase,19284.26,Domain,United States,Company_2733,Mobile App
+T00305,2025-07-23,00:49:35,C5536,Savings,Crypto Purchase,18618.08,Officeworks,China,Entity_2764,Mobile App
+T00819,2025-01-12,08:10:35,C6890,Checking,Cash Deposit,13603.66,Google Play,United States,Person_6137,Third Party
+T00747,2025-06-10,21:49:45,C6336,Savings,Cash Deposit,17408.07,ALDI,Hong Kong,Company_7394,ATM
+T00269,2025-06-29,18:43:52,C4408,Savings,Cash Deposit,1384.46,Target,Australia,Person_6297,Branch
+T00071,2025-10-12,15:36:42,C1763,Savings,Cash Deposit,15130.21,Bunnings,China,Company_3870,ATM
+T00718,2025-10-01,13:22:27,C2101,Investment,Online Payment,9945.71,Westpack Banking Co,Singapore,Person_5084,Online
+T00282,2025-03-26,01:01:13,C7862,Savings,Cash Deposit,18439.04,eBay,Hong Kong,Person_8516,Mobile App
+T00344,2025-02-24,11:28:22,C3186,Business,Crypto Purchase,18751.98,PayPal,Hong Kong,Entity_1892,Mobile App
+T00731,2025-06-30,19:23:51,C6477,Investment,Online Payment,6542.82,Commonwealth Bank,Singapore,Entity_5627,Mobile App
+T00955,2025-03-13,00:29:31,C7458,Savings,Wire Transfer,5902.3,Telstra,Hong Kong,Company_7631,Branch
+T00448,2025-03-24,15:44:00,C8539,Business,Crypto Purchase,14421.16,Harvey Norman,Singapore,Person_4354,Third Party
+T00926,2025-02-11,21:12:22,C2235,Savings,ATM Withdrawal,4217.7,Qantas,China,Person_3372,Branch
+T00320,2025-05-06,19:00:45,C3716,Investment,Online Payment,14628.64,JB Hi-Fi,Hong Kong,Entity_3604,Mobile App
+T00831,2025-05-13,09:50:41,C5347,Business,Crypto Purchase,5053.09,Westpac,United States,Company_2695,ATM
+T00952,2025-07-23,18:32:10,C6864,Investment,ATM Withdrawal,16852.14,Apple Store,China,Company_3665,Online
+T00048,2025-06-02,23:50:15,C2499,Business,Wire Transfer,5007.96,Microsoft Store,Australia,Entity_9379,Branch
+T00562,2025-01-07,09:02:08,C4365,Investment,Cash Deposit,9963.09,Woolworths,UAE,Person_3721,Mobile App
+T00840,2025-09-01,19:20:49,C5199,Business,ATM Withdrawal,17389.8,Bunnings,UAE,Entity_1417,Branch
+T00432,2025-05-26,19:44:16,C9176,Investment,Online Payment,14684.06,Myer,UAE,Person_5469,Mobile App
+T00093,2025-01-11,22:14:40,C5355,Savings,Online Payment,1669.06,BP Australia,United States,Company_3814,Mobile App
+T00841,2025-09-25,08:23:06,C3863,Investment,Online Payment,23818.58,Uber,United States,Entity_3134,Branch
+T00686,2025-01-04,10:23:04,C9084,Savings,Crypto Purchase,1680.64,PayPal,Singapore,Company_4282,ATM
+T00708,2025-05-19,17:42:55,C2789,Business,ATM Withdrawal,5878.51,Caltex,China,Person_8322,Mobile App
+T00584,2025-02-26,03:28:21,C4509,Investment,Wire Transfer,20007.91,Kmart,United States,Entity_5312,Online
+T00354,2025-01-30,17:31:05,C4223,Investment,Cash Deposit,18939.18,Coles Express,Singapore,Company_2198,ATM
+T00434,2025-08-22,01:02:13,C3633,Investment,ATM Withdrawal,8469.3,Target,Hong Kong,Company_7687,Online
+T00665,2025-09-02,17:25:07,C9918,Checking,Wire Transfer,9365.8,Global Gold Traders,Hong Kong,Company_9638,ATM
+T00946,2025-02-15,14:15:29,C7254,Savings,Crypto Purchase,11395.76,Coles,Singapore,Company_8554,Mobile App
+T00699,2025-09-08,01:36:32,C8542,Savings,ATM Withdrawal,988.04,Telstra,United Kingdom,Entity_7666,Online
+T00424,2025-06-01,17:30:04,C1297,Checking,Crypto Purchase,21025.71,IKEA,China,Entity_5472,Online
+T00330,2025-04-05,12:51:32,C3325,Business,Wire Transfer,24655.96,IKEA,China,Entity_6402,Online
+T00195,2025-06-27,10:40:34,C3026,Investment,Online Payment,9299.79,UAE Trade Co,Singapore,Entity_4475,ATM
+T00748,2025-05-14,03:29:13,C6242,Checking,Online Payment,12422.1,Uber,Hong Kong,Person_1353,Third Party
+T00446,2025-04-26,08:39:19,C7565,Savings,Crypto Purchase,17439.19,BP Australia,Hong Kong,Company_3074,Third Party
+T00749,2025-02-13,09:06:24,C6016,Business,Crypto Purchase,24054.94,Bunnings,Australia,Person_7095,Mobile App
+T00932,2025-08-26,04:50:34,C8263,Investment,Online Payment,21713.37,Amazon,United States,Person_9169,Online
+T00734,2025-06-28,13:33:49,C3748,Checking,Crypto Purchase,20405.04,Officeworks,United Kingdom,Entity_8158,ATM
+T00655,2025-05-08,09:37:10,C1952,Business,Wire Transfer,24194.1,ANZ,Australia,Person_4853,Mobile App
+T00072,2025-06-26,11:52:24,C1562,Investment,Wire Transfer,18901.0,Afterpay,Australia,Company_3201,Mobile App
+T00152,2025-01-27,03:26:56,C6785,Checking,Cash Deposit,22306.56,Qantas,Hong Kong,Entity_5999,Mobile App
+T00713,2025-05-19,11:02:53,C8071,Savings,Online Payment,23912.57,Optus,Hong Kong,Company_9594,ATM
+T00901,2025-09-19,13:58:41,C9984,Investment,Cash Deposit,11672.03,ZipPay,Singapore,Entity_3260,Online
+T00987,2025-03-09,14:10:10,C7088,Checking,Crypto Purchase,5720.38,Apple Store,UAE,Entity_2063,Third Party
+T00986,2025-03-05,09:15:59,C8380,Savings,Cash Deposit,13664.89,Caltex,China,Entity_1746,ATM
+T00979,2025-06-25,16:29:16,C8786,Savings,Crypto Purchase,20454.96,Microsoft Store,United Kingdom,Person_9590,ATM
+T00631,2025-09-09,21:30:21,C6143,Investment,Crypto Purchase,71264.22,QuickCash Transfers,UAE,Entity_2383,Mobile App
+T00697,2025-02-24,16:19:03,C2938,Investment,ATM Withdrawal,286.66,Coles Express,Hong Kong,Entity_2412,Branch
+T00611,2025-03-03,13:08:09,C7029,Savings,Crypto Purchase,12835.82,ANZ,UAE,Entity_1910,Third Party
+T00769,2025-05-24,22:01:14,C5476,Checking,ATM Withdrawal,5754.2,NAB,Australia,Entity_5567,ATM
+T00846,2025-06-13,03:14:52,C6011,Checking,Online Payment,12497.26,Optus,Australia,Person_2440,ATM
+T00776,2025-04-23,23:35:33,C4496,Investment,Wire Transfer,6532.1,Google Play,Singapore,Person_9734,ATM
+T00011,2025-03-25,20:04:35,C4871,Savings,Wire Transfer,4625.94,Commonwealth Bank,United Kingdom,Entity_4732,Branch
+T00028,2025-01-19,00:16:08,C4490,Savings,ATM Withdrawal,12404.66,Qantas,UAE,Entity_3985,ATM
+T00234,2025-09-17,21:45:59,C8215,Checking,ATM Withdrawal,1810.69,Coles,United States,Company_5640,Third Party
+T00201,2025-07-25,21:29:00,C2810,Investment,Cash Deposit,3501.91,Commonwealth Bank,United Kingdom,Entity_6212,Mobile App
+T00881,2025-02-12,21:45:49,C8441,Investment,ATM Withdrawal,5749.95,Optus,Hong Kong,Company_6856,Branch
+T00572,2025-08-30,09:27:28,C7042,Investment,Cash Deposit,19145.64,Harvey Norman,United Kingdom,Person_1037,Third Party
+T00115,2025-02-27,06:20:43,C4570,Savings,ATM Withdrawal,12826.72,Aldi Australia,Hong Kong,Company_1719,Online
+T00138,2025-01-06,10:09:11,C1426,Business,Crypto Purchase,23506.33,ALDI,Singapore,Person_6018,ATM
+T00122,2025-03-21,07:17:18,C3765,Savings,Crypto Purchase,13559.13,Coles,Singapore,Entity_2407,Mobile App
+T00992,2025-06-06,04:34:10,C3743,Business,Online Payment,23789.39,eBay,China,Person_3730,Branch
+T00520,2025-05-21,09:51:09,C1771,Investment,ATM Withdrawal,5722.41,Optus,United States,Person_9946,Online
+T00416,2025-02-03,05:56:19,C1723,Savings,Wire Transfer,3371.27,Afterpay,Australia,Person_2598,Third Party
+T00235,2025-09-23,19:44:35,C3749,Business,Wire Transfer,23609.08,ZipPay,Singapore,Entity_5071,Branch
+T00764,2025-05-30,07:13:36,C2136,Investment,Cash Deposit,18830.28,Optus,United States,Company_8065,Branch
+T00209,2025-07-22,04:56:04,C4300,Checking,Online Payment,10253.38,Domain,United Kingdom,Company_6427,Online
+T00941,2025-07-30,10:17:20,C8521,Checking,Crypto Purchase,17220.79,Bunnings,United States,Company_4541,Branch
+T00741,2025-06-29,08:42:05,C7869,Savings,ATM Withdrawal,1157.2,Coles Express,Australia,Person_2816,Third Party
+T00246,2025-08-29,08:09:12,C1614,Business,Wire Transfer,2406.35,Westpac,Hong Kong,Person_8798,Third Party
+T00150,2025-03-04,19:15:47,C5706,Checking,Crypto Purchase,6137.54,Optus,Australia,Company_3497,Online
+T00094,2025-04-12,10:25:12,C4432,Savings,Cash Deposit,24063.06,Coles,United Kingdom,Entity_1183,Online
+T00018,2025-05-16,07:31:42,C8137,Savings,Cash Deposit,5031.86,Westpac,Australia,Company_4794,Third Party
+T00684,2025-09-05,15:02:17,C2324,Savings,ATM Withdrawal,9323.79,GoldenGate Exports,Singapore,Entity_7864,Online
+T00677,2025-01-23,10:19:28,C7802,Business,Online Payment,19893.78,Qantas,United Kingdom,Person_3699,Third Party
+T00485,2025-02-17,13:42:22,C9932,Checking,Online Payment,22701.26,JB Hi-Fi,Hong Kong,Person_1787,Mobile App
+T00745,2025-09-17,18:53:28,C8469,Business,Crypto Purchase,7070.7,Myer,Hong Kong,Company_3144,Online
+T00927,2025-04-27,13:53:46,C8427,Savings,Crypto Purchase,9515.0,Microsoft Store,UAE,Person_3001,Mobile App
+T00854,2025-08-12,02:52:35,C7188,Checking,Crypto Purchase,3361.26,Officeworks,United States,Company_6063,Branch
+T00247,2025-04-25,11:28:02,C2721,Checking,Wire Transfer,8447.03,Apple Store,Hong Kong,Entity_8271,Third Party
+T00805,2025-01-28,08:30:11,C6066,Checking,Cash Deposit,19331.93,PayPal,Hong Kong,Person_2746,Branch
+T00045,2025-08-26,22:23:54,C8054,Business,Online Payment,9806.48,UAE Trade Co,UAE,Person_2049,Branch
+T00848,2025-02-10,05:32:53,C8034,Checking,Online Payment,14013.23,David Jones,United Kingdom,Entity_5044,Branch
+T00905,2025-02-22,08:18:03,C4538,Investment,ATM Withdrawal,15831.89,Westpac,UAE,Person_6520,ATM
+T00706,2025-06-28,08:41:10,C9554,Checking,Cash Deposit,8897.82,Myer,Singapore,Person_8365,Mobile App
+T00372,2025-04-15,14:28:51,C6592,Checking,Crypto Purchase,15450.73,Amazon,Hong Kong,Company_8107,Online
+T00641,2025-08-20,02:30:09,C3795,Investment,ATM Withdrawal,23854.47,BP Australia,UAE,Person_1177,Branch
+T00160,2025-02-17,17:03:05,C6299,Savings,Online Payment,23514.44,Seek,United States,Person_1111,ATM
+T00896,2025-10-04,20:28:18,C8639,Business,ATM Withdrawal,21841.91,Amazon,United Kingdom,Company_6244,Mobile App
+T00777,2025-10-03,14:31:11,C9649,Savings,Cash Deposit,276.36,Qantas,China,Entity_8099,Online
+T00165,2025-09-01,02:42:39,C3762,Business,Cash Deposit,14328.7,Harvey Norman,China,Company_7021,Branch
+T00239,2025-10-10,00:23:04,C3699,Business,Crypto Purchase,3256.08,Coles,Hong Kong,Person_2288,Branch
+T00285,2025-01-22,19:15:38,C1517,Savings,Cash Deposit,19049.69,IKEA,Singapore,Company_8701,Online
+T00457,2025-07-25,05:17:52,C7945,Business,Online Payment,10664.64,Optus,China,Person_4279,ATM
+T00654,2025-08-06,15:47:53,C6091,Business,Wire Transfer,19995.43,BP Australia,United Kingdom,Entity_4833,Branch
+T00951,2025-06-06,10:24:44,C6533,Investment,Crypto Purchase,9622.31,Westpack Banking Co,Hong Kong,Company_4055,ATM
+T00911,2025-04-23,14:50:06,C2883,Investment,Cash Deposit,101638.3,Westpack Banking Co,UAE,Entity_9363,Online
+T00465,2025-07-05,19:09:10,C7926,Business,Cash Deposit,3403.65,BP Australia,United States,Person_8740,ATM
+T00087,2025-04-18,05:21:44,C9985,Checking,ATM Withdrawal,13375.53,BP Australia,Hong Kong,Person_5965,ATM
+T00426,2025-08-06,03:15:49,C4151,Savings,Wire Transfer,9100.46,Shell Intl Payments,Singapore,Person_3375,ATM
+T00261,2025-02-27,14:51:56,C1582,Savings,Online Payment,21684.56,Woolworths,UAE,Person_6531,Third Party
+T00966,2025-06-30,13:48:02,C8661,Checking,Crypto Purchase,9876.92,ZipPay,United Kingdom,Person_5675,Third Party
+T00617,2025-05-10,17:14:19,C7250,Business,ATM Withdrawal,17295.99,JB Hi-Fi,United Kingdom,Entity_2618,Mobile App
+T00824,2025-08-05,14:00:22,C4755,Investment,Cash Deposit,15674.2,David Jones,China,Company_2107,Online
+T00006,2025-03-18,16:25:32,C8949,Investment,Cash Deposit,8376.03,Apple Store,United Kingdom,Company_4935,Branch
+T00647,2025-02-02,03:36:18,C6120,Checking,Online Payment,9549.88,Global Gold Traders,UAE,Company_9121,Branch
+T00891,2025-09-25,20:40:05,C7456,Investment,ATM Withdrawal,19204.71,Bunnings,United States,Company_3348,Online
+T00758,2025-04-17,08:28:35,C4419,Checking,ATM Withdrawal,19945.78,Bunnings,Australia,Company_4773,Third Party
+T00603,2025-02-24,19:24:09,C3123,Investment,ATM Withdrawal,8662.54,PayPal,United States,Entity_4013,Mobile App
+T00362,2025-02-21,13:08:20,C4667,Investment,Wire Transfer,12479.22,Amazon,United States,Person_4448,Third Party
+T00177,2025-04-03,23:37:04,C1707,Business,ATM Withdrawal,3458.7,IAG Insurance,United Kingdom,Entity_1109,Mobile App
+T00389,2025-02-12,12:40:03,C5900,Investment,Wire Transfer,9354.53,PayQuick Offshore,Singapore,Person_1416,Online
+T00311,2025-08-04,04:43:47,C1360,Business,Cash Deposit,24448.62,eBay,United States,Entity_2089,Mobile App
+T00867,2025-02-16,15:53:09,C5781,Savings,ATM Withdrawal,16537.46,Westpac,Singapore,Company_1145,Branch
+T00052,2025-08-05,12:22:06,C2143,Investment,Wire Transfer,1897.41,Bunnings,United States,Company_1298,Online
+T00736,2025-06-08,09:04:38,C8369,Investment,Online Payment,13447.51,Bunnings,UAE,Company_6818,Branch
+T00604,2025-06-17,21:49:17,C1186,Checking,Wire Transfer,9100.81,ALDI,Singapore,Company_7697,Third Party
+T00277,2025-09-28,08:38:03,C9753,Investment,ATM Withdrawal,18821.74,Optus,United Kingdom,Entity_9811,Branch
+T00535,2025-05-24,20:44:25,C3216,Savings,ATM Withdrawal,2875.29,Commonwealth Bank,UAE,Person_3280,ATM
+T00312,2025-07-21,22:20:13,C8362,Savings,Wire Transfer,1126.84,IKEA,Australia,Person_7895,Third Party
+T00676,2025-08-07,19:29:18,C2286,Savings,Cash Deposit,24277.9,Telstra,China,Entity_3529,Third Party
+T00444,2025-08-23,13:31:16,C2273,Checking,Cash Deposit,21065.74,David Jones,Hong Kong,Company_9122,Branch
+T00760,2025-03-04,21:13:24,C6854,Checking,Wire Transfer,21688.99,BP Australia,United States,Entity_6338,Mobile App
+T00196,2025-09-02,17:50:52,C1716,Business,ATM Withdrawal,19261.34,Officeworks,UAE,Entity_5594,ATM
+T00556,2025-07-26,23:56:30,C3280,Business,Wire Transfer,16605.26,Qantas,UAE,Company_7445,Mobile App
+T00608,2025-07-09,14:06:38,C3110,Checking,ATM Withdrawal,14166.13,ZipPay,United Kingdom,Entity_7136,Online
+T00998,2025-03-26,03:25:52,C5554,Business,ATM Withdrawal,9187.86,PayQuick Offshore,Singapore,Person_5025,Third Party
+T00455,2025-08-10,02:57:56,C8188,Savings,Online Payment,19248.85,Google Play,Australia,Entity_2020,ATM
+T00242,2025-01-11,09:39:17,C9978,Savings,Crypto Purchase,24031.7,eBay,Hong Kong,Person_3293,ATM
+T00021,2025-04-04,09:26:34,C5546,Checking,Online Payment,17023.67,Bunnings,United States,Company_2759,Mobile App
+T00632,2025-07-02,11:43:08,C3044,Savings,Online Payment,1221.8,Aldi Australia,United Kingdom,Person_9307,Third Party
+T00918,2025-06-27,06:30:44,C6942,Checking,Online Payment,24247.04,Optus,Singapore,Entity_1877,ATM
+T00385,2025-02-08,01:56:17,C7636,Business,Cash Deposit,8717.96,Caltex,Hong Kong,Company_4773,Third Party
+T00121,2025-04-21,04:46:33,C7037,Savings,ATM Withdrawal,2881.16,Uber,United Kingdom,Person_7096,ATM
+T00003,2025-08-09,14:31:07,C5026,Savings,Online Payment,14986.53,Telstra,Hong Kong,Company_1546,ATM
+T00129,2025-02-22,01:27:58,C9318,Business,Wire Transfer,15845.88,Target,Singapore,Entity_6714,Third Party
+T00207,2025-02-08,00:51:32,C3643,Business,Crypto Purchase,24068.08,David Jones,China,Person_8875,Branch
+T00856,2025-02-26,01:24:44,C2131,Business,Crypto Purchase,20024.64,BP Australia,United States,Entity_6425,Third Party
+T00135,2025-03-24,04:22:35,C4181,Checking,Cash Deposit,4082.64,Microsoft Store,Singapore,Person_9956,Third Party
+T00256,2025-06-30,07:46:05,C9539,Savings,Wire Transfer,4477.12,JB Hi-Fi,United States,Person_6569,Third Party
+T00214,2025-03-22,09:40:37,C9325,Business,Cash Deposit,15974.85,Harvey Norman,China,Person_1236,Branch
+T00205,2025-07-09,18:24:17,C6121,Investment,Cash Deposit,11002.34,Kmart,China,Person_5567,Mobile App
+T00902,2025-02-04,09:09:20,C5321,Checking,Online Payment,18341.17,Woolworths,United Kingdom,Entity_7273,Branch
+T00139,2025-02-24,16:52:21,C7869,Business,Cash Deposit,176.29,Officeworks,United Kingdom,Entity_9112,Online
+T00512,2025-06-25,13:06:41,C6404,Business,Crypto Purchase,13519.52,Aldi Australia,United States,Company_6717,Third Party
+T00063,2025-06-06,20:07:48,C3928,Savings,Wire Transfer,5937.82,IKEA,United States,Entity_3999,Third Party
+T00530,2025-02-12,20:21:39,C7642,Investment,Wire Transfer,19292.6,ALDI,United Kingdom,Company_2427,Mobile App
+T00092,2025-01-21,17:14:36,C5924,Investment,Cash Deposit,17590.32,Domain,UAE,Company_2830,Mobile App
+T00335,2025-06-18,17:03:55,C7230,Investment,Wire Transfer,1951.2,Bunnings,China,Company_7794,Mobile App
+T00580,2025-05-16,02:29:23,C5332,Investment,Crypto Purchase,10229.21,Seek,UAE,Person_4264,Mobile App
+T00252,2025-04-22,16:39:47,C8391,Business,Cash Deposit,9909.36,MerchantServices Ltd,Singapore,Company_2847,Mobile App
+T00644,2025-02-25,04:12:46,C1621,Business,Wire Transfer,6593.49,Google Play,Singapore,Company_3468,ATM
+T00188,2025-04-07,04:07:13,C7251,Checking,Crypto Purchase,10989.93,Commonwealth Bank,China,Person_6734,Mobile App
+T00123,2025-09-06,19:02:28,C1171,Checking,Cash Deposit,6485.64,Coles Express,UAE,Company_6191,Online
+T00363,2025-01-18,07:16:40,C8899,Investment,Cash Deposit,9896.54,Offshore Investments LLC,Singapore,Entity_1636,Third Party
+T00715,2025-07-29,14:13:38,C4483,Investment,ATM Withdrawal,14734.43,Afterpay,United States,Person_3659,Third Party
+T00445,2025-08-24,11:03:18,C8848,Checking,Wire Transfer,13136.56,Apple Store,Hong Kong,Company_4356,Online
+T00187,2025-01-14,00:52:53,C9512,Checking,Cash Deposit,9365.4,FastFunds Remit,Hong Kong,Company_6396,Online
+T00568,2025-05-22,13:12:45,C3695,Checking,Crypto Purchase,7386.41,Westpac,Hong Kong,Company_9569,ATM
+T00549,2025-08-16,19:20:09,C8173,Investment,Wire Transfer,869.52,Microsoft Store,China,Person_1241,Branch
+T00616,2025-10-07,23:10:53,C2276,Investment,Cash Deposit,13165.97,eBay,United Kingdom,Company_7510,Online
+T00692,2025-05-15,07:45:26,C8254,Savings,Wire Transfer,658.8,Qantas,United Kingdom,Person_8062,Third Party
+T00796,2025-06-22,21:01:46,C3111,Savings,ATM Withdrawal,8124.07,eBay,Hong Kong,Person_3147,Branch
+T00845,2025-01-04,07:25:27,C9752,Savings,Online Payment,9959.28,W00lw0rths Services,Singapore,Company_7638,Third Party
+T00625,2025-01-27,23:33:26,C8880,Investment,Wire Transfer,6628.91,Bunnings,United Kingdom,Person_4206,ATM
+T00490,2025-07-20,20:52:10,C7105,Investment,ATM Withdrawal,7569.38,Qantas,Singapore,Person_4846,Branch
+T00974,2025-05-19,18:55:35,C2335,Investment,Wire Transfer,9111.43,W00lw0rths Services,Hong Kong,Company_6712,ATM
+T00703,2025-06-30,14:14:18,C5403,Savings,ATM Withdrawal,8442.44,ANZ,UAE,Entity_8891,ATM
+T00893,2025-06-04,17:05:38,C4416,Savings,Crypto Purchase,12874.2,BP Australia,UAE,Person_6018,Branch
+T00589,2025-08-20,11:23:57,C9975,Savings,ATM Withdrawal,20180.91,Telstra,Singapore,Person_2831,ATM
+T00319,2025-02-21,06:49:15,C2364,Checking,Wire Transfer,24895.99,PayPal,Australia,Company_1857,Third Party
+T00670,2025-04-22,16:18:10,C5637,Savings,Wire Transfer,17654.1,Kmart,United States,Entity_1246,Mobile App
+T00646,2025-01-15,22:50:36,C9535,Business,Crypto Purchase,12434.34,Woolworths,Hong Kong,Entity_8632,Mobile App
+T00275,2025-05-23,22:34:42,C5299,Business,Crypto Purchase,9539.45,MerchantServices Ltd,UAE,Person_4589,Branch
+T00550,2025-07-01,12:32:43,C2673,Investment,ATM Withdrawal,3564.38,Google Play,Australia,Company_6918,ATM
+T00599,2025-01-12,07:45:25,C5398,Investment,Wire Transfer,15637.79,Myer,Australia,Company_5186,Third Party
+T00503,2025-02-22,00:00:38,C6868,Business,Wire Transfer,9248.05,Qantass Travel,Singapore,Entity_6289,Online
+T00304,2025-07-20,15:26:24,C2061,Business,Wire Transfer,19191.51,Coles,China,Person_5575,Third Party
+T00727,2025-01-30,08:57:35,C7006,Checking,Wire Transfer,20029.2,Woolworths,Singapore,Entity_3535,Online
+T00894,2025-08-24,03:13:39,C8968,Business,Crypto Purchase,10993.45,ALDI,Australia,Person_2147,Third Party
+T00762,2025-05-18,11:30:33,C9974,Checking,Wire Transfer,17451.91,Bunnings,China,Entity_8308,Third Party
+T00161,2025-08-13,14:57:52,C2968,Savings,ATM Withdrawal,7025.03,Kmart,United States,Company_5435,Online
+T00314,2025-06-09,06:33:10,C6626,Investment,Wire Transfer,24824.47,IKEA,United States,Person_6951,Branch
+T00061,2025-10-03,01:32:53,C8149,Checking,ATM Withdrawal,24294.22,Westpac,Hong Kong,Company_7654,ATM
+T00203,2025-08-26,18:43:17,C5009,Investment,Online Payment,17879.15,Westpac,Australia,Person_7076,ATM
+T00296,2025-09-03,19:02:08,C9553,Savings,Wire Transfer,8787.95,Harvey Norman,China,Entity_8360,Branch
+T00299,2025-03-04,01:49:18,C5347,Savings,ATM Withdrawal,9117.59,Westpack Banking Co,Singapore,Company_3339,Mobile App
+T00755,2025-07-22,03:02:19,C6227,Investment,Cash Deposit,16569.69,IKEA,United Kingdom,Person_9366,Branch
+T00366,2025-08-14,00:55:42,C8386,Business,Online Payment,2255.79,Target,Hong Kong,Entity_3006,Online
+T00828,2025-02-02,05:51:50,C7273,Investment,ATM Withdrawal,80.73,Seek,Singapore,Company_5137,Third Party
+T00898,2025-04-22,12:21:47,C6784,Checking,Wire Transfer,6956.85,Optus,United Kingdom,Company_5781,ATM
+T00907,2025-02-12,20:39:17,C3984,Investment,Wire Transfer,10355.13,ZipPay,Hong Kong,Company_8155,ATM
+T00876,2025-06-02,06:11:28,C8128,Savings,Online Payment,11781.06,Harvey Norman,Hong Kong,Company_5895,Online
+T00868,2025-08-22,16:43:47,C4995,Checking,Cash Deposit,13712.43,Uber,United Kingdom,Person_7765,Third Party
+T00782,2025-01-09,13:34:43,C3842,Checking,Cash Deposit,15833.92,ALDI,China,Person_8320,ATM
+T00814,2025-03-08,19:47:39,C1726,Business,Crypto Purchase,22357.78,Optus,Australia,Entity_3774,Mobile App
+T00039,2025-03-25,04:23:44,C1267,Checking,ATM Withdrawal,13044.81,Aldi Australia,UAE,Entity_1163,ATM
+T00493,2025-09-28,17:11:50,C4062,Business,Cash Deposit,9817.48,Coles Express,Hong Kong,Entity_9054,ATM
+T00925,2025-10-03,13:21:52,C2958,Savings,Cash Deposit,9103.91,FastFunds Remit,UAE,Person_2680,Online
+T00170,2025-04-12,18:50:09,C2709,Business,Wire Transfer,9897.55,Harvey Norman,Hong Kong,Entity_8149,Branch
+T00041,2025-09-06,05:47:42,C4605,Investment,Cash Deposit,18695.64,Woolworths,Hong Kong,Person_9600,Online
+T00377,2025-04-17,14:38:24,C1340,Checking,Crypto Purchase,11300.22,IAG Insurance,Hong Kong,Entity_4997,Online
+T00813,2025-04-14,05:00:38,C5630,Savings,Wire Transfer,9806.68,GoldenGate Exports,Singapore,Entity_9691,ATM
+T00656,2025-09-07,02:44:52,C5369,Checking,Online Payment,14776.26,Telstra,Hong Kong,Person_6807,Branch
+T00643,2025-03-31,14:09:08,C7916,Savings,Wire Transfer,6784.28,Seek,Hong Kong,Person_2654,Branch
+T00899,2025-08-08,12:58:16,C4267,Checking,ATM Withdrawal,7132.17,JB Hi-Fi,UAE,Entity_7474,Third Party
+T00605,2025-09-14,21:37:22,C2338,Checking,Wire Transfer,7396.92,Telstra,United States,Company_1994,Online
+T00969,2025-04-05,00:40:23,C6474,Investment,Crypto Purchase,15143.6,Caltex,China,Person_6491,Third Party
+T00930,2025-06-20,02:49:31,C9567,Business,Cash Deposit,21112.05,Westpac,UAE,Person_4467,Third Party
+T00409,2025-06-25,02:20:31,C3325,Business,Crypto Purchase,9766.44,PayQuick Offshore,Hong Kong,Entity_4170,Mobile App
+T00127,2025-02-14,05:15:08,C8078,Business,Cash Deposit,2372.91,Apple Store,United States,Entity_3634,Branch
+T00341,2025-09-01,23:27:46,C3581,Business,Cash Deposit,9442.76,Coles,Hong Kong,Person_4051,Branch
+T00507,2025-06-16,00:09:54,C9188,Investment,ATM Withdrawal,21925.3,Bunnings,China,Company_7349,ATM
+T00812,2025-04-22,04:26:45,C8044,Investment,Cash Deposit,6891.67,David Jones,United Kingdom,Entity_7406,Third Party
+T00054,2025-07-30,20:55:35,C4748,Savings,Online Payment,21584.43,Target,Singapore,Company_1392,Mobile App
+T00370,2025-09-20,13:34:37,C9960,Investment,Online Payment,16002.07,Domain,Hong Kong,Entity_9774,Branch
+T00696,2025-08-26,18:16:37,C5473,Business,ATM Withdrawal,19979.64,eBay,Hong Kong,Person_7327,ATM
+T00176,2025-08-24,21:27:46,C1459,Investment,ATM Withdrawal,18532.18,Uber,China,Entity_6888,Branch
+T00834,2025-07-28,02:29:46,C9734,Business,Crypto Purchase,14777.09,Caltex,United Kingdom,Company_4312,Mobile App
+T00618,2025-09-15,19:45:15,C5021,Investment,ATM Withdrawal,508.85,Aldi Australia,Hong Kong,Person_9651,Branch
+T00046,2025-10-07,16:53:21,C5569,Checking,Cash Deposit,1910.04,Coles,Hong Kong,Entity_9575,Online
+T00237,2025-06-15,01:56:32,C3165,Investment,Cash Deposit,20033.68,Optus,UAE,Person_3268,Mobile App
+T00675,2025-01-07,05:04:55,C5573,Business,Cash Deposit,4855.35,Telstra,United Kingdom,Entity_6022,ATM
+T00916,2025-02-28,20:13:16,C5836,Savings,Cash Deposit,8163.49,Amazon,Singapore,Entity_3343,Branch
+T00083,2025-02-12,04:49:58,C7100,Business,Cash Deposit,6839.7,Harvey Norman,Australia,Company_8034,Third Party
+T00961,2025-06-08,14:55:39,C9120,Savings,Online Payment,21621.99,Google Play,Hong Kong,Person_6533,Branch
+T00137,2025-09-21,10:12:20,C7247,Checking,Wire Transfer,279.47,Bunnings,Australia,Person_3175,ATM
+T00007,2025-01-24,00:35:38,C7846,Checking,ATM Withdrawal,17716.41,Apple Store,UAE,Entity_8425,Third Party
+T00068,2025-04-08,03:56:11,C6260,Investment,Crypto Purchase,15928.44,ALDI,China,Company_7176,Online
+T00301,2025-03-13,16:01:28,C3503,Business,Crypto Purchase,12341.0,Woolworths,UAE,Entity_5398,Third Party
+T00449,2025-08-05,22:16:28,C5265,Investment,Crypto Purchase,21644.4,Apple Store,Hong Kong,Entity_6685,Third Party
+T00284,2025-06-07,03:07:43,C3476,Checking,Crypto Purchase,24217.87,IKEA,Australia,Entity_2005,Mobile App
+T00025,2025-04-13,03:34:44,C6583,Checking,Crypto Purchase,448.36,ALDI,UAE,Person_8086,Mobile App
+T00743,2025-03-18,00:43:38,C5793,Savings,Cash Deposit,8259.83,Afterpay,Singapore,Person_6898,Third Party
+T00610,2025-05-07,16:30:14,C4965,Checking,Cash Deposit,10659.08,Myer,United Kingdom,Person_3424,Mobile App
+T00949,2025-03-26,23:27:18,C6964,Business,Crypto Purchase,9674.68,ShadySales Pty,Singapore,Person_5199,Branch
+T00672,2025-06-26,01:55:03,C9112,Checking,Wire Transfer,14220.23,Harvey Norman,United States,Company_3583,Third Party
+T00803,2025-05-27,03:41:35,C4957,Investment,Cash Deposit,20656.72,ALDI,Hong Kong,Person_3650,Third Party
+T00079,2025-05-27,20:38:15,C1753,Investment,Cash Deposit,10441.92,Caltex,China,Entity_6553,Branch
+T00266,2025-05-26,01:22:03,C7754,Savings,Online Payment,12656.05,ALDI,United Kingdom,Entity_4919,ATM
+T00738,2025-08-15,11:12:29,C2489,Business,Wire Transfer,2332.6,ANZ,Singapore,Person_1663,ATM
+T00772,2025-04-21,07:02:56,C7863,Savings,Online Payment,12711.32,eBay,United Kingdom,Company_1377,Third Party
+T00821,2025-07-10,23:12:02,C3025,Savings,ATM Withdrawal,2324.55,Bunnings,UAE,Person_7224,Branch
+T00742,2025-09-07,04:20:40,C9496,Savings,ATM Withdrawal,21560.08,JB Hi-Fi,Singapore,Entity_8909,Branch
+T00413,2025-09-05,10:13:39,C5049,Business,Wire Transfer,9254.4,IKEA,Australia,Entity_4684,Branch
+T00258,2025-07-19,06:07:26,C5134,Investment,Crypto Purchase,24763.1,Woolworths,China,Company_7719,Branch
+T00508,2025-04-08,09:11:21,C5147,Checking,Cash Deposit,2617.75,Kmart,Singapore,Entity_6152,Online
+T00864,2025-07-25,15:08:54,C2293,Investment,Crypto Purchase,17866.47,ANZ,Australia,Entity_6953,Branch
+T00818,2025-03-03,01:20:36,C2631,Business,Online Payment,21615.74,IAG Insurance,Australia,Company_3818,ATM
+T00882,2025-03-21,07:26:20,C7299,Savings,Wire Transfer,13584.84,PayPal,Australia,Company_7987,Online
+T00934,2025-01-28,11:20:47,C5111,Checking,ATM Withdrawal,6780.25,Bunnings,Hong Kong,Person_8112,Third Party
+T00870,2025-03-27,22:10:13,C9745,Checking,Wire Transfer,1066.81,ZipPay,United Kingdom,Company_3549,Online
+T00352,2025-07-15,22:36:31,C4214,Savings,Crypto Purchase,22833.49,IKEA,UAE,Person_2657,Online
+T00481,2025-04-06,03:25:05,C1055,Business,ATM Withdrawal,18775.02,Aldi Australia,United Kingdom,Company_6954,ATM
+T00837,2025-05-07,21:51:35,C2192,Business,Crypto Purchase,1857.55,Qantas,Hong Kong,Person_9357,Online
+T00937,2025-03-12,18:31:19,C4090,Savings,ATM Withdrawal,16018.07,Commonwealth Bank,UAE,Company_3176,Mobile App
+T00134,2025-05-21,23:16:55,C4231,Investment,ATM Withdrawal,21280.66,NAB,UAE,Person_7622,Online
+T00309,2025-03-06,20:28:55,C2067,Investment,Crypto Purchase,13232.83,Amazon,Hong Kong,Entity_3388,Branch
+T00414,2025-02-17,21:45:27,C1097,Investment,Wire Transfer,18026.88,Optus,Singapore,Person_9939,Branch
+T00965,2025-10-12,21:31:16,C4799,Checking,Wire Transfer,23524.84,IKEA,United Kingdom,Entity_2987,ATM
+T00793,2025-03-17,02:32:52,C3070,Business,Cash Deposit,16206.96,IKEA,United States,Entity_7375,Mobile App
+T00596,2025-07-16,14:17:55,C5734,Checking,Online Payment,4576.81,Coles,Hong Kong,Company_1839,Branch
+T00732,2025-05-09,13:52:47,C6504,Checking,Cash Deposit,18968.05,Target,UAE,Entity_4393,Mobile App
+T00108,2025-09-30,22:18:19,C6827,Investment,Crypto Purchase,24586.41,ALDI,UAE,Entity_6020,Third Party
+T00148,2025-02-21,23:45:13,C8946,Business,Wire Transfer,2387.19,Target,United States,Company_7576,ATM
+T00981,2025-09-09,15:36:54,C8039,Savings,Cash Deposit,193.68,Myer,United Kingdom,Company_4429,Mobile App
+T00020,2025-08-05,07:29:19,C3088,Checking,Online Payment,1208.94,ALDI,United Kingdom,Person_9211,Online
+T00230,2025-10-11,10:59:39,C9459,Investment,Crypto Purchase,9396.58,PayPal,United Kingdom,Company_2088,Mobile App
+T00495,2025-05-27,22:11:43,C6594,Savings,ATM Withdrawal,5764.18,Domain,China,Company_2594,ATM
+T00720,2025-09-02,12:30:52,C2952,Checking,ATM Withdrawal,5830.21,BP Australia,UAE,Person_6531,Online
+T00219,2025-06-28,10:15:46,C2871,Checking,Cash Deposit,3048.11,Target,UAE,Company_1164,Third Party
+T00295,2025-01-23,22:42:17,C7198,Business,Cash Deposit,24650.73,Aldi Australia,Hong Kong,Company_5289,Third Party
+T00439,2025-09-08,17:19:05,C2687,Checking,Online Payment,2589.47,NAB,China,Company_7943,Third Party
+T00996,2025-02-23,13:55:05,C8664,Savings,ATM Withdrawal,13189.26,eBay,United Kingdom,Entity_1851,Branch
+T00779,2025-03-12,01:01:06,C4160,Checking,Wire Transfer,7119.41,Uber,China,Company_5897,ATM
+T00166,2025-07-23,19:05:20,C2379,Checking,Wire Transfer,21332.59,Domain,China,Entity_5775,ATM
+T00586,2025-07-17,22:02:18,C2518,Checking,Cash Deposit,5992.66,Seek,China,Entity_1768,Branch
+T00636,2025-03-31,02:27:21,C8750,Investment,Crypto Purchase,9762.93,PayPal,Hong Kong,Company_7049,Online
+T00781,2025-03-05,04:24:50,C3442,Checking,Crypto Purchase,21011.03,NAB,United Kingdom,Person_4104,Branch
+T00208,2025-05-16,11:49:58,C2965,Business,Crypto Purchase,10736.45,Myer,Singapore,Company_4821,Third Party
+T00345,2025-08-29,12:43:44,C2099,Checking,Cash Deposit,24249.36,Caltex,Australia,Entity_3024,Online
+T00098,2025-06-12,16:49:41,C9020,Savings,Online Payment,15258.63,PayPal,Hong Kong,Person_5011,Third Party
+T00387,2025-06-04,10:32:48,C9523,Investment,Crypto Purchase,9763.91,UAE Trade Co,UAE,Entity_3398,Third Party
+T00583,2025-04-24,11:45:47,C4228,Savings,Cash Deposit,14896.47,Seek,Australia,Company_3217,Third Party
+T00204,2025-01-18,03:43:56,C8552,Checking,Cash Deposit,9161.83,GoldenGate Exports,Singapore,Entity_5082,ATM
+T00689,2025-02-22,03:21:39,C5208,Investment,Wire Transfer,18459.5,Kmart,China,Person_7241,Mobile App
+T00425,2025-01-10,04:57:36,C7263,Investment,Online Payment,8221.06,PayPal,United Kingdom,Person_4639,Branch
+T00468,2025-08-10,19:51:11,C3818,Investment,Cash Deposit,2242.31,Coles Express,Singapore,Company_6584,Mobile App
+T00820,2025-07-14,02:16:08,C4804,Investment,Cash Deposit,4678.86,eBay,United States,Entity_8752,Third Party
+T00082,2025-02-24,14:54:46,C6554,Savings,Online Payment,7984.19,Myer,United Kingdom,Entity_5428,Branch
+T00839,2025-02-27,11:02:45,C7756,Investment,ATM Withdrawal,18061.1,Westpac,Australia,Company_3573,Mobile App
+T00915,2025-01-31,05:47:11,C5686,Investment,Wire Transfer,21456.76,Bunnings,United States,Company_8578,Mobile App
+T00412,2025-04-12,08:00:25,C2221,Investment,Crypto Purchase,5941.11,IAG Insurance,United States,Company_6940,Third Party
+T00325,2025-04-28,06:59:38,C2435,Investment,Wire Transfer,8424.72,Aldi Australia,Singapore,Person_3900,Mobile App
+T00570,2025-09-09,05:25:56,C3999,Savings,Online Payment,13384.67,IAG Insurance,United Kingdom,Company_3991,Online
+T00518,2025-07-17,23:29:38,C9574,Business,Crypto Purchase,20678.63,IKEA,UAE,Company_5616,ATM
+T00322,2025-09-13,13:19:33,C4890,Savings,Wire Transfer,7060.03,Microsoft Store,United States,Person_1844,Online
+T00017,2025-01-30,08:23:05,C7171,Checking,Cash Deposit,2310.63,Aldi Australia,Singapore,Company_1827,Third Party
+T00884,2025-04-19,17:45:05,C7383,Business,Cash Deposit,10111.37,Google Play,Hong Kong,Person_6501,Branch
+T00669,2025-04-29,15:03:04,C1767,Checking,Crypto Purchase,16764.44,Uber,Hong Kong,Entity_7251,Third Party
+T00574,2025-10-01,01:56:42,C8069,Business,Wire Transfer,1933.81,Coles Express,Australia,Person_9894,ATM
+T00218,2025-04-16,13:33:02,C4212,Investment,Cash Deposit,8931.52,IAG Insurance,UAE,Person_3045,Third Party
+T00392,2025-01-27,18:01:42,C2825,Business,Wire Transfer,8674.4,Target,Singapore,Person_4966,Mobile App
+T00756,2025-10-12,17:54:56,C8845,Business,ATM Withdrawal,14165.01,Aldi Australia,Singapore,Company_2465,Mobile App
+T00361,2025-04-02,08:06:30,C7201,Business,Cash Deposit,2883.26,ALDI,Hong Kong,Company_5207,ATM
+T00714,2025-03-12,11:48:20,C6582,Business,Online Payment,19669.31,ZipPay,China,Entity_5817,Branch
+T00338,2025-08-19,06:43:28,C7072,Savings,ATM Withdrawal,2114.57,Bunnings,UAE,Person_8516,Online
+T00029,2025-08-09,02:48:55,C1328,Checking,Crypto Purchase,4375.45,Coles,United Kingdom,Person_7171,ATM
+T00404,2025-07-15,14:55:14,C4258,Business,Online Payment,19995.29,Coles Express,Australia,Person_9592,Third Party
+T00838,2025-10-07,12:29:20,C7755,Business,Cash Deposit,12024.47,IKEA,China,Person_4477,Third Party
+T00816,2025-04-07,01:38:28,C9912,Business,Crypto Purchase,826.8,Coles,Hong Kong,Person_1962,Third Party
+T00403,2025-01-07,04:12:20,C6250,Checking,Wire Transfer,8073.49,Uber,United States,Entity_1150,Mobile App
+T00735,2025-03-11,08:01:13,C9740,Investment,Online Payment,201629.05,Coles_Express_LLC,Russia,Entity_2750,Online
+T00526,2025-04-24,13:08:01,C9229,Investment,Cash Deposit,14844.42,Optus,China,Entity_3733,Third Party
+T00215,2025-03-22,22:25:24,C9503,Savings,Online Payment,18460.53,JB Hi-Fi,Australia,Entity_7841,Online
+T00591,2025-05-17,07:13:09,C9838,Business,ATM Withdrawal,3569.99,Woolworths,Singapore,Company_4001,Branch
+T00929,2025-07-23,16:58:16,C9179,Business,Online Payment,13361.12,Apple Store,Singapore,Company_4418,ATM
+T00694,2025-10-01,13:15:19,C8889,Savings,ATM Withdrawal,21873.81,Coles,Hong Kong,Entity_7032,Mobile App
+T00988,2025-03-07,22:22:48,C2520,Business,Cash Deposit,14697.19,Officeworks,United Kingdom,Person_2110,Branch
+T00871,2025-09-08,20:31:36,C6280,Checking,Crypto Purchase,18303.16,David Jones,UAE,Person_3259,Third Party
+T00289,2025-08-06,10:43:29,C8066,Investment,Cash Deposit,20555.41,Afterpay,Hong Kong,Entity_7899,Branch
+T00784,2025-08-28,14:33:43,C5194,Business,ATM Withdrawal,9064.53,Offshore Investments LLC,Singapore,Person_1284,Mobile App
+T00679,2025-02-06,03:46:23,C2333,Investment,ATM Withdrawal,11405.83,Apple Store,Hong Kong,Person_7085,Branch
+T00559,2025-06-01,21:58:55,C5339,Checking,Online Payment,21522.77,Myer,United States,Entity_4365,ATM
+T00450,2025-05-16,05:54:34,C6043,Savings,Online Payment,24377.93,Target,Australia,Company_8628,Mobile App
+T00197,2025-05-12,08:58:26,C7826,Business,Wire Transfer,24133.03,Myer,China,Person_5683,Branch
+T00989,2025-03-24,07:25:05,C7237,Business,Crypto Purchase,16721.91,Aldi Australia,Hong Kong,Person_4918,Branch
+T00019,2025-04-13,16:07:47,C8326,Investment,Cash Deposit,24581.61,Uber,Australia,Person_8773,Mobile App
+T00857,2025-07-27,16:33:16,C5189,Savings,ATM Withdrawal,1077.53,Apple Store,UAE,Entity_7335,Online
+T00050,2025-06-09,13:13:42,C5707,Checking,Crypto Purchase,17686.09,IAG Insurance,United States,Company_8848,Branch
+T00318,2025-04-23,08:14:19,C3789,Savings,Online Payment,17408.93,Woolworths,Singapore,Entity_3057,ATM
+T00033,2025-09-06,12:07:27,C9982,Checking,Wire Transfer,14214.12,Google Play,UAE,Company_4071,Branch
+T00059,2025-05-24,02:06:39,C9354,Business,Online Payment,6904.31,Google Play,Singapore,Entity_7640,Online
+T00118,2025-08-26,21:06:07,C4290,Savings,Crypto Purchase,9969.42,Google Play,United States,Person_2334,ATM
+T00069,2025-07-11,14:21:19,C2226,Checking,ATM Withdrawal,14103.73,IKEA,China,Person_5358,Branch
+T00569,2025-07-13,16:10:28,C7838,Savings,Crypto Purchase,11359.56,eBay,Hong Kong,Person_4005,Third Party
+T00517,2025-02-25,15:28:12,C6741,Savings,ATM Withdrawal,6332.39,Commonwealth Bank,Hong Kong,Person_2778,Third Party
+T00097,2025-02-18,12:18:23,C5253,Business,Cash Deposit,24943.63,IAG Insurance,UAE,Company_9566,ATM
+T00401,2025-03-14,00:14:49,C6285,Business,ATM Withdrawal,22360.72,Qantas,UAE,Company_5000,Online
+T00140,2025-02-24,02:31:29,C7513,Savings,Wire Transfer,13740.91,Qantas,Singapore,Entity_5770,Third Party
+T00798,2025-07-05,13:03:05,C1331,Business,ATM Withdrawal,17098.22,IAG Insurance,Hong Kong,Entity_5184,ATM
+T00331,2025-06-04,13:57:41,C3594,Checking,Cash Deposit,856.28,ZipPay,Australia,Person_7626,Branch
+T00565,2025-08-26,20:44:16,C8650,Checking,Crypto Purchase,4807.66,Coles Express,Australia,Company_2982,Branch
+T00126,2025-03-26,13:51:48,C4059,Savings,Cash Deposit,6557.69,Google Play,United States,Entity_1625,Branch
+T00012,2025-01-04,13:32:26,C5369,Investment,ATM Withdrawal,15310.75,Target,Australia,Entity_3355,Mobile App
+T00113,2025-04-12,16:25:10,C4825,Checking,Cash Deposit,14792.78,Coles,United States,Entity_8998,Online
+T00124,2025-09-10,03:59:24,C1822,Checking,Cash Deposit,4415.13,Bunnings,Singapore,Entity_5855,Branch
+T00464,2025-03-14,18:07:19,C7055,Investment,Cash Deposit,9262.3,Amazon,United States,Person_9371,Mobile App
+T00500,2025-10-14,10:50:00,C8226,Checking,ATM Withdrawal,12410.82,Qantas,Hong Kong,Person_4905,Online
+T00210,2025-08-01,04:11:57,C5081,Investment,Crypto Purchase,9887.53,Amaz0n Marketplace,Hong Kong,Person_4568,Mobile App
+T00179,2025-08-16,08:41:01,C1479,Business,ATM Withdrawal,7447.93,Telstra,China,Entity_5420,Online
+T00595,2025-02-14,19:37:47,C8290,Checking,ATM Withdrawal,21210.8,Myer,United Kingdom,Entity_2210,Third Party
+T00626,2025-04-16,06:05:50,C9299,Investment,Crypto Purchase,21853.56,Aldi Australia,United Kingdom,Company_7346,Online
+T00451,2025-01-09,05:30:02,C2036,Business,ATM Withdrawal,4313.65,Myer,United States,Company_4943,Third Party
+T00375,2025-05-25,03:31:57,C2364,Investment,Wire Transfer,10965.0,Afterpay,United States,Person_8768,Online
+T00903,2025-10-03,17:31:11,C7961,Savings,Online Payment,19411.21,Coles Express,China,Company_9361,Third Party
+T00519,2025-10-10,00:26:44,C7310,Investment,Crypto Purchase,22715.84,Microsoft Store,Singapore,Person_2677,Online
+T00843,2025-06-16,08:47:12,C1567,Checking,ATM Withdrawal,18741.58,Harvey Norman,Hong Kong,Entity_1023,Mobile App
+T00892,2025-07-06,22:53:08,C7676,Savings,Wire Transfer,1050.72,NAB,UAE,Entity_8436,ATM
+T00376,2025-10-07,06:28:25,C2581,Savings,Crypto Purchase,8738.97,Aldi Australia,United States,Company_2996,Branch
+T00514,2025-05-18,23:40:59,C8285,Investment,ATM Withdrawal,19308.46,Apple Store,United Kingdom,Entity_6001,Mobile App
+T00151,2025-01-18,17:22:12,C5397,Checking,ATM Withdrawal,24473.38,IKEA,China,Entity_7264,Third Party
+T00428,2025-04-14,09:26:01,C6312,Checking,Cash Deposit,8909.85,Microsoft Store,United Kingdom,Person_6268,Online
+T00920,2025-04-12,01:42:15,C7604,Business,Wire Transfer,1883.74,Telstra,Australia,Entity_3987,Mobile App
+T00095,2025-09-17,00:41:23,C4796,Savings,Cash Deposit,17422.79,Amazon,Hong Kong,Company_7586,Branch
+T00660,2025-01-17,17:40:08,C8287,Business,Crypto Purchase,11177.84,eBay,Singapore,Person_3904,Online
+T00089,2025-06-22,11:54:20,C7239,Investment,ATM Withdrawal,6771.84,JB Hi-Fi,Hong Kong,Entity_4762,ATM
+T00458,2025-04-02,16:25:30,C3926,Investment,Cash Deposit,18419.37,Telstra,Hong Kong,Company_8146,ATM
+T00555,2025-09-21,04:40:28,C4123,Business,Crypto Purchase,5541.43,Telstra,Hong Kong,Person_1151,Third Party
+T00592,2025-04-07,02:29:42,C2586,Business,Online Payment,7364.04,Caltex,China,Person_3078,Branch
+T00716,2025-01-02,07:50:19,C9557,Checking,Crypto Purchase,21984.0,Optus,UAE,Person_9273,ATM
+T00659,2025-04-26,03:23:41,C1172,Investment,Wire Transfer,19760.84,Myer,China,Company_7713,Branch
+T00483,2025-03-06,12:07:12,C6158,Savings,Online Payment,4700.8,Google Play,China,Company_6293,Mobile App
+T00240,2025-06-10,20:34:46,C8155,Savings,Wire Transfer,13663.14,Afterpay,Hong Kong,Person_6546,Online
+T00525,2025-05-09,10:31:21,C2350,Savings,Online Payment,501.85,Seek,Hong Kong,Entity_6366,Third Party
+T00390,2025-07-20,21:07:11,C4408,Savings,ATM Withdrawal,3513.74,Coles,China,Entity_4254,Third Party
+T00336,2025-04-06,16:25:06,C1658,Investment,Crypto Purchase,23747.51,BP Australia,UAE,Company_6762,Third Party
+T00963,2025-07-13,06:52:07,C5970,Savings,Online Payment,19897.98,Caltex,Singapore,Entity_6180,ATM
+T00453,2025-07-23,13:10:41,C1901,Business,Crypto Purchase,13941.23,Domain,Australia,Person_3757,ATM
+T00193,2025-03-01,07:14:49,C7552,Savings,Wire Transfer,1018.93,Myer,UAE,Entity_1744,ATM
+T00339,2025-03-26,06:29:18,C2766,Savings,Wire Transfer,21658.29,Woolworths,Singapore,Entity_4162,Third Party
+T00168,2025-04-29,21:37:49,C8582,Business,Cash Deposit,6748.45,Target,Hong Kong,Entity_3953,Online
+T00315,2025-08-26,14:07:07,C9046,Savings,Crypto Purchase,6362.1,Afterpay,United Kingdom,Person_1118,ATM
+T00728,2025-10-08,22:56:04,C6568,Business,ATM Withdrawal,24229.11,Coles,UAE,Entity_2249,Third Party
+T00759,2025-01-22,06:15:52,C9445,Business,Crypto Purchase,6169.87,JB Hi-Fi,United Kingdom,Company_4974,Third Party
+T00701,2025-07-17,15:41:22,C2029,Checking,Crypto Purchase,6828.59,Uber,United Kingdom,Entity_4473,Third Party
+T00674,2025-06-16,03:24:22,C5155,Checking,Cash Deposit,17450.64,Coles,China,Company_3122,Online
+T00270,2025-01-07,00:51:25,C3079,Investment,Crypto Purchase,22639.28,Westpac,Hong Kong,Entity_2317,Online
+T00801,2025-06-08,17:07:05,C8519,Savings,Online Payment,2599.73,eBay,China,Person_5825,ATM
+T00078,2025-02-26,20:28:31,C4017,Checking,Online Payment,20101.62,Google Play,Australia,Person_7211,Third Party
+T00488,2025-05-24,06:39:26,C6679,Investment,Cash Deposit,11006.42,JB Hi-Fi,Hong Kong,Company_9867,Mobile App
+T00419,2025-01-15,07:35:06,C3253,Savings,Crypto Purchase,2723.94,Officeworks,Hong Kong,Company_1196,Branch
+T00043,2025-03-09,04:42:01,C7366,Investment,Online Payment,24133.12,IKEA,China,Person_4016,Branch
+T00369,2025-04-01,14:14:34,C4895,Investment,Crypto Purchase,18890.67,IAG Insurance,United Kingdom,Entity_8301,Online
+T00452,2025-08-08,19:05:27,C5819,Checking,Crypto Purchase,20530.49,Commonwealth Bank,Hong Kong,Person_7289,ATM
+T00128,2025-04-19,02:15:52,C1335,Investment,Crypto Purchase,13979.42,Commonwealth Bank,Singapore,Entity_1655,Third Party
+T00544,2025-05-29,23:28:28,C3490,Business,Wire Transfer,2900.97,ZipPay,Hong Kong,Person_9743,Branch
+T00100,2025-06-22,07:34:41,C4364,Investment,Wire Transfer,7002.23,Westpac,UAE,Company_3182,Third Party
+T00853,2025-02-09,04:27:45,C3001,Investment,Wire Transfer,8977.14,NAB,United Kingdom,Company_9417,Mobile App
+T00474,2025-05-27,07:38:22,C4447,Checking,Cash Deposit,24127.42,Target,United States,Person_2978,Mobile App
+T00065,2025-07-31,22:35:59,C4371,Business,ATM Withdrawal,168621.69,CryptoXchange LTD,UAE,Company_2529,Third Party
+T00192,2025-03-09,01:19:16,C2490,Checking,Cash Deposit,810.98,Aldi Australia,United States,Company_7048,ATM
+T00183,2025-03-23,09:47:45,C4926,Business,Wire Transfer,15715.97,Target,United States,Entity_9152,Branch
+T00984,2025-02-15,18:42:08,C3433,Checking,Crypto Purchase,9541.47,ZipPay,Australia,Person_3099,Online
+T00175,2025-01-05,08:24:38,C8557,Investment,ATM Withdrawal,7417.5,Coles,Singapore,Entity_3064,Branch
+T00076,2025-06-23,05:50:33,C8755,Checking,Crypto Purchase,20212.6,Bunnings,China,Company_1641,Mobile App
+T00561,2025-03-10,06:43:31,C7634,Checking,ATM Withdrawal,14904.86,Apple Store,Singapore,Person_5119,Third Party
+T00575,2025-09-11,21:53:03,C2269,Checking,ATM Withdrawal,9364.07,Kmart,Australia,Entity_2550,ATM
+T00337,2025-05-19,11:08:56,C7591,Checking,Online Payment,15354.71,Qantas,Hong Kong,Entity_2765,Online
+T00975,2025-04-22,03:28:31,C6908,Checking,Online Payment,8209.48,Qantas,United States,Person_2306,Branch
+T00245,2025-03-08,12:34:14,C1098,Investment,Online Payment,9462.61,ALDI,UAE,Company_9282,Mobile App
+T00308,2025-05-04,05:49:31,C3255,Checking,Crypto Purchase,7178.52,Apple Store,Australia,Company_4922,Online
+T00340,2025-02-12,04:36:04,C7015,Savings,Online Payment,4162.61,IAG Insurance,Singapore,Company_9819,Online
+T00262,2025-09-06,03:07:28,C9717,Investment,Online Payment,21467.4,Myer,China,Entity_5891,Third Party
+T00582,2025-02-13,22:20:11,C4960,Business,Crypto Purchase,4943.02,Amazon,UAE,Company_7318,Online
+T00141,2025-08-25,15:48:41,C7326,Checking,Cash Deposit,11238.18,ALDI,United Kingdom,Person_5884,Mobile App
+T00073,2025-04-28,03:23:05,C5065,Savings,Online Payment,23574.2,JB Hi-Fi,Australia,Entity_4498,Branch
+T00477,2025-01-03,22:24:01,C4551,Savings,Cash Deposit,9511.75,Qantas,China,Entity_1968,Online
+T00940,2025-08-25,12:55:33,C1242,Investment,ATM Withdrawal,12705.51,Coles Express,UAE,Person_1670,Branch
+T00763,2025-01-17,08:14:16,C7682,Investment,Online Payment,249933.44,FastFunds Remit,Russia,Entity_8695,Branch
+T00418,2025-06-28,06:01:51,C1135,Business,Online Payment,18752.92,IKEA,China,Company_1561,Third Party
+T00593,2025-02-26,19:07:06,C5874,Checking,Cash Deposit,2218.78,Aldi Australia,Australia,Company_3507,ATM
+T00313,2025-05-22,11:59:42,C3839,Business,ATM Withdrawal,1132.85,Domain,United States,Person_7767,Third Party
+T00638,2025-07-27,01:11:58,C8905,Savings,Crypto Purchase,17990.2,Kmart,China,Company_8675,Branch
+T00938,2025-07-05,11:36:08,C8106,Savings,Crypto Purchase,11332.37,Uber,Hong Kong,Person_5643,Online
+T00167,2025-05-21,18:31:41,C5699,Investment,Crypto Purchase,9658.19,Aldi Australia,Singapore,Company_8821,Online
+T00378,2025-10-09,19:54:45,C8461,Business,Wire Transfer,9943.74,NAB,Hong Kong,Company_2756,ATM
+T00407,2025-02-09,08:59:14,C2531,Business,Online Payment,1573.9,Uber,Hong Kong,Person_7692,Online
+T00001,2025-04-11,11:37:39,C5746,Investment,Cash Deposit,9394.78,ALDI,China,Company_4691,ATM
+T00198,2025-08-01,10:18:36,C9412,Investment,Online Payment,2179.42,eBay,Australia,Company_4485,ATM
+T00423,2025-06-16,10:12:24,C1633,Savings,Crypto Purchase,550.78,PayPal,Singapore,Person_3426,Third Party
+T00096,2025-09-29,01:42:22,C4158,Savings,Cash Deposit,9453.82,ShadySales Pty,UAE,Company_9718,Branch
+T00783,2025-04-17,17:26:55,C9747,Business,Wire Transfer,18854.79,Afterpay,Australia,Company_8460,Online
+T00104,2025-05-11,20:33:52,C3021,Savings,ATM Withdrawal,6089.28,Woolworths,Hong Kong,Person_3022,Online
+T00194,2025-07-25,18:01:35,C3966,Savings,Crypto Purchase,9036.76,Myer,China,Person_3657,Third Party
+T00088,2025-02-24,16:17:24,C1486,Business,Crypto Purchase,5591.59,Caltex,United States,Person_3949,Mobile App
+T00489,2025-08-13,18:10:07,C1061,Business,Online Payment,22496.7,Domain,Singapore,Person_8750,Branch
+T00081,2025-05-18,09:54:29,C2453,Checking,Crypto Purchase,3096.09,Woolworths,Australia,Company_8911,Online
+T00804,2025-09-11,07:35:29,C6425,Checking,Cash Deposit,5558.2,Target,China,Company_8334,ATM
+T00563,2025-02-19,10:23:54,C4666,Checking,Crypto Purchase,5287.14,Aldi Australia,China,Person_4896,ATM
+T00729,2025-10-04,22:20:36,C1770,Savings,Cash Deposit,12980.6,BP Australia,UAE,Entity_3132,Third Party
+T00191,2025-06-09,13:51:23,C5252,Savings,Cash Deposit,20981.39,Seek,UAE,Entity_6728,Branch
+T00833,2025-06-05,10:06:35,C8333,Checking,Cash Deposit,14570.19,Bunnings,Singapore,Company_4231,Branch
+T00888,2025-10-14,18:05:35,C3072,Checking,Wire Transfer,18192.87,BP Australia,Australia,Entity_6296,Branch
+T00102,2025-01-17,09:36:15,C1335,Savings,Online Payment,3665.13,Myer,Singapore,Person_7306,Branch
+T00635,2025-08-02,19:12:08,C9621,Savings,Crypto Purchase,19286.1,Microsoft Store,Singapore,Company_4321,Mobile App
+T00153,2025-06-10,02:16:06,C9370,Checking,Wire Transfer,10888.14,PayPal,Hong Kong,Person_7968,Third Party
+T00111,2025-02-11,08:04:02,C9171,Savings,Cash Deposit,8053.46,Woolworths,UAE,Person_3361,Branch
+T00436,2025-04-23,08:26:15,C3414,Savings,Crypto Purchase,6146.61,Woolworths,United Kingdom,Entity_3747,ATM
+T00560,2025-06-19,18:31:31,C5733,Business,Crypto Purchase,4652.35,JB Hi-Fi,Australia,Entity_7188,Online
+T00971,2025-04-16,11:27:54,C5586,Investment,Wire Transfer,21775.3,Qantas,China,Entity_4675,Online
+T00785,2025-05-26,18:12:44,C9337,Savings,Wire Transfer,19282.81,Amazon,United Kingdom,Company_4212,ATM
+T00973,2025-07-06,19:14:06,C6437,Checking,Crypto Purchase,18474.31,eBay,UAE,Person_9309,Online
+T00726,2025-03-16,05:58:37,C1778,Savings,Cash Deposit,237634.38,Shell Intl Payments,UAE,Entity_5827,ATM
+T00010,2025-02-18,17:31:02,C8438,Checking,ATM Withdrawal,69.43,David Jones,UAE,Person_3786,Online
+T00480,2025-01-13,18:16:47,C2672,Savings,Wire Transfer,3537.32,Afterpay,United Kingdom,Entity_8694,Third Party
+T00651,2025-10-01,03:59:14,C7774,Investment,ATM Withdrawal,17637.89,NAB,United States,Person_2771,Mobile App
+T00521,2025-01-08,23:19:43,C4507,Checking,ATM Withdrawal,11577.04,IKEA,United States,Company_1017,Online
+T00943,2025-09-22,15:47:02,C9444,Investment,Wire Transfer,17164.9,NAB,United Kingdom,Entity_2101,Third Party
+T00767,2025-09-21,18:18:18,C7442,Checking,ATM Withdrawal,21982.83,Coles Express,Singapore,Entity_1426,Online
+T00162,2025-09-12,18:00:54,C5463,Savings,ATM Withdrawal,9285.46,Harvey Norman,UAE,Entity_8049,Mobile App
+T00443,2025-03-23,04:04:36,C6213,Investment,ATM Withdrawal,4375.67,Telstra,China,Entity_8159,Branch
+T00032,2025-05-16,15:38:51,C1591,Checking,Wire Transfer,13025.7,ALDI,Australia,Company_7872,Online
+T00202,2025-06-24,18:50:02,C6984,Checking,ATM Withdrawal,24397.51,Westpac,China,Person_2473,Branch
+T00799,2025-07-21,22:31:56,C7105,Checking,Wire Transfer,4015.51,Bunnings,United States,Entity_7042,Branch
+T00571,2025-05-16,08:45:04,C9520,Checking,Wire Transfer,10049.04,Amazon,United Kingdom,Entity_7056,Mobile App
+T00272,2025-09-10,10:41:42,C2108,Savings,Cash Deposit,23754.05,Commonwealth Bank,Australia,Person_3222,Branch
+T00753,2025-04-04,18:54:12,C4398,Checking,Wire Transfer,12926.17,Amazon,UAE,Company_1545,Branch
+T00661,2025-05-02,13:42:28,C3500,Checking,Wire Transfer,124175.52,UAE Trade Co,UAE,Person_8701,Third Party
+T00310,2025-04-01,01:06:53,C9043,Business,ATM Withdrawal,24082.4,ANZ,United States,Entity_9289,ATM
+T00213,2025-06-13,23:49:20,C4034,Savings,Crypto Purchase,16521.92,Apple Store,UAE,Company_2932,Third Party
+T00022,2025-04-27,12:56:37,C2253,Investment,Crypto Purchase,1673.04,Uber,United Kingdom,Entity_3355,Third Party
+T00504,2025-08-20,16:27:42,C7732,Savings,Online Payment,19475.37,Afterpay,United Kingdom,Person_6653,Branch
+T00528,2025-03-04,10:30:48,C2944,Investment,Cash Deposit,19762.61,Microsoft Store,UAE,Entity_7707,Branch
+T00551,2025-08-20,11:51:11,C8902,Checking,Online Payment,14461.92,Telstra,United Kingdom,Person_6608,Third Party
+T00740,2025-05-06,20:40:43,C5584,Investment,Online Payment,3281.4,David Jones,UAE,Company_9402,Branch
+T00886,2025-04-14,08:19:02,C2719,Checking,Online Payment,6479.19,Optus,UAE,Entity_3553,Online
+T00047,2025-05-01,16:42:06,C3787,Savings,Cash Deposit,10613.87,JB Hi-Fi,UAE,Person_2653,Mobile App
+T00379,2025-03-16,19:32:56,C6399,Investment,Wire Transfer,13113.88,Harvey Norman,Hong Kong,Entity_6557,Online
+T00496,2025-10-12,16:12:59,C9297,Investment,Crypto Purchase,2966.61,Officeworks,Australia,Entity_4052,Third Party
+T00382,2025-08-19,23:15:48,C9122,Business,Online Payment,12328.3,Westpac,United States,Company_2117,ATM
+T00185,2025-04-29,01:05:50,C9565,Checking,Cash Deposit,19905.03,Coles,United States,Entity_6468,Third Party
+T00206,2025-07-09,18:47:30,C7397,Checking,Cash Deposit,6308.97,Target,Australia,Company_8864,Mobile App
+T00411,2025-05-12,00:58:54,C4661,Business,Wire Transfer,9293.28,Target,UAE,Entity_5497,Third Party
+T00978,2025-08-08,10:51:34,C4500,Business,ATM Withdrawal,7964.03,IAG Insurance,Singapore,Person_3437,Branch
+T00537,2025-09-21,13:11:30,C2973,Checking,ATM Withdrawal,3160.33,Bunnings,Hong Kong,Entity_4460,Third Party
+T00869,2025-01-04,17:57:34,C6789,Checking,Crypto Purchase,19606.62,Kmart,China,Company_8536,Mobile App
+T00702,2025-06-19,03:16:10,C6902,Business,Online Payment,19218.42,Woolworths,UAE,Person_3209,Branch
+T00542,2025-09-01,21:02:10,C4893,Checking,Cash Deposit,5179.22,Apple Store,United States,Entity_3728,Mobile App
+T00306,2025-09-21,18:14:54,C8900,Checking,Wire Transfer,14605.05,Caltex,United States,Company_1314,Online
+T00826,2025-03-12,22:01:44,C4499,Investment,Wire Transfer,24189.41,JB Hi-Fi,China,Company_1889,Mobile App
+T00343,2025-05-13,18:06:19,C3739,Investment,Online Payment,3802.9,Coles,United Kingdom,Person_3050,Third Party
+T00909,2025-09-18,20:05:32,C4745,Savings,Wire Transfer,2479.97,Caltex,Australia,Company_5761,Third Party
+T00169,2025-07-14,08:19:17,C5148,Investment,Online Payment,4278.84,JB Hi-Fi,Hong Kong,Company_3366,Third Party
+T00751,2025-06-28,15:18:49,C1835,Checking,ATM Withdrawal,24787.31,Woolworths,United States,Company_8327,Mobile App
+T00420,2025-04-21,10:08:39,C1523,Investment,ATM Withdrawal,8885.96,IKEA,Hong Kong,Person_8291,Branch
+T00511,2025-04-22,18:48:00,C7662,Checking,Online Payment,9962.32,Aldi Australia,Australia,Entity_5566,Mobile App
+T00038,2025-09-15,08:52:06,C2353,Savings,Online Payment,2257.89,Afterpay,Singapore,Person_3183,ATM
+T00844,2025-01-21,22:18:20,C8724,Checking,Cash Deposit,6089.02,Seek,United Kingdom,Entity_1805,Third Party
+T00815,2025-04-08,04:31:35,C2608,Business,ATM Withdrawal,18658.63,Woolworths,Australia,Person_6014,Mobile App
+T00342,2025-03-13,05:36:11,C3520,Investment,Wire Transfer,12035.23,Afterpay,UAE,Person_4526,ATM
+T00691,2025-01-19,21:51:25,C9089,Savings,ATM Withdrawal,21922.8,Telstra,United States,Company_8192,ATM
+T00384,2025-07-02,23:26:34,C5603,Investment,Online Payment,24501.81,Westpac,United Kingdom,Person_4329,Online
+T00515,2025-06-30,04:40:28,C8425,Investment,Online Payment,16046.63,ZipPay,Hong Kong,Company_2280,Third Party
+T00212,2025-01-20,00:28:19,C1751,Investment,ATM Withdrawal,2392.14,Bunnings,China,Entity_5641,ATM
+T00317,2025-02-17,07:16:27,C1322,Checking,Crypto Purchase,4197.08,David Jones,United Kingdom,Company_3771,Mobile App
+T00085,2025-10-07,01:36:23,C9973,Investment,ATM Withdrawal,8846.59,Officeworks,United States,Person_2114,Online
+T00977,2025-10-05,04:43:25,C9195,Investment,Crypto Purchase,19069.01,Bunnings,Singapore,Person_3860,Branch
+T00391,2025-10-09,01:06:12,C2431,Business,Wire Transfer,4542.68,JB Hi-Fi,United Kingdom,Company_9453,ATM
+T00680,2025-01-30,21:14:32,C1299,Investment,ATM Withdrawal,20731.44,Aldi Australia,United States,Company_3967,Third Party
+T00650,2025-04-24,22:04:17,C7380,Checking,Crypto Purchase,18218.31,NAB,United States,Company_1671,Mobile App
+T00939,2025-09-20,07:36:54,C8345,Checking,Wire Transfer,2259.46,Coles Express,Singapore,Company_5991,Mobile App
+T00357,2025-06-09,09:01:26,C9113,Business,Crypto Purchase,23853.57,ALDI,Hong Kong,Company_9614,Online
+T00326,2025-06-08,01:16:50,C8325,Savings,Crypto Purchase,4743.62,Westpac,China,Company_8504,Online
+T00566,2025-07-29,17:25:02,C1909,Business,Wire Transfer,9474.26,Myer,United States,Entity_1325,Online
+T01000,2025-04-16,12:08:12,C1318,Checking,Crypto Purchase,17901.5,PayPal,UAE,Person_2297,ATM
+T00761,2025-04-19,16:16:07,C5063,Business,Crypto Purchase,8383.52,Woolworths,Hong Kong,Entity_6007,Online
+T00509,2025-07-04,01:41:52,C5180,Investment,Online Payment,2810.26,ZipPay,United States,Company_8402,Branch
+T00825,2025-01-26,23:28:56,C8562,Business,Crypto Purchase,861.53,Myer,Singapore,Entity_7703,ATM
+T00681,2025-01-13,13:07:48,C6083,Checking,Crypto Purchase,16271.68,Coles,United Kingdom,Company_3721,Mobile App
+T00830,2025-01-25,21:37:20,C4449,Business,Crypto Purchase,6226.12,Apple Store,United States,Entity_6991,Mobile App
+T00950,2025-09-06,16:19:05,C4357,Investment,Cash Deposit,7732.85,ALDI,Singapore,Company_8674,Third Party
+T00254,2025-05-12,11:40:08,C7908,Checking,Online Payment,18390.02,PayPal,China,Company_5119,ATM
+T00863,2025-09-26,08:51:14,C5458,Savings,Crypto Purchase,23383.29,NAB,United Kingdom,Person_4391,Third Party
+T00581,2025-04-22,02:51:08,C3934,Business,ATM Withdrawal,5588.21,Target,Singapore,Entity_8716,Third Party
+T00877,2025-07-25,11:42:59,C9458,Savings,Crypto Purchase,4593.84,Caltex,China,Person_6092,Mobile App
+T00279,2025-09-05,10:46:45,C2300,Business,ATM Withdrawal,2325.59,Myer,China,Person_7402,ATM
+T00985,2025-08-22,23:29:55,C9361,Savings,Online Payment,11244.91,Kmart,Singapore,Person_7195,Third Party
+T00248,2025-05-03,10:41:16,C4394,Business,Wire Transfer,8008.44,Woolworths,China,Person_4804,Online
+T00181,2025-10-09,07:02:29,C9346,Checking,Online Payment,15307.27,Domain,China,Entity_6882,Mobile App
+T00471,2025-07-29,21:55:21,C7034,Checking,Wire Transfer,15172.24,eBay,China,Entity_3999,Mobile App
+T00433,2025-10-14,16:01:51,C8257,Investment,Crypto Purchase,3233.13,ANZ,Hong Kong,Entity_2775,Third Party
+T00953,2025-08-29,08:44:17,C3157,Checking,Wire Transfer,4749.31,Harvey Norman,Hong Kong,Entity_8612,ATM
+T00290,2025-01-26,17:33:46,C6290,Investment,Online Payment,9375.38,Shell Intl Payments,UAE,Entity_2718,Branch
+T00835,2025-02-23,08:03:49,C5403,Savings,Cash Deposit,7793.53,eBay,United Kingdom,Entity_5742,Online
+T00004,2025-01-20,07:38:05,C4752,Investment,Wire Transfer,11173.53,NAB,Singapore,Person_1177,Mobile App
+T00958,2025-06-30,16:37:42,C4141,Investment,Online Payment,23618.12,NAB,United Kingdom,Company_6648,Mobile App
+T00536,2025-07-27,05:36:33,C4607,Investment,Wire Transfer,4179.74,Uber,Singapore,Entity_6721,Third Party
+T00164,2025-09-27,06:23:57,C1482,Business,Crypto Purchase,10733.19,ZipPay,Hong Kong,Company_4136,Online
+T00189,2025-05-23,01:49:59,C3723,Business,Wire Transfer,8237.41,Caltex,Australia,Person_5332,ATM
+T00959,2025-06-30,00:30:25,C1056,Checking,Crypto Purchase,487.02,David Jones,China,Person_1847,ATM
+T00040,2025-05-26,12:37:39,C6206,Savings,Online Payment,8166.99,Woolworths,China,Person_9018,Mobile App
+T00283,2025-04-20,15:24:30,C3956,Savings,Cash Deposit,8805.33,Harvey Norman,Singapore,Person_7564,Third Party
+T00280,2025-10-01,21:20:03,C4350,Checking,Crypto Purchase,24357.49,Afterpay,Singapore,Entity_4703,Online
+T00367,2025-03-31,00:11:47,C4926,Investment,Online Payment,10116.9,Harvey Norman,UAE,Person_2448,Third Party
+T00707,2025-04-10,09:44:55,C6141,Business,ATM Withdrawal,21327.9,Officeworks,China,Entity_1502,Mobile App
+T00897,2025-07-15,02:48:21,C9304,Savings,Online Payment,19834.25,Westpac,United Kingdom,Company_7407,Branch
+T00421,2025-06-28,01:03:33,C1958,Checking,Online Payment,6099.64,ANZ,China,Person_2643,Online
+T00271,2025-06-16,23:23:14,C1906,Savings,ATM Withdrawal,8904.88,Bunnings,China,Person_1408,Branch
+T00890,2025-07-06,04:23:20,C5986,Checking,ATM Withdrawal,8681.08,Telstra,Australia,Person_6575,Online
+T00836,2025-08-31,06:11:03,C5432,Business,Cash Deposit,3782.04,NAB,United Kingdom,Company_7110,Branch
+T00475,2025-03-04,17:12:15,C6595,Savings,Cash Deposit,23326.8,Google Play,China,Company_1785,Mobile App
+T00505,2025-02-18,10:25:36,C7748,Business,ATM Withdrawal,886.63,Optus,Hong Kong,Person_8709,Online
+T00494,2025-08-08,16:06:02,C2014,Investment,Wire Transfer,13611.64,Woolworths,Australia,Company_7540,Branch
+T00924,2025-02-24,23:43:58,C5950,Savings,Cash Deposit,6255.42,Uber,United States,Person_1936,ATM
+T00558,2025-01-29,01:16:30,C8262,Checking,Wire Transfer,3759.14,Apple Store,Hong Kong,Entity_2263,ATM
+T00615,2025-06-03,14:15:19,C2839,Business,ATM Withdrawal,10571.51,eBay,Singapore,Entity_3226,Branch
+T00112,2025-03-22,18:51:36,C2887,Checking,Crypto Purchase,17410.53,Coles Express,Australia,Person_5999,Branch
+T00147,2025-09-07,16:38:37,C9363,Checking,Wire Transfer,7736.12,Target,United States,Company_5089,Branch
+T00368,2025-06-28,01:06:36,C7154,Savings,Crypto Purchase,84200.39,Qantass Travel,Russia,Entity_3473,Mobile App
+T00553,2025-08-26,03:08:42,C2343,Business,ATM Withdrawal,9315.21,FastFunds Remit,UAE,Person_8348,ATM
+T00904,2025-09-19,12:41:03,C5592,Savings,ATM Withdrawal,22730.36,Coles,Australia,Person_9084,Third Party
+T00221,2025-08-11,11:13:06,C8805,Savings,ATM Withdrawal,2399.22,Harvey Norman,United Kingdom,Company_2110,Online
+T00109,2025-09-02,22:07:18,C2903,Savings,Cash Deposit,13417.58,Coles Express,UAE,Person_7463,Mobile App
+T00628,2025-02-06,01:57:45,C9773,Investment,Cash Deposit,16642.67,NAB,Australia,Entity_4587,Mobile App
+T00754,2025-03-23,18:39:41,C4023,Savings,Cash Deposit,20625.79,IAG Insurance,United Kingdom,Company_4577,ATM
+T00399,2025-04-03,01:28:01,C6957,Investment,Wire Transfer,13740.45,Apple Store,China,Person_2476,Branch
+T00084,2025-09-20,19:58:49,C5924,Savings,Cash Deposit,10706.34,BP Australia,United Kingdom,Company_9697,Online
+T00874,2025-08-08,06:27:56,C5482,Business,ATM Withdrawal,12008.01,PayPal,United Kingdom,Company_4183,ATM
+T00791,2025-05-12,07:56:41,C7554,Savings,ATM Withdrawal,24754.2,Seek,United Kingdom,Company_5091,Online
+T00132,2025-01-12,00:27:17,C4501,Business,Online Payment,21415.29,Microsoft Store,Hong Kong,Person_2786,ATM
+T00462,2025-07-01,18:58:17,C8261,Business,Crypto Purchase,23303.76,Aldi Australia,Hong Kong,Company_6454,Mobile App
+T00405,2025-08-18,14:19:13,C2666,Investment,Wire Transfer,17210.23,Telstra,Hong Kong,Person_3595,ATM
+T00645,2025-01-25,09:40:44,C6524,Investment,Crypto Purchase,21046.17,Apple Store,United Kingdom,Entity_2960,Online
+T00552,2025-05-06,16:10:44,C7737,Business,Wire Transfer,10502.19,Aldi Australia,Australia,Company_5013,Mobile App
+T00154,2025-09-24,08:23:59,C5395,Checking,Crypto Purchase,12590.8,IKEA,UAE,Company_7223,Mobile App
+T00327,2025-09-09,03:54:24,C4670,Business,ATM Withdrawal,9849.09,ShadySales Pty,Hong Kong,Entity_3082,Third Party
+T00303,2025-05-14,19:03:52,C5550,Savings,Wire Transfer,1454.77,Kmart,United States,Person_4002,Mobile App
+T00199,2025-01-27,19:45:37,C3806,Business,Crypto Purchase,4899.78,IAG Insurance,Australia,Entity_2108,Branch
+T00700,2025-09-13,06:46:10,C1843,Savings,Online Payment,15706.26,Uber,China,Person_2223,Branch

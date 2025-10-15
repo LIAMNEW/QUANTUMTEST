@@ -311,6 +311,33 @@ class BankTransactionRiskAnalyzer:
         Returns:
             DataFrame with risk analysis added
         """
+        # Preprocess: Handle separate Date/Time columns
+        df = df.copy()
+        
+        # Check for separate Date and Time columns (case insensitive)
+        date_col = None
+        time_col = None
+        
+        for col in df.columns:
+            if col.lower() == 'date':
+                date_col = col
+            elif col.lower() == 'time':
+                time_col = col
+        
+        # If we have separate Date and Time, combine them
+        if date_col and time_col:
+            df['timestamp'] = pd.to_datetime(df[date_col].astype(str) + ' ' + df[time_col].astype(str))
+        
+        # Normalize column names for easier detection
+        column_mapping = {}
+        for col in df.columns:
+            lower_col = col.lower()
+            if lower_col in ['amount', 'merchant', 'country', 'description', 'timestamp', 'date', 'time']:
+                column_mapping[col] = lower_col
+        
+        if column_mapping:
+            df = df.rename(columns=column_mapping)
+        
         results = []
         
         for idx, row in df.iterrows():
@@ -388,11 +415,27 @@ class BankTransactionRiskAnalyzer:
         """
         anomalies = []
         
+        # Preprocess: Handle separate Date/Time columns
+        df = df.copy()
+        
+        # Check for separate Date and Time columns (case insensitive)
+        date_col = None
+        time_col = None
+        
+        for col in df.columns:
+            if col.lower() == 'date':
+                date_col = col
+            elif col.lower() == 'time':
+                time_col = col
+        
+        # If we have separate Date and Time, combine them
+        if date_col and time_col and 'timestamp' not in df.columns:
+            df['timestamp'] = pd.to_datetime(df[date_col].astype(str) + ' ' + df[time_col].astype(str))
+        
         if 'timestamp' not in df.columns and 'date' not in df.columns:
             return anomalies
         
         # Parse timestamps
-        df = df.copy()
         timestamp_col = 'timestamp' if 'timestamp' in df.columns else 'date'
         df['dt'] = pd.to_datetime(df[timestamp_col])
         df = df.sort_values('dt')
