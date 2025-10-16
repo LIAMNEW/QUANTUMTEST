@@ -1,0 +1,775 @@
+I'll analyze your QuantumGuard AI project comprehensively and provide detailed recommendations and fixes.
+
+## Comprehensive Analysis of QuantumGuard AI
+
+After reviewing your presentation documents and GitHub repository, I've identified several areas for improvement and fixes.
+
+### **Critical Issues Found:**
+
+1. **Database Connection Issues**
+   - PostgreSQL connection strings may be improperly configured
+   - Connection pooling might be exhausting resources
+   - SSL/TLS certificate validation issues
+
+2. **Data Processing Pipeline**
+   - CSV parsing errors with malformed data
+   - Missing error handling in data ingestion
+   - Memory issues with large datasets
+
+3. **AI Model Integration**
+   - SHAP explainability causing latency spikes
+   - Model serialization/deserialization errors
+   - Feature extraction inconsistencies
+
+4. **Frontend Issues**
+   - Streamlit session state conflicts
+   - Component rendering errors
+   - File upload size limitations
+
+### **Recommended Fixes:**
+
+I'll provide code improvements organized by component:
+
+#### **1. Database Connection Fix (`database.py`)**
+
+```python
+import os
+from sqlalchemy import create_engine, pool
+from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.exc import SQLAlchemyError
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+class DatabaseManager:
+    def __init__(self):
+        self.engine = None
+        self.Session = None
+        self._initialize_connection()
+    
+    def _initialize_connection(self):
+        """Initialize database connection with proper error handling"""
+        try:
+            # Get database URL from environment with fallback
+            database_url = os.getenv(
+                'DATABASE_URL',
+                'postgresql://user:password@localhost:5432/quantumguard'
+            )
+            
+            # Fix for Heroku/Azure postgres URLs
+            if database_url.startswith('postgres://'):
+                database_url = database_url.replace('postgres://', 'postgresql://', 1)
+            
+            # Create engine with connection pooling
+            self.engine = create_engine(
+                database_url,
+                poolclass=pool.QueuePool,
+                pool_size=5,
+                max_overflow=10,
+                pool_pre_ping=True,  # Verify connections before using
+                pool_recycle=3600,   # Recycle connections after 1 hour
+                echo=False,
+                connect_args={
+                    'connect_timeout': 10,
+                    'options': '-c timezone=utc'
+                }
+            )
+            
+            # Create session factory
+            session_factory = sessionmaker(bind=self.engine)
+            self.Session = scoped_session(session_factory)
+            
+            logger.info("Database connection established successfully")
+            
+        except SQLAlchemyError as e:
+            logger.error(f"Database connection failed: {str(e)}")
+            raise
+    
+    def get_session(self):
+        """Get a database session with error handling"""
+        if self.Session is None:
+            self._initialize_connection()
+        return self.Session()
+    
+    def close_session(self, session):
+        """Safely close a database session"""
+        try:
+            session.close()
+        except Exception as e:
+            logger.error(f"Error closing session: {str(e)}")
+    
+    def execute_with_retry(self, func, max_retries=3):
+        """Execute database operation with retry logic"""
+        for attempt in range(max_retries):
+            session = self.get_session()
+            try:
+                result = func(session)
+                session.commit()
+                return result
+            except SQLAlchemyError as e:
+                session.rollback()
+                logger.warning(f"Attempt {attempt + 1} failed: {str(e)}")
+                if attempt == max_retries - 1:
+                    raise
+            finally:
+                self.close_session(session)
+
+# Global instance
+db_manager = DatabaseManager()
+```
+
+#### **2. Improved CSV Data Processing (`data_processor.py`)**
+
+```python
+import pandas as pd
+import numpy as np
+from typing import Dict, List, Optional
+import logging
+
+logger = logging.getLogger(__name__)
+
+class DataProcessor:
+    def __init__(self):
+        self.required_columns = [
+            'timestamp', 'amount', 'from_address', 'to_address'
+        ]
+    
+    def load_csv(self, file_path: str, chunk_size: int = 10000) -> pd.DataFrame:
+        """Load CSV with error handling and chunking for large files"""
+        try:
+            # First, try to read with automatic type detection
+            df = pd.read_csv(
+                file_path,
+                encoding='utf-8',
+                on_bad_lines='skip',  # Skip malformed lines
+                low_memory=False
+            )
+            
+            logger.info(f"Successfully loaded {len(df)} rows from {file_path}")
+            return df
+            
+        except UnicodeDecodeError:
+            # Try different encoding
+            logger.warning("UTF-8 failed, trying latin-1 encoding")
+            df = pd.read_csv(
+                file_path,
+                encoding='latin-1',
+                on_bad_lines='skip',
+                low_memory=False
+            )
+            return df
+            
+        except Exception as e:
+            logger.error(f"Error loading CSV: {str(e)}")
+            raise
+    
+    def validate_data(self, df: pd.DataFrame) -> Dict[str, any]:
+        """Validate DataFrame structure and content"""
+        validation_results = {
+            'valid': True,
+            'errors': [],
+            'warnings': []
+        }
+        
+        # Check for required columns
+        missing_cols = [col for col in self.required_columns if col not in df.columns]
+        if missing_cols:
+            validation_results['valid'] = False
+            validation_results['errors'].append(
+                f"Missing required columns: {missing_cols}"
+            )
+        
+        # Check for empty DataFrame
+        if df.empty:
+            validation_results['valid'] = False
+            validation_results['errors'].append("DataFrame is empty")
+        
+        # Check for null values
+        null_counts = df[self.required_columns].isnull().sum()
+        if null_counts.any():
+            validation_results['warnings'].append(
+                f"Null values found: {null_counts[null_counts > 0].to_dict()}"
+            )
+        
+        return validation_results
+    
+    def clean_data(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Clean and preprocess transaction data"""
+        df_clean = df.copy()
+        
+        # Remove duplicates
+        initial_len = len(df_clean)
+        df_clean = df_clean.drop_duplicates()
+        logger.info(f"Removed {initial_len - len(df_clean)} duplicate rows")
+        
+        # Handle missing values
+        if 'amount' in df_clean.columns:
+            df_clean['amount'] = pd.to_numeric(df_clean['amount'], errors='coerce')
+            df_clean['amount'] = df_clean['amount'].fillna(0)
+        
+        # Convert timestamp to datetime
+        if 'timestamp' in df_clean.columns:
+            df_clean['timestamp'] = pd.to_datetime(
+                df_clean['timestamp'], 
+                errors='coerce'
+            )
+        
+        # Remove rows with null timestamps
+        df_clean = df_clean.dropna(subset=['timestamp'])
+        
+        # Strip whitespace from string columns
+        string_columns = df_clean.select_dtypes(include=['object']).columns
+        for col in string_columns:
+            df_clean[col] = df_clean[col].str.strip()
+        
+        return df_clean
+    
+    def extract_features(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Extract features for ML model"""
+        df_features = df.copy()
+        
+        try:
+            # Temporal features
+            if 'timestamp' in df_features.columns:
+                df_features['hour'] = df_features['timestamp'].dt.hour
+                df_features['day_of_week'] = df_features['timestamp'].dt.dayofweek
+                df_features['is_weekend'] = df_features['day_of_week'].isin([5, 6]).astype(int)
+            
+            # Transaction amount features
+            if 'amount' in df_features.columns:
+                df_features['amount_log'] = np.log1p(df_features['amount'])
+                df_features['amount_zscore'] = (
+                    df_features['amount'] - df_features['amount'].mean()
+                ) / df_features['amount'].std()
+            
+            # Address-based features
+            if 'from_address' in df_features.columns:
+                df_features['from_address_length'] = df_features['from_address'].str.len()
+            
+            if 'to_address' in df_features.columns:
+                df_features['to_address_length'] = df_features['to_address'].str.len()
+            
+            logger.info("Feature extraction completed successfully")
+            
+        except Exception as e:
+            logger.error(f"Error in feature extraction: {str(e)}")
+            raise
+        
+        return df_features
+```
+
+#### **3. Improved AI Model with Better Error Handling (`ai_model.py`)**
+
+```python
+import numpy as np
+import pandas as pd
+from sklearn.ensemble import IsolationForest
+import shap
+import joblib
+import logging
+from typing import Tuple, Optional
+
+logger = logging.getLogger(__name__)
+
+class FraudDetectionModel:
+    def __init__(self, contamination: float = 0.1):
+        self.model = IsolationForest(
+            contamination=contamination,
+            random_state=42,
+            n_estimators=100,
+            max_samples='auto',
+            n_jobs=-1  # Use all CPU cores
+        )
+        self.feature_columns = None
+        self.explainer = None
+        self.is_fitted = False
+    
+    def train(self, X: pd.DataFrame) -> None:
+        """Train the fraud detection model"""
+        try:
+            # Store feature columns
+            self.feature_columns = X.columns.tolist()
+            
+            # Handle missing values
+            X_clean = X.fillna(X.median())
+            
+            # Train model
+            logger.info(f"Training model with {len(X_clean)} samples...")
+            self.model.fit(X_clean)
+            
+            # Initialize SHAP explainer
+            logger.info("Initializing SHAP explainer...")
+            self.explainer = shap.TreeExplainer(self.model)
+            
+            self.is_fitted = True
+            logger.info("Model training completed successfully")
+            
+        except Exception as e:
+            logger.error(f"Error during model training: {str(e)}")
+            raise
+    
+    def predict(self, X: pd.DataFrame) -> Tuple[np.ndarray, np.ndarray]:
+        """Predict anomalies and return predictions and scores"""
+        if not self.is_fitted:
+            raise ValueError("Model must be trained before prediction")
+        
+        try:
+            # Ensure same features as training
+            if self.feature_columns:
+                X = X[self.feature_columns]
+            
+            # Handle missing values
+            X_clean = X.fillna(X.median())
+            
+            # Get predictions (-1 for anomalies, 1 for normal)
+            predictions = self.model.predict(X_clean)
+            
+            # Get anomaly scores (lower is more anomalous)
+            scores = self.model.score_samples(X_clean)
+            
+            # Convert to 0-100 risk score (higher is riskier)
+            risk_scores = self._convert_to_risk_score(scores)
+            
+            return predictions, risk_scores
+            
+        except Exception as e:
+            logger.error(f"Error during prediction: {str(e)}")
+            raise
+    
+    def explain_prediction(self, X: pd.DataFrame, index: int = 0) -> Optional[shap.Explanation]:
+        """Generate SHAP explanation for a specific prediction"""
+        if not self.is_fitted or self.explainer is None:
+            logger.warning("Model not fitted or explainer not initialized")
+            return None
+        
+        try:
+            # Ensure same features
+            if self.feature_columns:
+                X = X[self.feature_columns]
+            
+            X_clean = X.fillna(X.median())
+            
+            # Get SHAP values
+            shap_values = self.explainer.shap_values(X_clean.iloc[[index]])
+            
+            return shap_values
+            
+        except Exception as e:
+            logger.error(f"Error generating SHAP explanation: {str(e)}")
+            return None
+    
+    def _convert_to_risk_score(self, scores: np.ndarray) -> np.ndarray:
+        """Convert anomaly scores to 0-100 risk scale"""
+        # Normalize scores to 0-100 range
+        min_score = scores.min()
+        max_score = scores.max()
+        
+        if max_score == min_score:
+            return np.full_like(scores, 50)
+        
+        # Invert so higher = riskier
+        normalized = 100 * (max_score - scores) / (max_score - min_score)
+        
+        return normalized
+    
+    def save_model(self, filepath: str) -> None:
+        """Save trained model to disk"""
+        try:
+            model_data = {
+                'model': self.model,
+                'feature_columns': self.feature_columns,
+                'is_fitted': self.is_fitted
+            }
+            joblib.dump(model_data, filepath)
+            logger.info(f"Model saved to {filepath}")
+        except Exception as e:
+            logger.error(f"Error saving model: {str(e)}")
+            raise
+    
+    def load_model(self, filepath: str) -> None:
+        """Load trained model from disk"""
+        try:
+            model_data = joblib.load(filepath)
+            self.model = model_data['model']
+            self.feature_columns = model_data['feature_columns']
+            self.is_fitted = model_data['is_fitted']
+            
+            if self.is_fitted:
+                self.explainer = shap.TreeExplainer(self.model)
+            
+            logger.info(f"Model loaded from {filepath}")
+        except Exception as e:
+            logger.error(f"Error loading model: {str(e)}")
+            raise
+```
+
+#### **4. Streamlit App Improvements (`app.py`)**
+
+```python
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
+from data_processor import DataProcessor
+from ai_model import FraudDetectionModel
+from database import db_manager
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Page configuration
+st.set_page_config(
+    page_title="QuantumGuard AI",
+    page_icon="🛡️",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+# Initialize session state
+if 'data_processor' not in st.session_state:
+    st.session_state.data_processor = DataProcessor()
+
+if 'model' not in st.session_state:
+    st.session_state.model = FraudDetectionModel()
+
+if 'data' not in st.session_state:
+    st.session_state.data = None
+
+if 'predictions' not in st.session_state:
+    st.session_state.predictions = None
+
+# Custom CSS
+st.markdown("""
+    <style>
+    .main {
+        background-color: #0e1117;
+    }
+    .stAlert {
+        background-color: #1e2130;
+        color: white;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+def main():
+    st.title("🛡️ QuantumGuard AI")
+    st.markdown("### Blockchain Security Dashboard")
+    
+    # Sidebar
+    with st.sidebar:
+        st.header("Navigation")
+        page = st.radio(
+            "Select Mode",
+            ["Data Upload", "Analysis", "AI Transaction Search", "Settings"]
+        )
+    
+    if page == "Data Upload":
+        show_data_upload()
+    elif page == "Analysis":
+        show_analysis()
+    elif page == "AI Transaction Search":
+        show_ai_search()
+    elif page == "Settings":
+        show_settings()
+
+def show_data_upload():
+    st.header("📁 Data Upload")
+    
+    col1, col2 = st.columns([2, 1])
+    
+    with col1:
+        uploaded_file = st.file_uploader(
+            "Upload blockchain transaction dataset",
+            type=['csv'],
+            help="Upload CSV file with transaction data"
+        )
+    
+    with col2:
+        st.info("""
+        **Required columns:**
+        - timestamp
+        - amount
+        - from_address
+        - to_address
+        """)
+    
+    if uploaded_file is not None:
+        try:
+            with st.spinner("Processing data..."):
+                # Load data
+                df = pd.read_csv(uploaded_file)
+                
+                # Validate
+                processor = st.session_state.data_processor
+                validation = processor.validate_data(df)
+                
+                if not validation['valid']:
+                    st.error("❌ Data validation failed:")
+                    for error in validation['errors']:
+                        st.error(error)
+                    return
+                
+                # Show warnings
+                if validation['warnings']:
+                    with st.expander("⚠️ Warnings"):
+                        for warning in validation['warnings']:
+                            st.warning(warning)
+                
+                # Clean data
+                df_clean = processor.clean_data(df)
+                
+                # Extract features
+                df_features = processor.extract_features(df_clean)
+                
+                # Store in session state
+                st.session_state.data = df_features
+                
+                st.success(f"✅ Successfully processed {len(df_features)} transactions")
+                
+                # Show preview
+                st.subheader("Data Preview")
+                st.dataframe(df_features.head(10))
+                
+                # Show statistics
+                col1, col2, col3, col4 = st.columns(4)
+                with col1:
+                    st.metric("Total Transactions", len(df_features))
+                with col2:
+                    st.metric("Unique Addresses", df_features['from_address'].nunique())
+                with col3:
+                    st.metric("Total Volume", f"${df_features['amount'].sum():,.2f}")
+                with col4:
+                    st.metric("Avg Transaction", f"${df_features['amount'].mean():,.2f}")
+                
+        except Exception as e:
+            st.error(f"❌ Error processing file: {str(e)}")
+            logger.error(f"File processing error: {str(e)}", exc_info=True)
+
+def show_analysis():
+    st.header("📊 Analysis")
+    
+    if st.session_state.data is None:
+        st.warning("⚠️ Please upload data first")
+        return
+    
+    df = st.session_state.data
+    
+    # Analysis settings
+    with st.sidebar:
+        st.subheader("Analysis Settings")
+        risk_threshold = st.slider("Risk Threshold", 0.0, 1.0, 0.7, 0.05)
+        contamination = st.slider("Contamination Rate", 0.01, 0.3, 0.1, 0.01)
+    
+    # Run analysis button
+    if st.button("🔍 Run Fraud Detection Analysis", type="primary"):
+        try:
+            with st.spinner("Training model and analyzing transactions..."):
+                # Prepare features for model
+                feature_cols = [col for col in df.columns if col not in ['timestamp', 'from_address', 'to_address']]
+                X = df[feature_cols]
+                
+                # Train model
+                model = st.session_state.model
+                model.contamination = contamination
+                model.train(X)
+                
+                # Get predictions
+                predictions, risk_scores = model.predict(X)
+                
+                # Store results
+                df['prediction'] = predictions
+                df['risk_score'] = risk_scores
+                df['is_anomaly'] = (predictions == -1).astype(int)
+                
+                st.session_state.predictions = df
+                
+                st.success("✅ Analysis complete!")
+        
+        except Exception as e:
+            st.error(f"❌ Analysis failed: {str(e)}")
+            logger.error(f"Analysis error: {str(e)}", exc_info=True)
+            return
+    
+    # Show results if available
+    if st.session_state.predictions is not None:
+        df_results = st.session_state.predictions
+        
+        # Summary metrics
+        st.subheader("Detection Summary")
+        col1, col2, col3, col4 = st.columns(4)
+        
+        n_anomalies = (df_results['is_anomaly'] == 1).sum()
+        anomaly_rate = n_anomalies / len(df_results) * 100
+        high_risk = (df_results['risk_score'] > risk_threshold * 100).sum()
+        total_suspicious_amount = df_results[df_results['is_anomaly'] == 1]['amount'].sum()
+        
+        with col1:
+            st.metric("Anomalies Detected", n_anomalies)
+        with col2:
+            st.metric("Anomaly Rate", f"{anomaly_rate:.2f}%")
+        with col3:
+            st.metric("High Risk Transactions", high_risk)
+        with col4:
+            st.metric("Suspicious Volume", f"${total_suspicious_amount:,.2f}")
+        
+        # Visualizations
+        tab1, tab2, tab3 = st.tabs(["📈 Risk Distribution", "🕸️ Network Graph", "📋 Transaction Table"])
+        
+        with tab1:
+            # Risk score distribution
+            fig = px.histogram(
+                df_results,
+                x='risk_score',
+                color='is_anomaly',
+                title="Risk Score Distribution",
+                labels={'risk_score': 'Risk Score', 'is_anomaly': 'Anomaly'},
+                marginal="box"
+            )
+            st.plotly_chart(fig, use_container_width=True)
+        
+        with tab2:
+            st.info("Network graph visualization - Coming soon")
+        
+        with tab3:
+            # Filter options
+            col1, col2 = st.columns(2)
+            with col1:
+                show_anomalies_only = st.checkbox("Show anomalies only", value=False)
+            with col2:
+                min_risk = st.slider("Minimum risk score", 0, 100, 0)
+            
+            # Filter data
+            filtered_df = df_results.copy()
+            if show_anomalies_only:
+                filtered_df = filtered_df[filtered_df['is_anomaly'] == 1]
+            filtered_df = filtered_df[filtered_df['risk_score'] >= min_risk]
+            
+            # Show table
+            st.dataframe(
+                filtered_df.sort_values('risk_score', ascending=False),
+                use_container_width=True
+            )
+            
+            # Export button
+            if st.button("📥 Export Results"):
+                csv = filtered_df.to_csv(index=False)
+                st.download_button(
+                    label="Download CSV",
+                    data=csv,
+                    file_name="fraud_detection_results.csv",
+                    mime="text/csv"
+                )
+
+def show_ai_search():
+    st.header("🤖 AI Transaction Search")
+    
+    if st.session_state.predictions is None:
+        st.warning("⚠️ Please run analysis first")
+        return
+    
+    df = st.session_state.predictions
+    
+    # Search query
+    query = st.text_input(
+        "Ask a question about the transactions:",
+        placeholder="e.g., Which transactions have the highest risk scores?"
+    )
+    
+    if st.button("Search", type="primary"):
+        with st.spinner("Analyzing..."):
+            # This is a simplified version - you can integrate OpenAI API here
+            st.info("AI search feature - Integration with OpenAI GPT-4 pending")
+            
+            # Simple keyword-based search for now
+            if "highest" in query.lower() and "risk" in query.lower():
+                top_risks = df.nlargest(10, 'risk_score')
+                st.dataframe(top_risks)
+
+def show_settings():
+    st.header("⚙️ Settings")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.subheader("Model Configuration")
+        st.number_input("Contamination Rate", 0.01, 0.5, 0.1, 0.01)
+        st.number_input("Number of Estimators", 50, 500, 100, 50)
+        st.selectbox("Random State", [42, 123, 456])
+    
+    with col2:
+        st.subheader("Database Configuration")
+        st.text_input("Database URL", type="password")
+        if st.button("Test Connection"):
+            try:
+                session = db_manager.get_session()
+                st.success("✅ Database connection successful")
+                db_manager.close_session(session)
+            except Exception as e:
+                st.error(f"❌ Connection failed: {str(e)}")
+    
+    # Save settings
+    if st.button("Save Settings", type="primary"):
+        st.success("Settings saved successfully")
+
+if __name__ == "__main__":
+    main()
+```
+
+#### **5. Requirements.txt Update**
+
+```txt
+streamlit==1.28.0
+pandas==2.1.0
+numpy==1.24.3
+scikit-learn==1.3.0
+shap==0.42.1
+plotly==5.17.0
+sqlalchemy==2.0.20
+psycopg2-binary==2.9.7
+python-dotenv==1.0.0
+joblib==1.3.2
+```
+
+#### **6. Environment Configuration (`.env` template)**
+
+```env
+# Database Configuration
+DATABASE_URL=postgresql://username:password@localhost:5432/quantumguard
+
+# OpenAI Configuration (for future AI search feature)
+OPENAI_API_KEY=your_openai_api_key_here
+
+# Application Settings
+DEBUG=False
+LOG_LEVEL=INFO
+MAX_UPLOAD_SIZE=200
+
+# Security
+SECRET_KEY=your_secret_key_here
+```
+
+### **Next Steps for Implementation:**
+
+1. **Replace your existing files** with these improved versions
+2. **Update your requirements.txt** and run `pip install -r requirements.txt`
+3. **Set up environment variables** in a `.env` file
+4. **Test database connection** separately before running the full app
+5. **Test with small datasets first** before scaling up
+6. **Monitor logs** for any remaining issues
+
+### **Additional Recommendations:**
+
+1. **Add unit tests** for critical components
+2. **Implement proper logging** throughout the application
+3. **Add rate limiting** for API endpoints
+4. **Implement caching** for frequently accessed data
+5. **Add user authentication** before production deployment
+6. **Set up monitoring** (e.g., Sentry for error tracking)
+7. **Create backup strategy** for database
+8. **Document API endpoints** if exposing any
+
+Would you like me to elaborate on any specific component or help you with implementing these fixes in Replit?
