@@ -23,6 +23,42 @@ def calculate_austrac_risk_score(df: pd.DataFrame) -> Dict:
     except:
         use_enhanced_detection = False
     
+    # Normalize column names for case-insensitive matching
+    df_normalized = df.copy()
+    col_mapping = {col: col.lower() for col in df.columns}
+    df_normalized.columns = [col.lower() for col in df.columns]
+    
+    # Check if this is a valid transaction dataset
+    required_columns = ['amount', 'value']  # At least one of these should exist
+    has_amount = any(col in df_normalized.columns for col in required_columns)
+    
+    # If this is not a transaction dataset, return N/A result
+    if not has_amount:
+        return {
+            "risk_percentage": 0.0,
+            "risk_level": "N/A",
+            "risk_color": "gray",
+            "risk_status": "⚠️ NOT APPLICABLE",
+            "transactions_analyzed": len(df),
+            "high_risk_count": 0,
+            "critical_count": 0,
+            "reporting_required": 0,
+            "avg_individual_risk": 0.0,
+            "max_individual_risk": 0.0,
+            "summary_message": """
+    AUSTRAC Compliance Assessment:
+    
+    • This dataset does not contain transaction data
+    • AUSTRAC risk scoring requires Amount, Merchant, Country columns
+    • Please upload a transaction dataset for compliance analysis
+            """,
+            "compliance_recommendations": [
+                "⚠️ Upload a transaction dataset with Amount, Merchant, and Country columns",
+                "📊 Transaction datasets should include Date/Time information",
+                "💡 For customer profile data, use different analysis tools"
+            ]
+        }
+    
     classifier = AUSTRACClassifier()
     
     # Sample transactions for risk assessment
@@ -31,11 +67,6 @@ def calculate_austrac_risk_score(df: pd.DataFrame) -> Dict:
     high_risk_count = 0
     critical_count = 0
     reporting_required_count = 0
-    
-    # Normalize column names for case-insensitive matching
-    df_normalized = df.copy()
-    col_mapping = {col: col.lower() for col in df.columns}
-    df_normalized.columns = [col.lower() for col in df.columns]
     
     # Process sample transactions
     for i in range(sample_size):

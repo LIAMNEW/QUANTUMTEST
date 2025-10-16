@@ -1042,67 +1042,75 @@ with st.sidebar:
             if st.session_state.get('austrac_risk_score'):
                 risk_data = st.session_state.austrac_risk_score
                 risk_percentage = risk_data["risk_percentage"]
+                risk_level = risk_data.get("risk_level", "Low")
                 
-                # Determine CSS class based on risk level
-                if risk_percentage >= 80:
-                    risk_class = "risk-score-critical"
-                elif risk_percentage >= 60:
-                    risk_class = "risk-score-critical"
-                elif risk_percentage >= 40:
-                    risk_class = "risk-score-high"
-                elif risk_percentage >= 20:
-                    risk_class = "risk-score-medium"
+                # Check if this is a N/A result (non-transaction dataset)
+                if risk_level == "N/A":
+                    st.markdown("---")
+                    st.info("ℹ️ **AUSTRAC Compliance Analysis Not Applicable**\n\n" + risk_data.get('summary_message', 'This dataset does not contain transaction data suitable for AUSTRAC compliance analysis.'))
+                    # Don't show metrics for N/A datasets
+                    
                 else:
-                    risk_class = "risk-score-low"
-                
-                st.markdown("---")
-                
-                # Enhanced risk score display
-                st.markdown(f"""
-                <div class="risk-score-container {risk_class}">
-                    <h2 style="margin: 0; font-size: 3rem;">{risk_percentage}%</h2>
-                    <h3 style="margin: 0.5rem 0;">AUSTRAC Compliance Risk Score</h3>
-                    <p style="margin: 0; font-size: 1.2rem;">{risk_data['risk_status']}</p>
-                </div>
-                """, unsafe_allow_html=True)
-                
-                # Professional metrics display
-                st.markdown("""
-                <div style="display: flex; justify-content: space-between; gap: 1rem; margin: 2rem 0;">
-                    <div class="metric-card" style="flex: 1;">
-                        <h4>📊 Analyzed</h4>
-                        <h2>{:,}</h2>
-                        <p>Transactions</p>
+                    # Determine CSS class based on risk level
+                    if risk_percentage >= 80:
+                        risk_class = "risk-score-critical"
+                    elif risk_percentage >= 60:
+                        risk_class = "risk-score-critical"
+                    elif risk_percentage >= 40:
+                        risk_class = "risk-score-high"
+                    elif risk_percentage >= 20:
+                        risk_class = "risk-score-medium"
+                    else:
+                        risk_class = "risk-score-low"
+                    
+                    st.markdown("---")
+                    
+                    # Enhanced risk score display
+                    st.markdown(f"""
+                    <div class="risk-score-container {risk_class}">
+                        <h2 style="margin: 0; font-size: 3rem;">{risk_percentage}%</h2>
+                        <h3 style="margin: 0.5rem 0;">AUSTRAC Compliance Risk Score</h3>
+                        <p style="margin: 0; font-size: 1.2rem;">{risk_data['risk_status']}</p>
                     </div>
-                    <div class="metric-card" style="flex: 1;">
-                        <h4>⚠️ High Risk</h4>
-                        <h2>{}</h2>
-                        <p>Transactions</p>
+                    """, unsafe_allow_html=True)
+                    
+                    # Professional metrics display
+                    st.markdown("""
+                    <div style="display: flex; justify-content: space-between; gap: 1rem; margin: 2rem 0;">
+                        <div class="metric-card" style="flex: 1;">
+                            <h4>📊 Analyzed</h4>
+                            <h2>{:,}</h2>
+                            <p>Transactions</p>
+                        </div>
+                        <div class="metric-card" style="flex: 1;">
+                            <h4>⚠️ High Risk</h4>
+                            <h2>{}</h2>
+                            <p>Transactions</p>
+                        </div>
+                        <div class="metric-card" style="flex: 1;">
+                            <h4>📋 Reports Due</h4>
+                            <h2>{}</h2>
+                            <p>AUSTRAC Reports</p>
+                        </div>
+                        <div class="metric-card" style="flex: 1;">
+                            <h4>🎯 Risk Level</h4>
+                            <h2>{}</h2>
+                            <p>Classification</p>
+                        </div>
                     </div>
-                    <div class="metric-card" style="flex: 1;">
-                        <h4>📋 Reports Due</h4>
-                        <h2>{}</h2>
-                        <p>AUSTRAC Reports</p>
-                    </div>
-                    <div class="metric-card" style="flex: 1;">
-                        <h4>🎯 Risk Level</h4>
-                        <h2>{}</h2>
-                        <p>Classification</p>
-                    </div>
-                </div>
-                """.format(
-                    risk_data['transactions_analyzed'],
-                    risk_data['high_risk_count'], 
-                    risk_data['reporting_required'],
-                    risk_data['risk_level']
-                ), unsafe_allow_html=True)
-                
-                # Show summary
-                with st.expander("📋 Detailed AUSTRAC Assessment", expanded=False):
-                    st.markdown(risk_data["summary_message"])
-                    st.markdown("**🔍 Compliance Recommendations:**")
-                    for rec in risk_data["compliance_recommendations"]:
-                        st.markdown(f"• {rec}")
+                    """.format(
+                        risk_data['transactions_analyzed'],
+                        risk_data['high_risk_count'], 
+                        risk_data['reporting_required'],
+                        risk_data['risk_level']
+                    ), unsafe_allow_html=True)
+                    
+                    # Show summary
+                    with st.expander("📋 Detailed AUSTRAC Assessment", expanded=False):
+                        st.markdown(risk_data["summary_message"])
+                        st.markdown("**🔍 Compliance Recommendations:**")
+                        for rec in risk_data["compliance_recommendations"]:
+                            st.markdown(f"• {rec}")
                 
                 st.markdown("---")
         else:
