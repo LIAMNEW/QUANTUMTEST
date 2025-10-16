@@ -1,0 +1,101 @@
+TransactionID,date,time,Type,amount,merchant,country,Channel,Counterparty,timestamp,transaction_id,risk_score,risk_level,risk_flags,risk_details,flagged_for_review,austrac_reporting_required
+TX0050,2025-09-01,00:39:58,BPAY,225.9,Amazon Australia,Australia,Branch,,2025-09-01 00:39:58,TX_000001,25.0,MEDIUM,['LATE_NIGHT_TRANSACTION'],['Transaction at 00:00 (High-risk hours: 12am-5am)'],False,False
+TX0045,2025-09-01,00:45:30,Direct Credit,235976.2,Coles_Express_LLC,Australia,Wire,,2025-09-01 00:45:30,TX_000002,50.0,HIGH,"['LATE_NIGHT_TRANSACTION', 'LARGE_TRANSACTION']","['Transaction at 00:00 (High-risk hours: 12am-5am)', 'Large transaction: $235,976.20']",True,False
+TX0100,2025-09-01,10:51:11,Direct Credit,133.93,NAB,Australia,Mobile App,,2025-09-01 10:51:11,TX_000003,0.0,LOW,[],[],False,False
+TX0051,2025-09-01,22:41:31,POS Purchase,1163.65,eBay,Australia,ATM,,2025-09-01 22:41:31,TX_000004,15.0,LOW,['UNUSUAL_HOURS'],['Transaction at 22:00 (Late evening hours)'],False,False
+TX0062,2025-09-02,00:30:24,BPAY,329.26,ANZ Bank,Australia,Online,,2025-09-02 00:30:24,TX_000005,25.0,MEDIUM,['LATE_NIGHT_TRANSACTION'],['Transaction at 00:00 (High-risk hours: 12am-5am)'],False,False
+TX0073,2025-09-03,22:37:07,Direct Credit,11.6,Domino's Pizza,Australia,ATM,,2025-09-03 22:37:07,TX_000006,15.0,LOW,['UNUSUAL_HOURS'],['Transaction at 22:00 (Late evening hours)'],False,False
+TX0039,2025-09-04,02:00:54,Direct Credit,822.66,IKEA Australia,Australia,Mobile App,,2025-09-04 02:00:54,TX_000007,25.0,MEDIUM,['LATE_NIGHT_TRANSACTION'],['Transaction at 02:00 (High-risk hours: 12am-5am)'],False,False
+TX0092,2025-09-04,07:10:48,Transfer,857.33,Bunnings,Australia,Branch,,2025-09-04 07:10:48,TX_000008,0.0,LOW,[],[],False,False
+TX0053,2025-09-04,19:45:31,POS Purchase,1127.7,Domino's Pizza,Australia,Branch,,2025-09-04 19:45:31,TX_000009,0.0,LOW,[],[],False,False
+TX0070,2025-09-05,03:00:00,Direct Credit,9511.42,RemitHub Overseas,Singapore,Mobile App,,2025-09-05 03:00:00,TX_000010,65.0,VERY_HIGH,"['LATE_NIGHT_TRANSACTION', 'INTERNATIONAL_TRANSACTION', 'POTENTIAL_STRUCTURING']","['Transaction at 03:00 (High-risk hours: 12am-5am)', 'International transaction: Singapore', 'Amount $9,511.42 is 4.9% below AUSTRAC threshold ($10,000)']",True,True
+TX0005,2025-09-05,13:09:46,Online Payment,191.44,Bunnings,Australia,Mobile App,,2025-09-05 13:09:46,TX_000011,0.0,LOW,[],[],False,False
+TX0078,2025-09-05,18:04:18,POS Purchase,93.48,Officeworks,Australia,Mobile App,,2025-09-05 18:04:18,TX_000012,0.0,LOW,[],[],False,False
+TX0012,2025-09-05,23:05:00,POS Purchase,1164.04,IKEA Australia,Australia,POS,,2025-09-05 23:05:00,TX_000013,15.0,LOW,['UNUSUAL_HOURS'],['Transaction at 23:00 (Late evening hours)'],False,False
+TX0093,2025-09-06,19:40:40,BPAY,914.14,Bunnings,Australia,Mobile App,,2025-09-06 19:40:40,TX_000014,0.0,LOW,[],[],False,False
+TX0011,2025-09-08,13:08:48,Online Payment,29.6,McDonald's,Australia,ATM,,2025-09-08 13:08:48,TX_000015,0.0,LOW,[],[],False,False
+TX0090,2025-09-08,15:25:20,POS Purchase,569.3,Commonwealth Bank,Australia,POS,,2025-09-08 15:25:20,TX_000016,0.0,LOW,[],[],False,False
+TX0080,2025-09-09,01:45:59,Direct Credit,143.46,Aldi Australia,Australia,Branch,,2025-09-09 01:45:59,TX_000017,25.0,MEDIUM,['LATE_NIGHT_TRANSACTION'],['Transaction at 01:00 (High-risk hours: 12am-5am)'],False,False
+TX0086,2025-09-10,05:14:49,ATM Withdrawal,393.59,Caltex,Australia,POS,,2025-09-10 05:14:49,TX_000018,0.0,LOW,[],[],False,False
+TX0075,2025-09-10,05:36:33,BPAY,849.69,Myer,Australia,Online,,2025-09-10 05:36:33,TX_000019,0.0,LOW,[],[],False,False
+TX0081,2025-09-11,09:02:01,Direct Credit,1036.41,Coles,Australia,Online,,2025-09-11 09:02:01,TX_000020,0.0,LOW,[],[],False,False
+TX0067,2025-09-11,09:36:14,BPAY,173.4,Telstra,Australia,Mobile App,,2025-09-11 09:36:14,TX_000021,0.0,LOW,[],[],False,False
+TX0027,2025-09-11,15:52:12,Transfer,243.61,Amazon Australia,Australia,POS,,2025-09-11 15:52:12,TX_000022,0.0,LOW,[],[],False,False
+TX0028,2025-09-12,03:00:00,Direct Credit,9261.95,W00lw0rths Services,Singapore,Online,W00lw0rths Services,2025-09-12 03:00:00,TX_000023,65.0,VERY_HIGH,"['LATE_NIGHT_TRANSACTION', 'INTERNATIONAL_TRANSACTION', 'POTENTIAL_STRUCTURING']","['Transaction at 03:00 (High-risk hours: 12am-5am)', 'International transaction: Singapore', 'Amount $9,261.95 is 7.4% below AUSTRAC threshold ($10,000)']",True,True
+TX0052,2025-09-12,14:58:55,POS Purchase,931.28,Bunnings,Australia,Mobile App,,2025-09-12 14:58:55,TX_000024,0.0,LOW,[],[],False,False
+TX0002,2025-09-12,21:19:10,Online Payment,1141.1,Telstra,Australia,POS,,2025-09-12 21:19:10,TX_000025,0.0,LOW,[],[],False,False
+TX0061,2025-09-13,00:49:51,Online Payment,469.47,Qantas Airways,Australia,ATM,,2025-09-13 00:49:51,TX_000026,25.0,MEDIUM,['LATE_NIGHT_TRANSACTION'],['Transaction at 00:00 (High-risk hours: 12am-5am)'],False,False
+TX0077,2025-09-13,03:02:44,POS Purchase,926.67,Myer,Australia,Mobile App,,2025-09-13 03:02:44,TX_000027,25.0,MEDIUM,['LATE_NIGHT_TRANSACTION'],['Transaction at 03:00 (High-risk hours: 12am-5am)'],False,False
+TX0098,2025-09-13,21:27:48,Direct Credit,515.91,Telstra,Australia,ATM,,2025-09-13 21:27:48,TX_000028,0.0,LOW,[],[],False,False
+TX0044,2025-09-15,05:57:08,Direct Credit,1091.64,BP Australia,Australia,Branch,,2025-09-15 05:57:08,TX_000029,0.0,LOW,[],[],False,False
+TX0013,2025-09-18,00:45:30,Online Payment,9103.59,uber-oceanic-inc,Australia,Mobile App,uber-oceanic-inc,2025-09-18 00:45:30,TX_000030,55.0,HIGH,"['LATE_NIGHT_TRANSACTION', 'POTENTIAL_STRUCTURING']","['Transaction at 00:00 (High-risk hours: 12am-5am)', 'Amount $9,103.59 is 9.0% below AUSTRAC threshold ($10,000)']",True,False
+TX0022,2025-09-18,23:17:31,ATM Withdrawal,171.7,Caltex,Australia,ATM,,2025-09-18 23:17:31,TX_000031,15.0,LOW,['UNUSUAL_HOURS'],['Transaction at 23:00 (Late evening hours)'],False,False
+TX0082,2025-09-19,09:32:08,POS Purchase,749.84,IKEA Australia,Australia,ATM,,2025-09-19 09:32:08,TX_000032,0.0,LOW,[],[],False,False
+TX0026,2025-09-19,10:05:51,ATM Withdrawal,943.29,Officeworks,Australia,Mobile App,,2025-09-19 10:05:51,TX_000033,0.0,LOW,[],[],False,False
+TX0009,2025-09-20,03:00:00,Transfer,8000.0,FastFunds Remit,UAE,Wire,FastFunds Remit,2025-09-20 03:00:00,TX_000034,65.0,VERY_HIGH,"['LATE_NIGHT_TRANSACTION', 'INTERNATIONAL_TRANSACTION', 'POTENTIAL_STRUCTURING']","['Transaction at 03:00 (High-risk hours: 12am-5am)', 'International transaction: UAE', 'Amount $8,000.00 is 20.0% below AUSTRAC threshold ($10,000)']",True,True
+TX0035,2025-09-20,09:20:07,ATM Withdrawal,1158.93,Bunnings,Australia,Online,,2025-09-20 09:20:07,TX_000035,0.0,LOW,[],[],False,False
+TX0029,2025-09-20,11:23:27,ATM Withdrawal,712.94,Qantas Airways,Australia,Online,,2025-09-20 11:23:27,TX_000036,0.0,LOW,[],[],False,False
+TX0095,2025-09-21,08:25:56,Transfer,926.31,Westpac,Australia,Mobile App,,2025-09-21 08:25:56,TX_000037,0.0,LOW,[],[],False,False
+TX0008,2025-09-21,08:46:33,Online Payment,1040.08,Myer,Australia,Mobile App,,2025-09-21 08:46:33,TX_000038,0.0,LOW,[],[],False,False
+TX0076,2025-09-21,11:31:39,Online Payment,876.16,JB Hi-Fi,Australia,Branch,,2025-09-21 11:31:39,TX_000039,0.0,LOW,[],[],False,False
+TX0071,2025-09-21,13:30:17,Direct Credit,927.83,Myer,Australia,POS,,2025-09-21 13:30:17,TX_000040,0.0,LOW,[],[],False,False
+TX0032,2025-09-22,03:00:00,Transfer,8200.0,FastFunds Remit,UAE,Wire,FastFunds Remit,2025-09-22 03:00:00,TX_000041,65.0,VERY_HIGH,"['LATE_NIGHT_TRANSACTION', 'INTERNATIONAL_TRANSACTION', 'POTENTIAL_STRUCTURING']","['Transaction at 03:00 (High-risk hours: 12am-5am)', 'International transaction: UAE', 'Amount $8,200.00 is 18.0% below AUSTRAC threshold ($10,000)']",True,True
+TX0060,2025-09-22,06:25:24,BPAY,393.77,Myer,Australia,POS,,2025-09-22 06:25:24,TX_000042,0.0,LOW,[],[],False,False
+TX0099,2025-09-23,04:42:18,ATM Withdrawal,35.38,McDonald's,Australia,POS,,2025-09-23 04:42:18,TX_000043,25.0,MEDIUM,['LATE_NIGHT_TRANSACTION'],['Transaction at 04:00 (High-risk hours: 12am-5am)'],False,False
+TX0040,2025-09-23,17:19:03,BPAY,530.98,JB Hi-Fi,Australia,Mobile App,,2025-09-23 17:19:03,TX_000044,0.0,LOW,[],[],False,False
+TX0021,2025-09-23,23:50:00,Direct Credit,151881.14,Phantom Retailers Inc,UAE,Mobile App,Phantom Retailers Inc,2025-09-23 23:50:00,TX_000045,50.0,HIGH,"['UNUSUAL_HOURS', 'INTERNATIONAL_TRANSACTION', 'LARGE_TRANSACTION']","['Transaction at 23:00 (Late evening hours)', 'International transaction: UAE', 'Large transaction: $151,881.14']",True,False
+TX0037,2025-09-24,03:00:00,Transfer,8400.0,FastFunds Remit,UAE,Wire,FastFunds Remit,2025-09-24 03:00:00,TX_000046,65.0,VERY_HIGH,"['LATE_NIGHT_TRANSACTION', 'INTERNATIONAL_TRANSACTION', 'POTENTIAL_STRUCTURING']","['Transaction at 03:00 (High-risk hours: 12am-5am)', 'International transaction: UAE', 'Amount $8,400.00 is 16.0% below AUSTRAC threshold ($10,000)']",True,True
+TX0046,2025-09-25,07:13:30,Online Payment,796.71,Commonwealth Bank,Australia,POS,,2025-09-25 07:13:30,TX_000047,0.0,LOW,[],[],False,False
+TX0036,2025-09-25,17:38:28,Direct Credit,971.03,Qantas Airways,Australia,POS,,2025-09-25 17:38:28,TX_000048,0.0,LOW,[],[],False,False
+TX0066,2025-09-25,23:02:07,Online Payment,653.52,JB Hi-Fi,Australia,Branch,,2025-09-25 23:02:07,TX_000049,15.0,LOW,['UNUSUAL_HOURS'],['Transaction at 23:00 (Late evening hours)'],False,False
+TX0048,2025-09-26,03:00:00,Transfer,8600.0,FastFunds Remit,UAE,Wire,FastFunds Remit,2025-09-26 03:00:00,TX_000050,65.0,VERY_HIGH,"['LATE_NIGHT_TRANSACTION', 'INTERNATIONAL_TRANSACTION', 'POTENTIAL_STRUCTURING']","['Transaction at 03:00 (High-risk hours: 12am-5am)', 'International transaction: UAE', 'Amount $8,600.00 is 14.0% below AUSTRAC threshold ($10,000)']",True,True
+TX0096,2025-09-26,09:05:09,ATM Withdrawal,595.09,JB Hi-Fi,Australia,Online,,2025-09-26 09:05:09,TX_000051,0.0,LOW,[],[],False,False
+TX0015,2025-09-27,00:45:03,POS Purchase,222.28,IKEA Australia,Australia,POS,,2025-09-27 00:45:03,TX_000052,25.0,MEDIUM,['LATE_NIGHT_TRANSACTION'],['Transaction at 00:00 (High-risk hours: 12am-5am)'],False,False
+TX0058,2025-09-27,04:19:31,Transfer,239.2,Zip Pay,Australia,Online,,2025-09-27 04:19:31,TX_000053,25.0,MEDIUM,['LATE_NIGHT_TRANSACTION'],['Transaction at 04:00 (High-risk hours: 12am-5am)'],False,False
+TX0056,2025-09-27,16:34:03,Online Payment,1106.64,JB Hi-Fi,Australia,Mobile App,,2025-09-27 16:34:03,TX_000054,0.0,LOW,[],[],False,False
+TX0016,2025-09-27,19:10:26,ATM Withdrawal,224.17,Officeworks,Australia,Mobile App,,2025-09-27 19:10:26,TX_000055,0.0,LOW,[],[],False,False
+TX0065,2025-09-28,03:00:00,Transfer,8800.0,FastFunds Remit,UAE,Wire,FastFunds Remit,2025-09-28 03:00:00,TX_000056,65.0,VERY_HIGH,"['LATE_NIGHT_TRANSACTION', 'INTERNATIONAL_TRANSACTION', 'POTENTIAL_STRUCTURING']","['Transaction at 03:00 (High-risk hours: 12am-5am)', 'International transaction: UAE', 'Amount $8,800.00 is 12.0% below AUSTRAC threshold ($10,000)']",True,True
+TX0030,2025-09-28,12:48:45,Transfer,60.51,Amazon Australia,Australia,Online,,2025-09-28 12:48:45,TX_000057,0.0,LOW,[],[],False,False
+TX0068,2025-09-28,23:20:06,Direct Credit,963.63,Bunnings,Australia,Branch,,2025-09-28 23:20:06,TX_000058,15.0,LOW,['UNUSUAL_HOURS'],['Transaction at 23:00 (Late evening hours)'],False,False
+TX0087,2025-09-29,02:47:38,Transfer,876.88,ANZ Bank,Australia,POS,,2025-09-29 02:47:38,TX_000059,25.0,MEDIUM,['LATE_NIGHT_TRANSACTION'],['Transaction at 02:00 (High-risk hours: 12am-5am)'],False,False
+TX0089,2025-09-29,08:36:58,Direct Credit,1065.22,Commonwealth Bank,Australia,Mobile App,,2025-09-29 08:36:58,TX_000060,0.0,LOW,[],[],False,False
+TX0063,2025-09-29,13:34:56,Online Payment,995.34,Woolworths,Australia,POS,,2025-09-29 13:34:56,TX_000061,0.0,LOW,[],[],False,False
+TX0004,2025-09-29,15:58:25,Direct Credit,720.4,Coles,Australia,POS,,2025-09-29 15:58:25,TX_000062,0.0,LOW,[],[],False,False
+TX0094,2025-09-29,20:39:54,POS Purchase,675.73,NAB,Australia,POS,,2025-09-29 20:39:54,TX_000063,0.0,LOW,[],[],False,False
+TX0006,2025-09-30,05:24:09,POS Purchase,191.41,ANZ Bank,Australia,Online,,2025-09-30 05:24:09,TX_000064,0.0,LOW,[],[],False,False
+TX0024,2025-09-30,13:41:20,Transfer,442.8,BP Australia,Australia,Mobile App,,2025-09-30 13:41:20,TX_000065,0.0,LOW,[],[],False,False
+TX0001,2025-10-02,00:59:10,POS Purchase,452.58,Woolworths,Australia,ATM,,2025-10-02 00:59:10,TX_000066,25.0,MEDIUM,['LATE_NIGHT_TRANSACTION'],['Transaction at 00:00 (High-risk hours: 12am-5am)'],False,False
+TX0031,2025-10-02,19:38:29,Direct Credit,731.02,IKEA Australia,Australia,Branch,,2025-10-02 19:38:29,TX_000067,0.0,LOW,[],[],False,False
+TX0085,2025-10-03,03:08:09,Transfer,376.62,Aldi Australia,Australia,Online,,2025-10-03 03:08:09,TX_000068,25.0,MEDIUM,['LATE_NIGHT_TRANSACTION'],['Transaction at 03:00 (High-risk hours: 12am-5am)'],False,False
+TX0097,2025-10-03,12:17:14,Transfer,629.67,Amazon Australia,Australia,Online,,2025-10-03 12:17:14,TX_000069,0.0,LOW,[],[],False,False
+TX0072,2025-10-03,16:31:35,Transfer,242.47,Officeworks,Australia,POS,,2025-10-03 16:31:35,TX_000070,0.0,LOW,[],[],False,False
+TX0003,2025-10-03,20:24:43,Transfer,879.73,ANZ Bank,Australia,POS,,2025-10-03 20:24:43,TX_000071,0.0,LOW,[],[],False,False
+TX0042,2025-10-04,02:15:00,BPAY,596.74,McDonald's,Australia,ATM,,2025-10-04 02:15:00,TX_000072,25.0,MEDIUM,['LATE_NIGHT_TRANSACTION'],['Transaction at 02:00 (High-risk hours: 12am-5am)'],False,False
+TX0010,2025-10-04,03:12:12,Transfer,170965.97,Coles_Express_LLC,Australia,Online,Coles_Express_LLC,2025-10-04 03:12:12,TX_000073,50.0,HIGH,"['LATE_NIGHT_TRANSACTION', 'LARGE_TRANSACTION']","['Transaction at 03:00 (High-risk hours: 12am-5am)', 'Large transaction: $170,965.97']",True,False
+TX0084,2025-10-04,19:35:16,Transfer,80.95,Starbucks,Australia,Mobile App,,2025-10-04 19:35:16,TX_000074,0.0,LOW,[],[],False,False
+TX0023,2025-10-05,01:40:47,Transfer,354.11,Officeworks,Australia,POS,,2025-10-05 01:40:47,TX_000075,25.0,MEDIUM,['LATE_NIGHT_TRANSACTION'],['Transaction at 01:00 (High-risk hours: 12am-5am)'],False,False
+TX0018,2025-10-05,04:53:08,POS Purchase,632.08,Coles,Australia,Online,,2025-10-05 04:53:08,TX_000076,25.0,MEDIUM,['LATE_NIGHT_TRANSACTION'],['Transaction at 04:00 (High-risk hours: 12am-5am)'],False,False
+TX0064,2025-10-05,08:41:40,Transfer,431.32,Coles,Australia,Online,,2025-10-05 08:41:40,TX_000077,0.0,LOW,[],[],False,False
+TX0059,2025-10-05,14:38:44,ATM Withdrawal,59.05,IKEA Australia,Australia,ATM,,2025-10-05 14:38:44,TX_000078,0.0,LOW,[],[],False,False
+TX0007,2025-10-05,18:13:23,Transfer,74.41,Zip Pay,Australia,Mobile App,,2025-10-05 18:13:23,TX_000079,0.0,LOW,[],[],False,False
+TX0025,2025-10-06,09:29:39,Online Payment,550.0,BP Australia,Australia,Branch,,2025-10-06 09:29:39,TX_000080,0.0,LOW,[],[],False,False
+TX0034,2025-10-07,03:12:12,Direct Credit,9041.83,W00lw0rths Services,Australia,Online,,2025-10-07 03:12:12,TX_000081,55.0,HIGH,"['LATE_NIGHT_TRANSACTION', 'POTENTIAL_STRUCTURING']","['Transaction at 03:00 (High-risk hours: 12am-5am)', 'Amount $9,041.83 is 9.6% below AUSTRAC threshold ($10,000)']",True,False
+TX0033,2025-10-07,03:58:30,BPAY,82.74,ANZ Bank,Australia,ATM,,2025-10-07 03:58:30,TX_000082,25.0,MEDIUM,['LATE_NIGHT_TRANSACTION'],['Transaction at 03:00 (High-risk hours: 12am-5am)'],False,False
+TX0088,2025-10-07,07:27:16,ATM Withdrawal,766.88,Coles,Australia,POS,,2025-10-07 07:27:16,TX_000083,0.0,LOW,[],[],False,False
+TX0049,2025-10-08,00:23:22,Online Payment,658.32,ANZ Bank,Australia,Mobile App,,2025-10-08 00:23:22,TX_000084,25.0,MEDIUM,['LATE_NIGHT_TRANSACTION'],['Transaction at 00:00 (High-risk hours: 12am-5am)'],False,False
+TX0055,2025-10-08,04:15:42,Online Payment,719.49,Telstra,Australia,Branch,,2025-10-08 04:15:42,TX_000085,25.0,MEDIUM,['LATE_NIGHT_TRANSACTION'],['Transaction at 04:00 (High-risk hours: 12am-5am)'],False,False
+TX0043,2025-10-08,07:28:56,Transfer,46.09,Amazon Australia,Australia,POS,,2025-10-08 07:28:56,TX_000086,0.0,LOW,[],[],False,False
+TX0019,2025-10-08,12:41:23,ATM Withdrawal,521.17,Qantas Airways,Australia,Online,,2025-10-08 12:41:23,TX_000087,0.0,LOW,[],[],False,False
+TX0083,2025-10-09,01:30:30,Direct Credit,400.42,Uber Eats,Australia,Branch,,2025-10-09 01:30:30,TX_000088,25.0,MEDIUM,['LATE_NIGHT_TRANSACTION'],['Transaction at 01:00 (High-risk hours: 12am-5am)'],False,False
+TX0038,2025-10-09,10:50:21,Transfer,121.72,Kmart,Australia,Mobile App,,2025-10-09 10:50:21,TX_000089,0.0,LOW,[],[],False,False
+TX0074,2025-10-09,20:45:28,POS Purchase,979.48,Bunnings,Australia,Online,,2025-10-09 20:45:28,TX_000090,0.0,LOW,[],[],False,False
+TX0069,2025-10-10,00:05:00,Direct Credit,9846.1,FakeStore Online,Australia,Mobile App,,2025-10-10 00:05:00,TX_000091,55.0,HIGH,"['LATE_NIGHT_TRANSACTION', 'POTENTIAL_STRUCTURING']","['Transaction at 00:00 (High-risk hours: 12am-5am)', 'Amount $9,846.10 is 1.5% below AUSTRAC threshold ($10,000)']",True,False
+TX0014,2025-10-10,04:22:21,POS Purchase,258.75,Domino's Pizza,Australia,Branch,,2025-10-10 04:22:21,TX_000092,25.0,MEDIUM,['LATE_NIGHT_TRANSACTION'],['Transaction at 04:00 (High-risk hours: 12am-5am)'],False,False
+TX0054,2025-10-10,14:44:09,POS Purchase,1074.32,McDonald's,Australia,Mobile App,,2025-10-10 14:44:09,TX_000093,0.0,LOW,[],[],False,False
+TX0079,2025-10-11,14:02:33,POS Purchase,433.37,Qantas Airways,Australia,Online,,2025-10-11 14:02:33,TX_000094,0.0,LOW,[],[],False,False
+TX0091,2025-10-12,07:53:09,Online Payment,147.92,Qantas Airways,Australia,Mobile App,,2025-10-12 07:53:09,TX_000095,0.0,LOW,[],[],False,False
+TX0041,2025-10-12,18:52:51,POS Purchase,150.84,Afterpay,Australia,POS,,2025-10-12 18:52:51,TX_000096,0.0,LOW,[],[],False,False
+TX0020,2025-10-13,01:31:35,POS Purchase,353.02,IKEA Australia,Australia,ATM,,2025-10-13 01:31:35,TX_000097,25.0,MEDIUM,['LATE_NIGHT_TRANSACTION'],['Transaction at 01:00 (High-risk hours: 12am-5am)'],False,False
+TX0017,2025-10-13,03:12:12,Transfer,9666.93,Qantass Travel,Australia,Online,,2025-10-13 03:12:12,TX_000098,55.0,HIGH,"['LATE_NIGHT_TRANSACTION', 'POTENTIAL_STRUCTURING']","['Transaction at 03:00 (High-risk hours: 12am-5am)', 'Amount $9,666.93 is 3.3% below AUSTRAC threshold ($10,000)']",True,False
+TX0057,2025-10-13,03:12:12,Transfer,242506.86,uber-oceanic-inc,Australia,Mobile App,uber-oceanic-inc,2025-10-13 03:12:12,TX_000099,50.0,HIGH,"['LATE_NIGHT_TRANSACTION', 'LARGE_TRANSACTION']","['Transaction at 03:00 (High-risk hours: 12am-5am)', 'Large transaction: $242,506.86']",True,False
+TX0047,2025-10-13,06:13:39,Transfer,377.49,Uber Eats,Australia,Mobile App,,2025-10-13 06:13:39,TX_000100,0.0,LOW,[],[],False,False
