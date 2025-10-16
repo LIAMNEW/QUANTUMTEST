@@ -583,9 +583,15 @@ with st.sidebar:
                     
                     # Check for high risk and anomalies
                     if st.session_state.get('risk_assessment') is not None:
-                        high_risk_count = len(st.session_state.risk_assessment[
-                            st.session_state.risk_assessment['risk_score'] > 0.7
-                        ]) if 'risk_score' in st.session_state.risk_assessment.columns else 0
+                        if 'risk_score' in st.session_state.risk_assessment.columns:
+                            # Detect scale: if max score > 1, it's 0-100 scale, else 0-1 scale
+                            max_score = st.session_state.risk_assessment['risk_score'].max()
+                            threshold = 60 if max_score > 1 else 0.7
+                            high_risk_count = len(st.session_state.risk_assessment[
+                                st.session_state.risk_assessment['risk_score'] > threshold
+                            ])
+                        else:
+                            high_risk_count = 0
                         app_context["high_risk_found"] = high_risk_count > 0
                     
                     if st.session_state.get('anomalies') is not None:
@@ -1326,7 +1332,10 @@ if st.session_state.view_saved_analysis and st.session_state.saved_session_id:
                         st.plotly_chart(fig, use_container_width=True)
                         
                         # Display high-risk transactions
-                        high_risks = risk_df[risk_df['risk_score'] > 0.7]
+                        # Detect scale: if max score > 1, it's 0-100 scale, else 0-1 scale
+                        max_score = risk_df['risk_score'].max() if 'risk_score' in risk_df.columns else 0
+                        threshold = 60 if max_score > 1 else 0.7
+                        high_risks = risk_df[risk_df['risk_score'] > threshold]
                         if not high_risks.empty:
                             st.warning(f"Found {len(high_risks)} high-risk transactions")
                             st.dataframe(high_risks)
@@ -1626,11 +1635,25 @@ else:
                     if 'risk_score' in st.session_state.risk_assessment.columns:
                         risk_data = st.session_state.risk_assessment['risk_score']
                         
-                        # Calculate risk categories
-                        low_risk = len(risk_data[risk_data <= 0.3])
-                        medium_risk = len(risk_data[(risk_data > 0.3) & (risk_data <= 0.6)])
-                        high_risk = len(risk_data[(risk_data > 0.6) & (risk_data <= 0.8)])
-                        critical_risk = len(risk_data[risk_data > 0.8])
+                        # Detect scale: if max score > 1, it's 0-100 scale, else 0-1 scale
+                        max_score = risk_data.max()
+                        is_hundred_scale = max_score > 1
+                        
+                        # Calculate risk categories based on detected scale
+                        if is_hundred_scale:
+                            # 0-100 scale (bank transactions)
+                            low_risk = len(risk_data[risk_data <= 30])
+                            medium_risk = len(risk_data[(risk_data > 30) & (risk_data <= 60)])
+                            high_risk = len(risk_data[(risk_data > 60) & (risk_data <= 80)])
+                            critical_risk = len(risk_data[risk_data > 80])
+                            high_risk_threshold = 60
+                        else:
+                            # 0-1 scale (blockchain)
+                            low_risk = len(risk_data[risk_data <= 0.3])
+                            medium_risk = len(risk_data[(risk_data > 0.3) & (risk_data <= 0.6)])
+                            high_risk = len(risk_data[(risk_data > 0.6) & (risk_data <= 0.8)])
+                            critical_risk = len(risk_data[risk_data > 0.8])
+                            high_risk_threshold = 0.7
                         
                         # Display in metric cards
                         risk_metrics_col1, risk_metrics_col2, risk_metrics_col3, risk_metrics_col4 = st.columns(4)
@@ -1643,8 +1666,8 @@ else:
                         with risk_metrics_col4:
                             st.metric("Critical Risk", critical_risk, delta=f"{(critical_risk/len(risk_data)*100):.1f}%")
                         
-                        # Display high-risk transactions
-                        high_risks = st.session_state.risk_assessment[st.session_state.risk_assessment['risk_score'] > 0.7]
+                        # Display high-risk transactions using appropriate threshold
+                        high_risks = st.session_state.risk_assessment[st.session_state.risk_assessment['risk_score'] > high_risk_threshold]
                         if not high_risks.empty:
                             st.markdown("### High-Risk Transactions Requiring Attention")
                             st.error(f"⚠️ Found {len(high_risks)} high-risk transactions that require immediate review")
