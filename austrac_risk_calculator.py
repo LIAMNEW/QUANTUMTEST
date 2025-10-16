@@ -32,13 +32,32 @@ def calculate_austrac_risk_score(df: pd.DataFrame) -> Dict:
     critical_count = 0
     reporting_required_count = 0
     
+    # Normalize column names for case-insensitive matching
+    df_normalized = df.copy()
+    col_mapping = {col: col.lower() for col in df.columns}
+    df_normalized.columns = [col.lower() for col in df.columns]
+    
     # Process sample transactions
     for i in range(sample_size):
-        row = df.iloc[i]
+        row = df_normalized.iloc[i]
         
-        # Extract actual data from row
+        # Extract actual data from row with case-insensitive column matching
         amount = float(row.get('value', row.get('amount', 1000)))
-        timestamp = row.get('timestamp', row.get('date', datetime.now().isoformat()))
+        
+        # Handle both combined datetime and separate Date/Time columns
+        if 'timestamp' in row:
+            timestamp = row.get('timestamp')
+        elif 'date' in row and 'time' in row:
+            # Combine separate Date and Time columns
+            date_str = str(row.get('date', ''))
+            time_str = str(row.get('time', ''))
+            if date_str and time_str:
+                timestamp = f"{date_str} {time_str}"
+            else:
+                timestamp = row.get('date', datetime.now().isoformat())
+        else:
+            timestamp = row.get('date', datetime.now().isoformat())
+        
         merchant = row.get('merchant', row.get('description', ''))
         country = row.get('country', row.get('location', 'Australia'))
         
@@ -102,12 +121,18 @@ def calculate_austrac_risk_score(df: pd.DataFrame) -> Dict:
     max_risk_score = np.max(risk_scores) if risk_scores else 0
     
     # Calculate percentage-based risk score (0-100%)
-    # Weight factors: average risk + high-risk transaction percentage + critical transaction penalty
-    base_risk = avg_risk_score * 0.5  # Reduce base weight to prevent over-scoring
-    high_risk_penalty = (high_risk_count / sample_size) * 20  # Reduced from 30% to 20%
-    critical_penalty = (critical_count / sample_size) * 30    # Reduced from 50% to 30%
+    # Enhanced formula to properly reflect AUSTRAC compliance risks
+    base_risk = avg_risk_score * 0.8  # Base risk from individual scores
+    high_risk_penalty = (high_risk_count / sample_size) * 50  # High-risk transactions are serious
+    critical_penalty = (critical_count / sample_size) * 60    # Critical = severe compliance risk
+    reporting_penalty = (reporting_required_count / sample_size) * 40  # AUSTRAC reporting is a major red flag
     
-    overall_risk_percentage = min(float(base_risk + high_risk_penalty + critical_penalty), 100.0)
+    # Special penalty: if >20% require reporting, add extra weight
+    if reporting_required_count / sample_size > 0.20:
+        reporting_penalty += 15  # Systemic compliance issue
+    
+    # Combine all factors
+    overall_risk_percentage = min(float(base_risk + high_risk_penalty + critical_penalty + reporting_penalty), 100.0)
     
     # Determine risk level and color
     if overall_risk_percentage >= 80:
