@@ -333,6 +333,42 @@ MODERN_CSS = """
     ::-webkit-scrollbar-thumb:hover {
         background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
     }
+    
+    /* ========== ACCESSIBILITY ENHANCEMENTS ========== */
+    /* High-contrast focus indicators for keyboard navigation */
+    .glass-card:focus-within,
+    .modern-metric:focus-within,
+    .modern-button:focus {
+        outline: 3px solid #667eea;
+        outline-offset: 2px;
+    }
+    
+    .stButton > button:focus {
+        outline: 3px solid #667eea !important;
+        outline-offset: 2px !important;
+    }
+    
+    /* Enhanced focus visibility for interactive elements */
+    a:focus, button:focus, input:focus, select:focus, textarea:focus {
+        outline: 2px solid #667eea;
+        outline-offset: 2px;
+    }
+    
+    /* Reduce motion for users with motion sensitivity */
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+    
+    /* High contrast mode support */
+    @media (prefers-contrast: high) {
+        .glass-card, .glass-header, .modern-metric {
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+    }
 </style>
 """
 
@@ -354,8 +390,8 @@ def glass_card(title: str, content: str, icon: str = ""):
         icon: Optional emoji icon
     """
     st.markdown(f"""
-    <div class="glass-card slide-in-up">
-        <h3>{icon} {title}</h3>
+    <div class="glass-card slide-in-up" role="article" aria-labelledby="card-title">
+        <h3 id="card-title">{icon} {title}</h3>
         <p>{content}</p>
     </div>
     """, unsafe_allow_html=True)
@@ -369,11 +405,11 @@ def glass_header(title: str, subtitle: str = "", icon: str = ""):
         subtitle: Optional subtitle
         icon: Optional emoji icon
     """
-    subtitle_html = f'<p style="font-size: 1rem; margin-top: 0.5rem; opacity: 0.9;">{subtitle}</p>' if subtitle else ''
+    subtitle_html = f'<p style="font-size: 1rem; margin-top: 0.5rem; opacity: 0.9;" aria-label="subtitle">{subtitle}</p>' if subtitle else ''
     
     st.markdown(f"""
-    <div class="glass-header fade-in">
-        <h2 style="margin: 0;">{icon} {title}</h2>
+    <div class="glass-header fade-in" role="banner">
+        <h2 style="margin: 0;" aria-label="{title}">{icon} {title}</h2>
         {subtitle_html}
     </div>
     """, unsafe_allow_html=True)
@@ -388,10 +424,10 @@ def modern_metric(label: str, value: str, icon: str = "", delta: Optional[str] =
         icon: Optional emoji icon
         delta: Optional delta/change indicator
     """
-    delta_html = f'<p style="font-size: 0.9rem; color: #43e97b; margin-top: 0.5rem;">{delta}</p>' if delta else ''
+    delta_html = f'<p style="font-size: 0.9rem; color: #43e97b; margin-top: 0.5rem;" aria-label="change indicator">{delta}</p>' if delta else ''
     
     st.markdown(f"""
-    <div class="modern-metric slide-in-up">
+    <div class="modern-metric slide-in-up" role="status" aria-label="{label}: {value}">
         <p style="font-size: 0.9rem; opacity: 0.8; margin: 0;">{icon} {label}</p>
         <h2 style="margin: 0.5rem 0; font-size: 2rem;">{value}</h2>
         {delta_html}
@@ -423,10 +459,18 @@ def modern_alert(message: str, alert_type: str = "info"):
         "info": "ℹ️"
     }
     
+    role_map = {
+        "success": "status",
+        "error": "alert",
+        "warning": "alert",
+        "info": "status"
+    }
+    
     icon = icon_map.get(alert_type, "ℹ️")
+    role = role_map.get(alert_type, "status")
     
     st.markdown(f"""
-    <div class="alert-{alert_type}">
+    <div class="alert-{alert_type}" role="{role}" aria-live="polite">
         <strong>{icon} {message}</strong>
     </div>
     """, unsafe_allow_html=True)
